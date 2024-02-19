@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
   res.json({ hello: "Hi" });
 });
 
-app.use("/api/user", userRouter);
+app.use("/api/users", userRouter);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
