@@ -2,8 +2,10 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const { verifyToken } = require("./middleware/auth");
 
 const userRouter = require("./routes/userRouter");
+const postRouter = require("./routes/postRouter");
 
 const app = express();
 
@@ -23,6 +25,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/users", userRouter);
+app.use("/api/posts", verifyToken(), postRouter);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

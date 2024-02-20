@@ -69,17 +69,17 @@ exports.login = [
     const user = await User.findOne({ email: req.body.email }).exec();
 
     const errors = validationResult(req);
-    
+
     if (!errors.isEmpty()) {
       return res.status(400).json({
         errors: errors.array(),
       });
     }
-    
+
     if (user === null) {
       return res
-      .status(404)
-      .json({ errors: [{ msg: "User with email address does not exist." }] });
+        .status(404)
+        .json({ errors: [{ msg: "User with email address does not exist." }] });
     }
     const match = await bcrypt.compare(req.body.password, user.password);
 
@@ -95,6 +95,6 @@ exports.login = [
     };
 
     const token = generateToken(verifiedUser);
-    res.status(200).json({ token });
+    res.status(200).json({ ...verifiedUser, token });
   }),
 ];
