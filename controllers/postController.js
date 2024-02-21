@@ -3,6 +3,11 @@ const { body, validationResult } = require("express-validator");
 const User = require("../models/User");
 const Post = require("../models/Post");
 
+exports.post_getAll = asyncHandler(async (req, res, next) => {
+  const posts = await Post.find().exec();
+  return res.status(200).json({ posts });
+});
+
 exports.post_create = [
   body("title", "Title field must be at least 5 characters long.")
     .trim()
@@ -31,7 +36,7 @@ exports.post_create = [
       author: user._id,
       title: req.body.title,
       content: req.body.content,
-      category: req.body.category || "General",
+      category: req.body.category,
       createdAt: Date.now(),
       updatedAt: Date.now(),
     });
