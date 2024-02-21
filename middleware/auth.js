@@ -4,11 +4,14 @@ const User = require("../models/User");
 
 exports.generateToken = (user) => {
   return jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1d" });
-}
+};
 
 exports.verifyToken = async (req, res, next) => {
+  if (!req.headers["authorization"])
+    return res.status(401).json({ errors: [{ msg: "Unauthorized user" }] });
+
   const token = req.headers["authorization"].split(" ")[1];
-  
+
   if (token === undefined)
     return res.status(401).json({ errors: [{ msg: "Unauthorized user" }] });
 
@@ -18,8 +21,7 @@ exports.verifyToken = async (req, res, next) => {
     next();
   } catch (e) {
     return res
-      .status(400)
+      .status(401)
       .json({ errors: [{ msg: "Token expired, Please Login Again." }] });
   }
 };
-

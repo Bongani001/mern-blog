@@ -2,10 +2,14 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const {
+  invalidPathHandler,
+  errorResponseHandler,
+} = require("./middleware/errorHandler");
 
 const userRouter = require("./routes/userRouter");
 const postRouter = require("./routes/postRouter");
-const categoryRouter = require("./routes/categoryRouter")
+const categoryRouter = require("./routes/categoryRouter");
 
 const app = express();
 
@@ -26,7 +30,10 @@ app.get("/", (req, res) => {
 
 app.use("/api/users", userRouter);
 app.use("/api/posts", postRouter);
-app.use("/api/categories", categoryRouter)
+app.use("/api/categories", categoryRouter);
+
+app.use(invalidPathHandler);
+app.use(errorResponseHandler);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

@@ -33,10 +33,10 @@ exports.post_create = [
     }
 
     const post = new Post({
-      author: user._id,
+      authorId: user._id,
       title: req.body.title,
       content: req.body.content,
-      category: req.body.category,
+      categoryId: req.body.category,
       createdAt: Date.now(),
       updatedAt: Date.now(),
     });
@@ -45,3 +45,57 @@ exports.post_create = [
     return res.status(201).json({ savedPost });
   }),
 ];
+
+exports.post_update = [
+  body("title", "Title field must be at least 5 characters long.")
+    .trim()
+    .isLength({ min: 5 })
+    .escape(),
+  body("content", "Content field must be at least 80 characters long.")
+    .trim()
+    .isLength({ min: 80 })
+    .escape(),
+
+  asyncHandler(async (req, res, next) => {
+    const post = await Post.findById(req.params.id).exec();
+    const user = await User.findById(req.user._id).exec();
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    if (post === null) {
+      const error = new Error("Post Not Found.");
+      error.status = 404;
+      next(error);
+    }
+
+    const newPost = new Post({
+      _id: post._id,
+      authorId: post.authorId,
+      title: req.body.title,
+      content: req.body.content,
+      categoryId: post.categoryId,
+      createdAt: post.createdAt,
+      updatedAt: Date.now(),
+    });
+
+    const updatedPost = await Post.findByIdAndUpdate(req.params.id, newPost, {
+      new: true,
+    });
+    return res.status(201).json({ updatedPost });
+  }),
+];
+
+exports.post_delete = asyncHandler(async (req, res, next) => {
+  const post = await Post.findById(req.params.id).exec();
+
+  if (post === null) {
+    const error = new Error("Post Not Found.");
+    error.status = 404;
+    next(error);
+  }
+  await Post.findByIdAndDelete(req.params.id);
+  res.status(200).json({ msg: "Post deleted successfully." });
+});

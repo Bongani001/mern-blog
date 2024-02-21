@@ -7,4 +7,8 @@ router.get("/", postController.post_getAll);
 
 router.post("/create", verifyToken, postController.post_create);
 
+router.patch("/update/:id", verifyToken, postController.post_update);
+
+router.delete("/delete/:id", verifyToken, postController.post_delete);
+
 module.exports = router;
