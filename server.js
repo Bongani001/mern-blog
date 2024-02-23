@@ -10,6 +10,7 @@ const {
 const userRouter = require("./routes/userRouter");
 const postRouter = require("./routes/postRouter");
 const categoryRouter = require("./routes/categoryRouter");
+const commentRouter = require("./routes/commentRouter");
 
 const app = express();
 
@@ -23,7 +24,7 @@ async function main() {
 
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   res.json({ hello: "Hi" });
@@ -32,6 +33,7 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/categories", categoryRouter);
+app.use("/api/comments", commentRouter);
 
 app.use(invalidPathHandler);
 app.use(errorResponseHandler);

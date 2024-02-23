@@ -8,12 +8,12 @@ exports.generateToken = (user) => {
 
 exports.verifyToken = async (req, res, next) => {
   if (!req.headers["authorization"])
-    return res.status(401).json({ errors: [{ msg: "Unauthorized user" }] });
+    return res.status(401).json({ errors: [{ msg: "Please Login first." }] });
 
   const token = req.headers["authorization"].split(" ")[1];
 
   if (token === undefined)
-    return res.status(401).json({ errors: [{ msg: "Unauthorized user" }] });
+    return res.status(401).json({ errors: [{ msg: "Please Login." }] });
 
   try {
     const { _id } = jwt.verify(token, process.env.JWT_SECRET);
@@ -22,6 +22,6 @@ exports.verifyToken = async (req, res, next) => {
   } catch (e) {
     return res
       .status(401)
-      .json({ errors: [{ msg: "Token expired, Please Login Again." }] });
+      .json({ errors: [{ msg: "Session token expired, Please Login Again." }] });
   }
 };

@@ -2,9 +2,14 @@ const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 const Category = require("../models/category");
 
+exports.category_getAll = asyncHandler(async (req, res, next) => {
+  const categories = await Category.find().exec();
+  return res.status(200).json({ categories });
+});
+
 exports.category_create = [
   body("name", "Category name must not be empty.").trim().isLength({ min: 1 }),
-  
+
   asyncHandler(async (req, res, next) => {
     const categoryCheck = await Category.findOne({
       name: req.body.name,

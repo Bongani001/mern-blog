@@ -63,7 +63,13 @@ exports.post_update = [
     if (post === null) {
       const error = new Error("Post Not Found.");
       error.status = 404;
-      next(error);
+      return next(error);
+    }
+
+    if (user.id != post.authorId && !user.admin) {
+      const error = new Error("Not Authorised.");
+      error.status = 403;
+      return next(error);
     }
 
     const newPost = new Post({
