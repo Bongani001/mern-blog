@@ -5,7 +5,7 @@ const User = require("../models/User");
 
 exports.comment_getAll = asyncHandler(async (req, res, next) => {
   const comments = await Comment.find().exec();
-  return res.status(200).json({ comments });
+  return res.status(200).json(comments);
 });
 
 exports.comment_create = [
@@ -33,7 +33,7 @@ exports.comment_create = [
 
     try {
       const savedComment = await comment.save();
-      return res.status(201).json({ savedComment });
+      return res.status(201).json(savedComment);
     } catch (err) {
       err.message = "Internal server Error, Please try again later.";
       err.statusCode = 500;
@@ -93,6 +93,6 @@ exports.comment_update = [
         new: true,
       }
     );
-    return res.status(201).json({ updatedComment });
+    return res.status(201).json(updatedComment);
   }),
 ];

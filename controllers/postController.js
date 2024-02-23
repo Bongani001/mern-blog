@@ -5,7 +5,12 @@ const Post = require("../models/Post");
 
 exports.post_getAll = asyncHandler(async (req, res, next) => {
   const posts = await Post.find().exec();
-  return res.status(200).json({ posts });
+  return res.status(200).json(posts);
+});
+
+exports.post_getSpecific = asyncHandler(async (req, res, next) => {
+  const post = await Post.findById(req.params.id).exec();
+  return res.status(200).json(post);
 });
 
 exports.post_create = [
@@ -39,7 +44,7 @@ exports.post_create = [
     });
 
     const savedPost = await post.save();
-    return res.status(201).json({ savedPost });
+    return res.status(201).json(savedPost);
   }),
 ];
 
@@ -85,7 +90,7 @@ exports.post_update = [
     const updatedPost = await Post.findByIdAndUpdate(req.params.id, newPost, {
       new: true,
     });
-    return res.status(201).json({ updatedPost });
+    return res.status(201).json(updatedPost);
   }),
 ];
 

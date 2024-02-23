@@ -5,6 +5,8 @@ const postController = require("../controllers/postController");
 
 router.get("/", postController.post_getAll);
 
+router.get("/:id", postController.post_getSpecific);
+
 router.post("/create", verifyToken, postController.post_create);
 
 router.patch("/update/:id", verifyToken, postController.post_update);

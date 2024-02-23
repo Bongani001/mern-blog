@@ -13,7 +13,7 @@ exports.verifyToken = async (req, res, next) => {
   const token = req.headers["authorization"].split(" ")[1];
 
   if (token === undefined)
-    return res.status(401).json({ errors: [{ msg: "Please Login." }] });
+    return res.status(401).json({ errors: [{ msg: "Please Login Again." }] });
 
   try {
     const { _id } = jwt.verify(token, process.env.JWT_SECRET);
