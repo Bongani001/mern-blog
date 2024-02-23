@@ -3,11 +3,8 @@ const { body, validationResult } = require("express-validator");
 const Category = require("../models/category");
 
 exports.category_create = [
-  body("name", "Category name must not be empty.")
-    .trim()
-    .isLength({ min: 1 })
-    .escape(),
-
+  body("name", "Category name must not be empty.").trim().isLength({ min: 1 }),
+  
   asyncHandler(async (req, res, next) => {
     const categoryCheck = await Category.findOne({
       name: req.body.name,

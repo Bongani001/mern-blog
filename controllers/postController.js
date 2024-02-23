@@ -11,13 +11,10 @@ exports.post_getAll = asyncHandler(async (req, res, next) => {
 exports.post_create = [
   body("title", "Title field must be at least 5 characters long.")
     .trim()
-    .isLength({ min: 5 })
-    .escape(),
+    .isLength({ min: 5 }),
   body("content", "Content field must be at least 80 characters long.")
     .trim()
-    .isLength({ min: 80 })
-    .escape(),
-
+    .isLength({ min: 80 }),
   asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.user._id).exec();
     const errors = validationResult(req);
@@ -49,12 +46,10 @@ exports.post_create = [
 exports.post_update = [
   body("title", "Title field must be at least 5 characters long.")
     .trim()
-    .isLength({ min: 5 })
-    .escape(),
+    .isLength({ min: 5 }),
   body("content", "Content field must be at least 80 characters long.")
     .trim()
-    .isLength({ min: 80 })
-    .escape(),
+    .isLength({ min: 80 }),
 
   asyncHandler(async (req, res, next) => {
     const post = await Post.findById(req.params.id).exec();

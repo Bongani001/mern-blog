@@ -6,23 +6,12 @@ const { generateToken, verifyToken } = require("../middleware/auth");
 const User = require("../models/User");
 
 exports.register = [
-  body("email", "Please enter a valid email address.")
-    .trim()
-    .isEmail()
-    .escape(),
-  body("username", "Username must not be empty.")
-    .trim()
-    .isLength({ min: 1 })
-    .escape(),
-  body("password", "Password must not be empty.")
-    .trim()
-    .isLength({ min: 1 })
-    .escape(),
+  body("email", "Please enter a valid email address.").trim().isEmail(),
+  body("username", "Username must not be empty.").trim().isLength({ min: 1 }),
+  body("password", "Password must not be empty.").trim().isLength({ min: 1 }),
   body("confirmPassword")
     .custom((value, { req }) => value === req.body.password)
-    .withMessage("Passwords do not match.")
-    .escape(),
-
+    .withMessage("Passwords do not match."),
   asyncHandler(async (req, res, next) => {
     const userExists = await User.findOne({ email: req.body.email }).exec();
 
@@ -56,15 +45,8 @@ exports.register = [
 ];
 
 exports.login = [
-  body("email", "Please enter a valid email address.")
-    .trim()
-    .isEmail()
-    .escape(),
-  body("password", "Password must not be empty.")
-    .trim()
-    .isLength({ min: 1 })
-    .escape(),
-
+  body("email", "Please enter a valid email address.").trim().isEmail(),
+  body("password", "Password must not be empty.").trim().isLength({ min: 1 }),
   asyncHandler(async (req, res, next) => {
     const user = await User.findOne({ email: req.body.email }).exec();
 
