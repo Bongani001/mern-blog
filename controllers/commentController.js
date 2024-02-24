@@ -37,7 +37,7 @@ exports.comment_create = [
     } catch (err) {
       err.message = "Internal server Error, Please try again later.";
       err.statusCode = 500;
-      next(err);
+      return next(err);
     }
   }),
 ];
@@ -48,7 +48,7 @@ exports.comment_delete = asyncHandler(async (req, res, next) => {
   if (comment === null) {
     const error = new Error("Comment Not Found.");
     error.status = 404;
-    next(error);
+    return next(error);
   }
   await Comment.findByIdAndDelete(req.params.id);
   res.status(200).json({ msg: "Comment deleted successfully." });

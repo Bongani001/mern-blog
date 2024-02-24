@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 const User = require("../models/User");
 const Post = require("../models/Post");
+const Comment = require("../models/Comment");
 
 exports.post_getAll = asyncHandler(async (req, res, next) => {
   const posts = await Post.find().exec();
@@ -40,6 +41,7 @@ exports.post_create = [
       content: req.body.content,
       categoryId: req.body.category,
       createdAt: Date.now(),
+      published: req.body.published,
       updatedAt: Date.now(),
     });
 
@@ -82,7 +84,8 @@ exports.post_update = [
       authorId: post.authorId,
       title: req.body.title,
       content: req.body.content,
-      categoryId: post.categoryId,
+      published: req.body.published,
+      categoryId: req.body.categoryId,
       createdAt: post.createdAt,
       updatedAt: Date.now(),
     });
@@ -100,8 +103,10 @@ exports.post_delete = asyncHandler(async (req, res, next) => {
   if (post === null) {
     const error = new Error("Post Not Found.");
     error.status = 404;
-    next(error);
+    return next(error);
   }
+
+  await Comment.deleteMany({ postId: req.params.id });
   await Post.findByIdAndDelete(req.params.id);
   res.status(200).json({ msg: "Post deleted successfully." });
 });

@@ -38,7 +38,7 @@ exports.category_delete = async (req, res, next) => {
   if (category == null) {
     const error = new Error("Category does not exist.");
     error.status = 404;
-    next(error);
+    return next(error);
   }
 
   await Category.findByIdAndDelete(req.params.id);

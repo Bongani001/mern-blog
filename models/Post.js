@@ -11,6 +11,7 @@ const PostSchema = new Schema({
     ref: "Category",
     default: "65d62f41a3ebb8f0d23c0ebc",
   },
+  published: { type: Boolean, default: false, require: true },
   createdAt: { type: Date, default: Date.now() },
   updatedAt: { type: Date, default: Date.now() },
 });
