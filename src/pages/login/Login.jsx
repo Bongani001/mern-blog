@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdOutlineMail } from "react-icons/md";
+import { loginUser } from "../../services/users";
+import toast, { Toaster } from "react-hot-toast";
 
 const Login = () => {
   const [body, setBody] = useState({
+    email: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState({
     email: "",
     password: "",
   });
@@ -12,14 +18,36 @@ const Login = () => {
     setBody((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
+    setErrors((prev) => {
+      return { ...prev, [e.target.name]: "" };
+    });
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log(body);
+    const data = await loginUser({
+      email: body.email,
+      password: body.password,
+    });
+    if (data?.errors) {
+      data.errors.forEach((err) => {
+        if (err.type) {
+          setErrors((prev) => {
+            return {
+              ...prev,
+              [err.path]: err.msg,
+            };
+          });
+          console.log(errors);
+        } else {
+          toast.error(err.msg);
+        }
+      });
+    }
   };
   return (
     <div className="flex justify-center items-center flex-grow">
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="py-8 px-20 bg-white shadow-2xl rounded">
         <h1 className="text-center text-2xl font-medium">Login</h1>
         <form onSubmit={handleFormSubmit} className="mt-3 flex flex-col gap-4">
@@ -30,7 +58,11 @@ const Login = () => {
             >
               Email:
             </label>
-            <div className="relative flex items-center bg-gray-100 ">
+            <div
+              className={`${
+                errors.email ? "border border-red-600" : ""
+              } relative flex items-center bg-gray-100 rounded-lg`}
+            >
               <MdOutlineMail className="absolute m-2 text-lg " />
               <input
                 type="text"
@@ -39,9 +71,16 @@ const Login = () => {
                 placeholder="example@email.com"
                 value={body.email}
                 onChange={handleFormChange}
-                className="rounded p-2 ml-6 focus:outline-none bg-gray-100 text-gray-500"
+                className="rounded-lg p-2 ml-6 focus:outline-none bg-gray-100 text-gray-500"
               />
             </div>
+            {errors.email ? (
+              <pre className="text-xs mt-2 text-red-600 italic">
+                {errors.email}
+              </pre>
+            ) : (
+              ""
+            )}
           </div>
           <div>
             <label
@@ -50,7 +89,11 @@ const Login = () => {
             >
               Password:
             </label>
-            <div className="relative flex items-center bg-gray-100 ">
+            <div
+              className={`${
+                errors.password ? "border border-red-600" : ""
+              } relative flex items-center bg-gray-100 rounded-lg`}
+            >
               <RiLockPasswordLine className="absolute m-2 text-lg " />
               <input
                 type="password"
@@ -58,9 +101,16 @@ const Login = () => {
                 id="password"
                 value={body.password}
                 onChange={handleFormChange}
-                className="rounded p-2 ml-6 focus:outline-none bg-gray-100 text-gray-500"
+                className="rounded-lg p-2 ml-6 focus:outline-none bg-gray-100 text-gray-500"
               />
             </div>
+            {errors.password ? (
+              <pre className="text-xs mt-2 text-red-600 italic">
+                {errors.password}
+              </pre>
+            ) : (
+              ""
+            )}
           </div>
           <button
             type="submit"
