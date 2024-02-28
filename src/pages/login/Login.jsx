@@ -38,12 +38,16 @@ const Login = () => {
               [err.path]: err.msg,
             };
           });
-          console.log(errors);
         } else {
           toast.error(err.msg);
         }
       });
+      return;
+    } else if (data === undefined) {
+      toast.error("Server error, come back later.");
     }
+    toast.success("Login Successful.");
+    localStorage.setItem("userInfo", JSON.stringify(data));
   };
   return (
     <div className="flex justify-center items-center flex-grow">
