@@ -3,6 +3,8 @@ const { body, validationResult } = require("express-validator");
 const User = require("../models/User");
 const Post = require("../models/Post");
 const Comment = require("../models/Comment");
+const cloudinary = require("../utils/cloudinary");
+const upload = require("../middleware/multer");
 
 exports.post_getAll = asyncHandler(async (req, res, next) => {
   const posts = await Post.find().exec();
@@ -15,12 +17,15 @@ exports.post_getSpecific = asyncHandler(async (req, res, next) => {
 });
 
 exports.post_create = [
+  upload.single("image"),
+
   body("title", "Title field must be at least 5 characters long.")
     .trim()
     .isLength({ min: 5 }),
   body("content", "Content field must be at least 80 characters long.")
     .trim()
     .isLength({ min: 80 }),
+
   asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.user._id).exec();
     const errors = validationResult(req);
@@ -35,9 +40,14 @@ exports.post_create = [
       return res.status(400).json({ errors: errors.array() });
     }
 
+    const result = await cloudinary.uploader.upload(req.file?.path, {
+      folder: "blog",
+    });
     const post = new Post({
       authorId: user._id,
       title: req.body.title,
+      headerImg: result.secure_url,
+      imgId: result.public_id,
       content: req.body.content,
       categoryId: req.body.category,
       createdAt: Date.now(),
@@ -57,6 +67,8 @@ exports.post_update = [
   body("content", "Content field must be at least 80 characters long.")
     .trim()
     .isLength({ min: 80 }),
+
+  upload.single("image"),
 
   asyncHandler(async (req, res, next) => {
     const post = await Post.findById(req.params.id).exec();
@@ -79,10 +91,14 @@ exports.post_update = [
       return next(error);
     }
 
+    const result = await cloudinary.uploader.upload(req.file?.path);
+
     const newPost = new Post({
       _id: post._id,
       authorId: post.authorId,
       title: req.body.title,
+      headerImg: result.secure_url || post.secure_url,
+      imgId: result.public_id || post.poblic_id,
       content: req.body.content,
       published: req.body.published,
       categoryId: req.body.categoryId,
