@@ -52,6 +52,7 @@ const Register = () => {
       return;
     } else if (data === undefined) {
       toast.error("Server error, come back later.");
+      return;
     }
     toast.success("Successfully Registered.");
   };

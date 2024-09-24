@@ -40,11 +40,13 @@ const Login = () => {
           });
         } else {
           toast.error(err.msg);
+          return;
         }
       });
       return;
     } else if (data === undefined) {
       toast.error("Server error, come back later.");
+      return;
     }
     toast.success("Login Successful.");
     localStorage.setItem("userInfo", JSON.stringify(data));

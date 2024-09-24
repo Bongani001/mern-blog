@@ -1,11 +1,13 @@
 import { useState } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Navbar from "./components/Navbar";
 import Homepage from "./pages/homepage/Homepage";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import SharedLayout from "./components/SharedLayout";
+import SideLayout from "./components/SideLayout";
+import Posts from "./pages/blogPost/Posts";
+import PostDetails from "./pages/blogPost/PostDetails";
 
 function App() {
   return (
@@ -14,8 +16,12 @@ function App() {
         <Routes>
           <Route path="/" element={<SharedLayout />}>
             <Route index element={<Homepage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/posts" element={<SideLayout />}>
+              <Route index element={<Posts />} />
+              <Route path=":id" element={<PostDetails />} />
+            </Route>
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
           </Route>
         </Routes>
       </BrowserRouter>
