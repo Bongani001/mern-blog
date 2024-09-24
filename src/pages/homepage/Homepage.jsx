@@ -39,7 +39,7 @@ const Homepage = () => {
           </div>
         </div>
       </header>
-      <main className="bg-zinc-50 rounded-2xl pt-5 -mt-14 mx-4">
+      <main className="bg-zinc-50 rounded-2xl py-5 -mt-14 mx-4">
         <h2 className="text-zinc-800 text-2xl font-semibold ml-3">Top Blogs</h2>
         <div className="flex overflow-x-auto gap-3 my-3">
           <div className="">

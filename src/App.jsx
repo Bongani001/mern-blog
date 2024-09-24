@@ -8,6 +8,7 @@ import SharedLayout from "./components/SharedLayout";
 import SideLayout from "./components/SideLayout";
 import Posts from "./pages/blogPost/Posts";
 import PostDetails from "./pages/blogPost/PostDetails";
+import SharedFooterLayout from "./components/SharedFooterLayout";
 
 function App() {
   return (
@@ -15,10 +16,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<SharedLayout />}>
-            <Route index element={<Homepage />} />
-            <Route path="/posts" element={<SideLayout />}>
-              <Route index element={<Posts />} />
-              <Route path=":id" element={<PostDetails />} />
+            <Route path="/" element={<SharedFooterLayout />}>
+              <Route index element={<Homepage />} />
             </Route>
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
