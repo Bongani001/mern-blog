@@ -3,7 +3,7 @@ import githubImg from "../assets/github-logo.png";
 
 const Footer = () => {
   return (
-    <footer className="">
+    <footer className="mt-3">
       <div className="bg-zinc-800 rounded-3xl p-3 mx-6">
         <div>
           <h2 className="text-zinc-200 text-3xl font-semibold mb-2">

@@ -5,18 +5,18 @@ import userImg from "../../assets/userImg.png";
 const Homepage = () => {
   return (
     <div className="bg-zinc-50">
-      <header className="bg-zinc-800 pb-16">
+      <header className="bg-zinc-800 pb-16 md:flex sm:pb-0 ">
         <div
           style={{ backgroundImage: `url(${headerImg})` }}
-          className="h-80 w-full bg-cover"
+          className="h-96 md:h-[500px] w-full md:min-w-[50%] bg-cover sm:order-1"
         ></div>
-        <div className="bg-zinc-800 p-3">
+        <div className="bg-zinc-800 p-4 sm:p-5 md:p-10 md:pt-24 md:min-w-[50%]">
           <div className="flex flex-col gap-2">
             <pre className="text-white">Newest Blog</pre>
             <h1 className="text-3xl text-zinc-200 font-semibold">
               The Art of Home Transformation
             </h1>
-            <p className="text-zinc-300">
+            <p className="text-zinc-300 line-clamp-3">
               Explore innovative ideas and trendy decor to elevate your living
               spaces. Dive into the world of home transformation with Homespace!
             </p>
@@ -39,40 +39,16 @@ const Homepage = () => {
           </div>
         </div>
       </header>
-      <main className="bg-zinc-50 rounded-2xl py-5 -mt-14 mx-4">
+      <main className="bg-zinc-50 rounded-2xl py-5 mx-4 relative -top-14">
         <h2 className="text-zinc-800 text-2xl font-semibold ml-3">Top Blogs</h2>
-        <div className="flex overflow-x-auto gap-3 my-3">
-          <div className="">
+        <div className="flex overflow-x-auto md:grid md:grid-cols-2 md:grid-flow-row gap-3 my-3 overflow-hidden">
+          <div className="md:row-span-2">
             <div
               style={{ backgroundImage: `url(${headerImg})` }}
-              className="h-48 w-72 bg-cover rounded-2xl"
+              className="h-48 w-72 md:min-h-[60%] md:w-full bg-cover rounded-2xl"
             ></div>
-            <div className="mt-2">
-              <div className="flex items-center gap-2">
-                <img
-                  src={userImg}
-                  alt="User profile"
-                  className="h-6 w-6 rounded-full"
-                />
-                <p className="text-zinc-500 text-sm">Peter Haaland</p>
-              </div>
-              <h4 className="text-zinc-800 font-semibold">
-                Tech Marvels for Your Home
-              </h4>
-              <p className="text-zinc-500 text-sm line-clamp-2">
-                Dicover the cutting-edge technologies that are reshaping homes.
-                From smart appliances to integrated systems, find the perfect
-                tech solutions at Homespace.
-              </p>
-            </div>
-          </div>
-          <div className="">
-            <div
-              style={{ backgroundImage: `url(${headerImg})` }}
-              className="h-48 w-80 bg-cover rounded-2xl"
-            ></div>
-            <div className="">
-              <div className="flex items-center gap-2">
+            <div className="md:flex md:flex-col md:gap-2">
+              <div className="flex items-center gap-1 md:order-1">
                 <img
                   src={userImg}
                   alt="User profile"
@@ -80,23 +56,25 @@ const Homepage = () => {
                 />
                 <p className="text-zinc-500 text-base">Peter Haaland</p>
               </div>
-              <h4 className="text-zinc-800 font-semibold">
-                Tech Marvels for Your Home
-              </h4>
-              <p className="text-zinc-500 text-base line-clamp-2">
-                Dicover the cutting-edge technologies that are reshaping homes.
-                From start appliances to integrated systems, find the perfect
-                tech solutions at Homespace.
-              </p>
+              <div className="">
+                <h4 className="text-zinc-800 font-semibold md:text-xl md:my-2">
+                  Tech Marvels for Your Home
+                </h4>
+                <p className="text-zinc-500 text-sm line-clamp-2 md:line-clamp-3">
+                  Dicover the cutting-edge technologies that are reshaping
+                  homes. From start appliances to integrated systems, find the
+                  perfect tech solutions at Homespace.
+                </p>
+              </div>
             </div>
           </div>
-          <div className="">
+          <div className="md:flex md:gap-3">
             <div
               style={{ backgroundImage: `url(${headerImg})` }}
-              className="h-48 w-80 bg-cover rounded-2xl"
+              className="h-48 w-80 md:min-w-[35%] bg-cover rounded-2xl"
             ></div>
-            <div className="">
-              <div className="flex items-center gap-2">
+            <div className="md:flex md:flex-col md:justify-between">
+              <div className="flex items-center gap-1 md:order-1">
                 <img
                   src={userImg}
                   alt="User profile"
@@ -104,14 +82,42 @@ const Homepage = () => {
                 />
                 <p className="text-zinc-500 text-base">Peter Haaland</p>
               </div>
-              <h4 className="text-zinc-800 font-semibold">
-                Tech Marvels for Your Home
-              </h4>
-              <p className="text-zinc-500 text-base line-clamp-2">
-                Dicover the cutting-edge technologies that are reshaping homes.
-                From start appliances to integrated systems, find the perfect
-                tech solutions at Homespace.
-              </p>
+              <div className="">
+                <h4 className="text-zinc-800 font-semibold md:text-xl md:mb-2">
+                  Tech Marvels for Your Home
+                </h4>
+                <p className="text-zinc-500 text-sm line-clamp-2 md:line-clamp-3">
+                  Dicover the cutting-edge technologies that are reshaping
+                  homes. From start appliances to integrated systems, find the
+                  perfect tech solutions at Homespace.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="md:flex md:gap-3">
+            <div
+              style={{ backgroundImage: `url(${headerImg})` }}
+              className="h-48 w-80 md:min-w-[35%] bg-cover rounded-2xl"
+            ></div>
+            <div className="md:flex md:flex-col md:justify-between">
+              <div className="flex items-center gap-1 md:order-1">
+                <img
+                  src={userImg}
+                  alt="User profile"
+                  className="h-12 w-12 rounded-full"
+                />
+                <p className="text-zinc-500 text-base">Peter Haaland</p>
+              </div>
+              <div className="">
+                <h4 className="text-zinc-800 font-semibold md:text-xl md:mb-2">
+                  Tech Marvels for Your Home
+                </h4>
+                <p className="text-zinc-500 text-sm line-clamp-2 md:line-clamp-3">
+                  Dicover the cutting-edge technologies that are reshaping
+                  homes. From start appliances to integrated systems, find the
+                  perfect tech solutions at Homespace.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -120,85 +126,179 @@ const Homepage = () => {
           <h2 className="text-zinc-800 text-2xl font-semibold my-4">
             Latest Blog
           </h2>
-          <div className="flex flex-col gap-3">
-            <div className="grid grid-cols-3 gap-3">
+          <div className="flex flex-col gap-3 md:grid md:grid-cols-3">
+            <div className="flex gap-3 md:flex-col">
               <img
                 src={headerImg}
                 alt="User profile"
-                className="h-24 w-full rounded-2xl"
+                className="h-24 md:h-44 lg:h-52 min-w-[35%] md:w-full rounded-2xl"
               />
-              <div className="col-span-2">
-                <div className="flex items-center w-auto">
+              <div className="col-span-2 md:flex md:flex-col">
+                <div className="flex items-center w-auto md:order-1">
                   <img
                     src={userImg}
                     alt="User profile"
-                    className="h-6 w-6 rounded-full"
+                    className="h-6 w-6 md:h-12 md:w-12 rounded-full"
                   />
-                  <p className="text-zinc-500 text-sm">Peter Haaland</p>
+                  <p className="text-zinc-500 text-sm md:text-base">
+                    Peter Haaland
+                  </p>
                 </div>
-                <p className="text-zinc-800 text-lg font-semibold line-clamp-2 mt-1">
-                  Eco-Friendly Living: Sustainable Choices for a Greener Home
-                </p>
+                <div className="">
+                  <h3 className="text-zinc-800 text-lg font-semibold line-clamp-2 mt-1 md:text-xl">
+                    Eco-Friendly Living: Sustainable Choices for a Greener Home
+                  </h3>
+                  <p className="text-zinc-500 text-sm hidden md:static md:line-clamp-2 md:my-2">
+                    Dicover the cutting-edge technologies that are reshaping
+                    homes. From start appliances to integrated systems, find the
+                    perfect tech solutions at Homespace.
+                  </p>
+                </div>
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="flex gap-3 md:flex-col">
               <img
                 src={headerImg}
                 alt="User profile"
-                className="h-24 w-full rounded-2xl"
+                className="h-24 md:h-44 lg:h-52 min-w-[35%] md:w-full rounded-2xl"
               />
-              <div className="col-span-2">
-                <div className="flex items-center w-auto">
+              <div className="col-span-2 md:flex md:flex-col">
+                <div className="flex items-center w-auto md:order-1">
                   <img
                     src={userImg}
                     alt="User profile"
-                    className="h-6 w-6 rounded-full"
+                    className="h-6 w-6 md:h-12 md:w-12 rounded-full"
                   />
-                  <p className="text-zinc-500 text-sm">Peter Haaland</p>
+                  <p className="text-zinc-500 text-sm md:text-base">
+                    Peter Haaland
+                  </p>
                 </div>
-                <p className="text-zinc-800 text-lg font-semibold line-clamp-2 mt-1">
-                  Eco-Friendly Living: Sustainable Choices for a Greener Home
-                </p>
+                <div className="">
+                  <h3 className="text-zinc-800 text-lg font-semibold line-clamp-2 mt-1 md:text-xl">
+                    Eco-Friendly Living: Sustainable Choices for a Greener Home
+                  </h3>
+                  <p className="text-zinc-500 text-sm hidden md:static md:line-clamp-2 md:my-2">
+                    Dicover the cutting-edge technologies that are reshaping
+                    homes. From start appliances to integrated systems, find the
+                    perfect tech solutions at Homespace.
+                  </p>
+                </div>
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="flex gap-3 md:flex-col">
               <img
                 src={headerImg}
                 alt="User profile"
-                className="h-24 w-full rounded-2xl"
+                className="h-24 md:h-44 lg:h-52 min-w-[35%] md:w-full rounded-2xl"
               />
-              <div className="col-span-2">
-                <div className="flex items-center w-auto">
+              <div className="col-span-2 md:flex md:flex-col">
+                <div className="flex items-center w-auto md:order-1">
                   <img
                     src={userImg}
                     alt="User profile"
-                    className="h-6 w-6 rounded-full"
+                    className="h-6 w-6 md:h-12 md:w-12 rounded-full"
                   />
-                  <p className="text-zinc-500 text-sm">Peter Haaland</p>
+                  <p className="text-zinc-500 text-sm md:text-base">
+                    Peter Haaland
+                  </p>
                 </div>
-                <p className="text-zinc-800 text-lg font-semibold line-clamp-2 mt-1">
-                  Eco-Friendly Living: Sustainable Choices for a Greener Home
-                </p>
+                <div className="">
+                  <h3 className="text-zinc-800 text-lg font-semibold line-clamp-2 mt-1 md:text-xl">
+                    Eco-Friendly Living: Sustainable Choices for a Greener Home
+                  </h3>
+                  <p className="text-zinc-500 text-sm hidden md:static md:line-clamp-2 md:my-2">
+                    Dicover the cutting-edge technologies that are reshaping
+                    homes. From start appliances to integrated systems, find the
+                    perfect tech solutions at Homespace.
+                  </p>
+                </div>
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="flex gap-3 md:flex-col">
               <img
                 src={headerImg}
                 alt="User profile"
-                className="h-24 w-full rounded-2xl"
+                className="h-24 md:h-44 lg:h-52 min-w-[35%] md:w-full rounded-2xl"
               />
-              <div className="col-span-2">
-                <div className="flex items-center w-auto">
+              <div className="col-span-2 md:flex md:flex-col">
+                <div className="flex items-center w-auto md:order-1">
                   <img
                     src={userImg}
                     alt="User profile"
-                    className="h-6 w-6 rounded-full"
+                    className="h-6 w-6 md:h-12 md:w-12 rounded-full"
                   />
-                  <p className="text-zinc-500 text-sm">Peter Haaland</p>
+                  <p className="text-zinc-500 text-sm md:text-base">
+                    Peter Haaland
+                  </p>
                 </div>
-                <p className="text-zinc-800 text-lg font-semibold line-clamp-2 mt-1">
-                  Eco-Friendly Living: Sustainable Choices for a Greener Home
-                </p>
+                <div className="">
+                  <h3 className="text-zinc-800 text-lg font-semibold line-clamp-2 mt-1 md:text-xl">
+                    Eco-Friendly Living: Sustainable Choices for a Greener Home
+                  </h3>
+                  <p className="text-zinc-500 text-sm hidden md:static md:line-clamp-2 md:my-2">
+                    Dicover the cutting-edge technologies that are reshaping
+                    homes. From start appliances to integrated systems, find the
+                    perfect tech solutions at Homespace.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-3 md:flex-col">
+              <img
+                src={headerImg}
+                alt="User profile"
+                className="h-24 md:h-44 lg:h-52 min-w-[35%] md:w-full rounded-2xl"
+              />
+              <div className="col-span-2 md:flex md:flex-col">
+                <div className="flex items-center w-auto md:order-1">
+                  <img
+                    src={userImg}
+                    alt="User profile"
+                    className="h-6 w-6 md:h-12 md:w-12 rounded-full"
+                  />
+                  <p className="text-zinc-500 text-sm md:text-base">
+                    Peter Haaland
+                  </p>
+                </div>
+                <div className="">
+                  <h3 className="text-zinc-800 text-lg font-semibold line-clamp-2 mt-1 md:text-xl">
+                    Eco-Friendly Living: Sustainable Choices for a Greener Home
+                  </h3>
+                  <p className="text-zinc-500 text-sm hidden md:static md:line-clamp-2 md:my-2">
+                    Dicover the cutting-edge technologies that are reshaping
+                    homes. From start appliances to integrated systems, find the
+                    perfect tech solutions at Homespace.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-3 md:flex-col">
+              <img
+                src={headerImg}
+                alt="User profile"
+                className="h-24 md:h-44 lg:h-52 min-w-[35%] md:w-full rounded-2xl"
+              />
+              <div className="col-span-2 md:flex md:flex-col">
+                <div className="flex items-center w-auto md:order-1">
+                  <img
+                    src={userImg}
+                    alt="User profile"
+                    className="h-6 w-6 md:h-12 md:w-12 rounded-full"
+                  />
+                  <p className="text-zinc-500 text-sm md:text-base">
+                    Peter Haaland
+                  </p>
+                </div>
+                <div className="">
+                  <h3 className="text-zinc-800 text-lg font-semibold line-clamp-2 mt-1 md:text-xl">
+                    Eco-Friendly Living: Sustainable Choices for a Greener Home
+                  </h3>
+                  <p className="text-zinc-500 text-sm hidden md:static md:line-clamp-2 md:my-2">
+                    Dicover the cutting-edge technologies that are reshaping
+                    homes. From start appliances to integrated systems, find the
+                    perfect tech solutions at Homespace.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
