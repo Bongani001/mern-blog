@@ -126,7 +126,7 @@ const Homepage = () => {
           <h2 className="text-zinc-800 text-2xl font-semibold my-4">
             Latest Blog
           </h2>
-          <div className="flex flex-col gap-3 md:grid md:grid-cols-3">
+          <div className="flex flex-col gap-3 sm:grid sm:grid-cols-2 md:grid-cols-3">
             <div className="flex gap-3 md:flex-col">
               <img
                 src={headerImg}
