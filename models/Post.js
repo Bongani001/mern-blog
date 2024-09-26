@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { type } = require("os");
 
 const Schema = mongoose.Schema;
 
@@ -16,6 +17,7 @@ const PostSchema = new Schema({
   published: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now() },
   updatedAt: { type: Date, default: Date.now() },
+  views: { type: Number, default: 0 },
 });
 
 PostSchema.virtual("formatted_date").get(function () {

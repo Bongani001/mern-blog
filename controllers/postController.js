@@ -13,7 +13,18 @@ exports.post_getAll = asyncHandler(async (req, res, next) => {
 
 exports.post_getSpecific = asyncHandler(async (req, res, next) => {
   const post = await Post.findById(req.params.id).exec();
-  return res.status(200).json(post);
+
+  const newPost = new Post({
+    ...post,
+    updatedAt: Date.now(),
+    views: post.views + 1,
+  });
+
+  const updatedPost = await Post.findByIdAndUpdate(req.params.id, newPost, {
+    new: true,
+  });
+
+  return res.status(200).json(updatedPost);
 });
 
 exports.post_create = [
