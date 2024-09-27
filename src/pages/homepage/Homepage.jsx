@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import headerImg from "../../assets/defaultHeaderImg.jpg";
 import userImg from "../../assets/userImg.png";
 import { getLatestPosts } from "../../services/posts";
+import { Link, useNavigate } from "react-router-dom";
 
 const Homepage = () => {
   const [latestPosts, setLatestPosts] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getLatest = async () => {
@@ -34,7 +37,11 @@ const Homepage = () => {
               <p className="text-zinc-300 line-clamp-3">
                 {latestPosts[0].content}
               </p>
-              <button className="bg-zinc-100 font-semibold rounded-3xl self-start py-2 px-3">
+              <button
+                type="button"
+                onClick={() => navigate(`/posts/${latestPosts[0]._id}`)}
+                className="bg-zinc-100 font-semibold rounded-3xl self-start py-2 px-3"
+              >
                 Read More
               </button>
             </div>
@@ -56,7 +63,12 @@ const Homepage = () => {
       )}
 
       <main className="bg-zinc-50 rounded-2xl py-5 mx-4 relative -top-14">
-        <h2 className="text-zinc-800 text-2xl font-semibold ml-3">Top Blogs</h2>
+        <h2
+          className="text-zinc-800 text-2xl font-semibold ml-3"
+          onClick={() => navigate("/topposts")}
+        >
+          Top Blogs
+        </h2>
         {latestPosts.length > 2 && (
           <div className="flex overflow-x-auto md:grid md:grid-cols-2 md:grid-flow-row gap-3 my-3 overflow-hidden">
             <div className="md:row-span-2">
@@ -67,7 +79,11 @@ const Homepage = () => {
                   })`,
                 }}
                 className="h-48 w-72 md:min-h-[60%] md:w-full bg-cover rounded-2xl"
-              ></div>
+              >
+                <Link to={`posts/${latestPosts[0]._id}`}>
+                  <div className="h-full w-full rounded-2xl hover:bg-black/50 "></div>
+                </Link>
+              </div>
               <div className="md:flex md:flex-col md:gap-2">
                 <div className="flex items-center gap-1 md:order-1">
                   <img
@@ -80,24 +96,31 @@ const Homepage = () => {
                   </p>
                 </div>
                 <div className="">
-                  <h4 className="text-zinc-800 font-semibold md:text-xl md:my-2">
-                    {latestPosts[0].title}
-                  </h4>
-                  <p className="text-zinc-500 text-sm line-clamp-2 md:line-clamp-3">
+                  <Link to={`posts/${latestPosts[0]._id}`}>
+                    <h4 className="text-zinc-800 font-semibold md:text-xl md:my-2">
+                      {latestPosts[0].title}
+                    </h4>
+                  </Link>
+
+                  <p className="text-zinc-500 text-sm line-clamp-2 lg:line-clamp-3">
                     {latestPosts[0].content}
                   </p>
                 </div>
               </div>
             </div>
-            <div className="md:flex md:gap-3">
+            <div className="md:flex md:gap-3 ">
               <div
                 style={{
                   backgroundImage: `url(${
                     latestPosts[1].headerImg || headerImg
                   })`,
                 }}
-                className="h-48 w-80 md:min-w-[35%] bg-cover rounded-2xl"
-              ></div>
+                className="h-48 w-80 md:min-w-[35%] bg-cover rounded-2xl "
+              >
+                <Link to={`posts/${latestPosts[1]._id}`}>
+                  <div className="h-full w-full rounded-2xl hover:bg-black/50"></div>
+                </Link>
+              </div>
               <div className="md:flex md:flex-col md:justify-between">
                 <div className="flex items-center gap-1 md:order-1">
                   <img
@@ -110,9 +133,12 @@ const Homepage = () => {
                   </p>
                 </div>
                 <div className="">
-                  <h4 className="text-zinc-800 font-semibold md:text-xl md:mb-2">
-                    {latestPosts[1].title}
-                  </h4>
+                  <Link to={`posts/${latestPosts[1]._id}`}>
+                    <h4 className="text-zinc-800 font-semibold md:text-xl md:mb-2 ">
+                      {latestPosts[1].title}
+                    </h4>
+                  </Link>
+
                   <p className="text-zinc-500 text-sm line-clamp-2 md:line-clamp-3">
                     {latestPosts[1].content}
                   </p>
@@ -127,7 +153,11 @@ const Homepage = () => {
                   })`,
                 }}
                 className="h-48 w-80 md:min-w-[35%] bg-cover rounded-2xl"
-              ></div>
+              >
+                <Link to={`posts/${latestPosts[2]._id}`}>
+                  <div className="h-full w-full rounded-2xl hover:bg-black/50"></div>
+                </Link>
+              </div>
               <div className="md:flex md:flex-col md:justify-between">
                 <div className="flex items-center gap-1 md:order-1">
                   <img
@@ -140,9 +170,11 @@ const Homepage = () => {
                   </p>
                 </div>
                 <div className="">
-                  <h4 className="text-zinc-800 font-semibold md:text-xl md:mb-2">
-                    {latestPosts[2].title}
-                  </h4>
+                  <Link to={`posts/${latestPosts[0]._id}`}>
+                    <h4 className="text-zinc-800 font-semibold md:text-xl md:mb-2 ">
+                      {latestPosts[2].title}
+                    </h4>
+                  </Link>
                   <p className="text-zinc-500 text-sm line-clamp-2 md:line-clamp-3">
                     {latestPosts[2].content}
                   </p>

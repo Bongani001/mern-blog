@@ -27,3 +27,15 @@ export const getMostViewedPosts = async (limit) => {
     return error.response.data;
   }
 };
+
+export const getOnePost = async (id) => {
+  try {
+    const { data } = await axios.get(`http://localhost:5000/api/posts/${id}`);
+    return data;
+  } catch (error) {
+    if (!error.response?.data) {
+      return error.response;
+    }
+    return error.response.data;
+  }
+};
