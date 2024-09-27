@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from "react";
 import headerImg from "../../assets/defaultHeaderImg.jpg";
 import userImg from "../../assets/userImg.png";
-import { getLatestPosts } from "../../services/posts";
+import { getLatestPosts, getMostViewedPosts } from "../../services/posts";
 import { Link, useNavigate } from "react-router-dom";
 
 const Homepage = () => {
   const [latestPosts, setLatestPosts] = useState([]);
+  const [mostViewedPosts, setMostViewedPosts] = useState([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const getLatest = async () => {
       let data = await getLatestPosts(3);
+      let viewed = await getMostViewedPosts(3);
       setLatestPosts(data);
-      console.log(data);
+      setMostViewedPosts(viewed);
     };
+
     getLatest();
   }, []);
 
@@ -75,12 +79,12 @@ const Homepage = () => {
               <div
                 style={{
                   backgroundImage: `url(${
-                    latestPosts[0].headerImg || headerImg
+                    mostViewedPosts[0].headerImg || headerImg
                   })`,
                 }}
                 className="h-48 w-72 md:min-h-[60%] md:w-full bg-cover rounded-2xl"
               >
-                <Link to={`posts/${latestPosts[0]._id}`}>
+                <Link to={`posts/${mostViewedPosts[0]._id}`}>
                   <div className="h-full w-full rounded-2xl hover:bg-black/50 "></div>
                 </Link>
               </div>
@@ -92,18 +96,18 @@ const Homepage = () => {
                     className="h-12 w-12 rounded-full"
                   />
                   <p className="text-zinc-500 text-base">
-                    {latestPosts[0].authorId.username}
+                    {mostViewedPosts[0].authorId.username}
                   </p>
                 </div>
                 <div className="">
-                  <Link to={`posts/${latestPosts[0]._id}`}>
+                  <Link to={`posts/${mostViewedPosts[0]._id}`}>
                     <h4 className="text-zinc-800 font-semibold md:text-xl md:my-2">
-                      {latestPosts[0].title}
+                      {mostViewedPosts[0].title}
                     </h4>
                   </Link>
 
                   <p className="text-zinc-500 text-sm line-clamp-2 lg:line-clamp-3">
-                    {latestPosts[0].content}
+                    {mostViewedPosts[0].content}
                   </p>
                 </div>
               </div>
@@ -112,12 +116,12 @@ const Homepage = () => {
               <div
                 style={{
                   backgroundImage: `url(${
-                    latestPosts[1].headerImg || headerImg
+                    mostViewedPosts[1].headerImg || headerImg
                   })`,
                 }}
                 className="h-48 w-80 md:min-w-[35%] bg-cover rounded-2xl "
               >
-                <Link to={`posts/${latestPosts[1]._id}`}>
+                <Link to={`posts/${mostViewedPosts[1]._id}`}>
                   <div className="h-full w-full rounded-2xl hover:bg-black/50"></div>
                 </Link>
               </div>
@@ -129,18 +133,18 @@ const Homepage = () => {
                     className="h-12 w-12 rounded-full"
                   />
                   <p className="text-zinc-500 text-base">
-                    {latestPosts[1].authorId.username}
+                    {mostViewedPosts[1].authorId.username}
                   </p>
                 </div>
                 <div className="">
-                  <Link to={`posts/${latestPosts[1]._id}`}>
+                  <Link to={`posts/${mostViewedPosts[1]._id}`}>
                     <h4 className="text-zinc-800 font-semibold md:text-xl md:mb-2 ">
-                      {latestPosts[1].title}
+                      {mostViewedPosts[1].title}
                     </h4>
                   </Link>
 
                   <p className="text-zinc-500 text-sm line-clamp-2 md:line-clamp-3">
-                    {latestPosts[1].content}
+                    {mostViewedPosts[1].content}
                   </p>
                 </div>
               </div>
@@ -149,12 +153,12 @@ const Homepage = () => {
               <div
                 style={{
                   backgroundImage: `url(${
-                    latestPosts[2].headerImg || headerImg
+                    mostViewedPosts[2].headerImg || headerImg
                   })`,
                 }}
                 className="h-48 w-80 md:min-w-[35%] bg-cover rounded-2xl"
               >
-                <Link to={`posts/${latestPosts[2]._id}`}>
+                <Link to={`posts/${mostViewedPosts[2]._id}`}>
                   <div className="h-full w-full rounded-2xl hover:bg-black/50"></div>
                 </Link>
               </div>
@@ -166,17 +170,17 @@ const Homepage = () => {
                     className="h-12 w-12 rounded-full"
                   />
                   <p className="text-zinc-500 text-base">
-                    {latestPosts[2].authorId.username}
+                    {mostViewedPosts[2].authorId.username}
                   </p>
                 </div>
                 <div className="">
-                  <Link to={`posts/${latestPosts[0]._id}`}>
+                  <Link to={`posts/${mostViewedPosts[0]._id}`}>
                     <h4 className="text-zinc-800 font-semibold md:text-xl md:mb-2 ">
-                      {latestPosts[2].title}
+                      {mostViewedPosts[2].title}
                     </h4>
                   </Link>
                   <p className="text-zinc-500 text-sm line-clamp-2 md:line-clamp-3">
-                    {latestPosts[2].content}
+                    {mostViewedPosts[2].content}
                   </p>
                 </div>
               </div>
@@ -194,8 +198,9 @@ const Homepage = () => {
                 <div key={post._id} className="flex gap-3 md:flex-col">
                   <img
                     src={post.headerImg || headerImg}
-                    alt="User profile"
-                    className="h-24 md:h-44 lg:h-52 min-w-[35%] md:w-full rounded-2xl"
+                    onClick={() => navigate(`posts/${post._id}`)}
+                    alt="header"
+                    className="h-24 md:h-44 lg:h-52 min-w-[35%] md:w-full rounded-2xl transition ease-in-out duration-300 hover:scale-105 hover:cursor-pointer"
                   />
                   <div className="col-span-2 md:flex md:flex-col md:justify-between md:h-full">
                     <div className="flex items-center w-auto md:order-1">
@@ -209,9 +214,12 @@ const Homepage = () => {
                       </p>
                     </div>
                     <div className="">
-                      <h3 className="text-zinc-800 text-lg font-semibold line-clamp-2 mt-1 md:text-xl">
-                        {post.title}
-                      </h3>
+                      <Link to={`posts/${post._id}`}>
+                        <h3 className="text-zinc-800 text-lg font-semibold line-clamp-2 mt-1 md:text-xl">
+                          {post.title}
+                        </h3>
+                      </Link>
+
                       <p className="text-zinc-500 text-sm hidden md:static md:line-clamp-2 md:my-2">
                         {post.content}
                       </p>
