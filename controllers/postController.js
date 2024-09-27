@@ -39,7 +39,7 @@ exports.post_getSpecific = asyncHandler(async (req, res, next) => {
     {
       new: true,
     }
-  );
+  ).populate({ path: "authorId", select: "username" });
 
   return res.status(200).json(updatedPost);
 });
