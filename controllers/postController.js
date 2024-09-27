@@ -7,22 +7,39 @@ const cloudinary = require("../utils/cloudinary");
 const upload = require("../middleware/multer");
 
 exports.post_getAll = asyncHandler(async (req, res, next) => {
-  const posts = await Post.find().exec();
+  let posts = [];
+  if (req.query.views) {
+    // Get the most viewed posts
+    const limit = Number(req.query.limit);
+    posts = await Post.find()
+      .populate({ path: "authorId", select: "username" })
+      .sort({ views: -1 })
+      .limit(limit)
+      .exec();
+  } else if (req.query.limit) {
+    // Get limited posts
+    const limit = Number(req.query.limit);
+    posts = await Post.find()
+      .populate({ path: "authorId", select: "username" })
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .exec();
+  } else {
+    posts = await Post.find().exec();
+  }
   return res.status(200).json(posts);
 });
 
 exports.post_getSpecific = asyncHandler(async (req, res, next) => {
   const post = await Post.findById(req.params.id).exec();
 
-  const newPost = new Post({
-    ...post,
-    updatedAt: Date.now(),
-    views: post.views + 1,
-  });
-
-  const updatedPost = await Post.findByIdAndUpdate(req.params.id, newPost, {
-    new: true,
-  });
+  const updatedPost = await Post.findByIdAndUpdate(
+    req.params.id,
+    { views: post.views + 1 },
+    {
+      new: true,
+    }
+  );
 
   return res.status(200).json(updatedPost);
 });
@@ -102,6 +119,7 @@ exports.post_update = [
       return next(error);
     }
 
+    // Save image to cloudinary
     const result = await cloudinary.uploader.upload(req.file?.path);
 
     const newPost = new Post({
