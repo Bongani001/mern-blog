@@ -12,7 +12,7 @@ import PageNotFound from "./pages/PageNotFound";
 
 function App() {
   return (
-    <div className="bg-gray-100 min-h-dvh flex flex-col">
+    <div className="bg-gray-200 min-h-dvh flex flex-col">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<SharedLayout />}>

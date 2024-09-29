@@ -4,6 +4,7 @@ import userImg from "../../assets/userImg.png";
 import { getLatestPosts, getMostViewedPosts } from "../../services/posts";
 import { Link, useNavigate } from "react-router-dom";
 import ScrollToTop from "../../components/ScrollToTop";
+import PostCard from "../../components/PostCard";
 
 const Homepage = () => {
   const [latestPosts, setLatestPosts] = useState([]);
@@ -197,39 +198,7 @@ const Homepage = () => {
           </h2>
           <div className="flex flex-col gap-3 sm:grid sm:grid-cols-2 md:grid-cols-3">
             {latestPosts?.map((post) => {
-              return (
-                <div key={post._id} className="flex gap-3 md:flex-col">
-                  <img
-                    src={post.headerImg || headerImg}
-                    onClick={() => navigate(`posts/${post._id}`)}
-                    alt="header"
-                    className="h-24 md:h-44 lg:h-52 min-w-[35%] md:w-full rounded-2xl transition ease-in-out duration-300 hover:scale-105 hover:cursor-pointer"
-                  />
-                  <div className="col-span-2 md:flex md:flex-col md:justify-between md:h-full">
-                    <div className="flex items-center w-auto md:order-1">
-                      <img
-                        src={userImg}
-                        alt="User profile"
-                        className="h-6 w-6 md:h-12 md:w-12 rounded-full"
-                      />
-                      <p className="text-zinc-500 text-sm md:text-base">
-                        {post.authorId.username}
-                      </p>
-                    </div>
-                    <div className="">
-                      <Link to={`posts/${post._id}`}>
-                        <h3 className="text-zinc-800 text-lg font-semibold line-clamp-2 mt-1 md:text-xl">
-                          {post.title}
-                        </h3>
-                      </Link>
-
-                      <p className="text-zinc-500 text-sm hidden md:static md:line-clamp-2 md:my-2">
-                        {post.content}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              );
+              return <PostCard key={post._id} post={post} />;
             })}
           </div>
         </section>

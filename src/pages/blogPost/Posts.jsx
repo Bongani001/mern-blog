@@ -32,7 +32,7 @@ const Posts = () => {
     <div className="md:grid md:grid-cols-4 min-h-[70dvh] pt-20 pb-8 px-3">
       {posts && (
         <>
-          <div className="hidden md:block col-span-1 px-3 border-r border-r-zinc-300">
+          <div className="hidden md:block h-fit bg-white/70 rounded-xl col-span-1 px-3 py-2 shadow border-r-zinc-300">
             <h2 className="text-zinc-800 text-2xl font-semibold">Top Picks</h2>
             <div className="">
               {topPosts?.map((post, index) => {
@@ -109,7 +109,7 @@ const Posts = () => {
               })}
             </div>
           </div>
-          <div className="col-span-3 px-2">
+          <div className="col-span-3 px-2 md:ml-2">
             <p className="text-zinc-800 text-2xl text-center mb-3">Blogs</p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4">
               {isLoadingPosts && (
