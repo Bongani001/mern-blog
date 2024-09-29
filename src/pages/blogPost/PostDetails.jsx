@@ -4,6 +4,7 @@ import userImg from "../../assets/userImg.png";
 import loading from "../../assets/three.gif";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getMostViewedPosts, getOnePost } from "../../services/posts";
+import ScrollToTop from "../../components/ScrollToTop";
 
 const PostDetails = () => {
   const [post, setPosts] = useState(null);
@@ -15,10 +16,13 @@ const PostDetails = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     const getPosts = async (id) => {
       let data = await getOnePost(id); // Get the main post
       let top = await getMostViewedPosts(3); // get top picks
+      if (data === "Network Error") {
+        navigate("/serverdown");
+      }
+
       setPosts(data);
       setTopPosts(top);
       setIsLoading(false);
@@ -28,7 +32,7 @@ const PostDetails = () => {
   }, [id]);
 
   return (
-    <div className="pt-24 mx-2 md:p-10 md:pt-24 min-h-dvh">
+    <div className="pt-20 mx-2 md:p-10 md:pt-20 min-h-dvh">
       {isLoading && (
         <div className="flex justify-center">
           <img src={loading} alt="loading..." className="w-20" />
@@ -115,6 +119,7 @@ const PostDetails = () => {
           </div>
         </div>
       )}
+      <ScrollToTop />
     </div>
   );
 };

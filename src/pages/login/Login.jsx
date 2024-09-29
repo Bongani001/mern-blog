@@ -3,6 +3,8 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { MdOutlineMail } from "react-icons/md";
 import { loginUser } from "../../services/users";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import ScrollToTop from "../../components/ScrollToTop";
 
 const Login = () => {
   const [body, setBody] = useState({
@@ -13,6 +15,8 @@ const Login = () => {
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const handleFormChange = (e) => {
     setBody((prev) => {
@@ -29,7 +33,10 @@ const Login = () => {
       email: body.email,
       password: body.password,
     });
-    if (data?.errors) {
+    if (data === "Network Error") {
+      toast.error("Server error, come back later.");
+      return;
+    } else if (data?.errors) {
       data.errors.forEach((err) => {
         if (err.type) {
           setErrors((prev) => {
@@ -126,6 +133,7 @@ const Login = () => {
           </button>
         </form>
       </div>
+      <ScrollToTop />
     </div>
   );
 };

@@ -3,6 +3,7 @@ import headerImg from "../../assets/defaultHeaderImg.jpg";
 import userImg from "../../assets/userImg.png";
 import { getLatestPosts, getMostViewedPosts } from "../../services/posts";
 import { Link, useNavigate } from "react-router-dom";
+import ScrollToTop from "../../components/ScrollToTop";
 
 const Homepage = () => {
   const [latestPosts, setLatestPosts] = useState([]);
@@ -11,10 +12,12 @@ const Homepage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     const getLatest = async () => {
       let data = await getLatestPosts(3);
       let viewed = await getMostViewedPosts(3);
+      if (data === "Network Error") {
+        navigate("/serverdown");
+      }
       setLatestPosts(data);
       setMostViewedPosts(viewed);
     };
@@ -231,6 +234,7 @@ const Homepage = () => {
           </div>
         </section>
       </main>
+      <ScrollToTop />
     </div>
   );
 };

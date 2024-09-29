@@ -8,9 +8,12 @@ export const loginUser = async ({ email, password }) => {
     });
     return data;
   } catch (error) {
-    if (!error.response?.data) {
+    if (error.message === "Network Error") {
+      return error.message;
+    } else if (!error.response?.data) {
       return error.response;
     }
+
     return error.response.data;
   }
 };
@@ -28,9 +31,12 @@ export const registerUser = async ({
     );
     return data;
   } catch (error) {
-    if (!error.response?.data) {
+    if (error.message === "Network Error") {
+      return error.message;
+    } else if (!error.response?.data) {
       return error.response;
     }
+
     return error.response.data;
   }
 };

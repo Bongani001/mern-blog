@@ -3,6 +3,7 @@ import { RiLockPasswordLine, RiUserLine } from "react-icons/ri";
 import { MdOutlineMail } from "react-icons/md";
 import { registerUser } from "../../services/users";
 import toast, { Toaster } from "react-hot-toast";
+import ScrollToTop from "../../components/ScrollToTop";
 
 const Register = () => {
   const [body, setBody] = useState({
@@ -36,7 +37,10 @@ const Register = () => {
       password,
       confirmPassword,
     });
-    if (data?.errors) {
+    if (data === "Network Error") {
+      toast.error("Server error, come back later.");
+      return;
+    } else if (data?.errors) {
       data.errors.forEach((err) => {
         if (err.type) {
           setErrors((prev) => {
@@ -192,6 +196,7 @@ const Register = () => {
           </button>
         </form>
       </div>
+      <ScrollToTop />
     </div>
   );
 };

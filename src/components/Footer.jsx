@@ -69,22 +69,22 @@ const Footer = () => {
           <div className="mt-4 md:self-end">
             <p className="text-zinc-800 text-lg">Social Media</p>
             <ul className="flex gap-3 mt-1">
-              <li className="bg-zinc-900 rounded-full p-3 hover:bg-zinc-500">
+              <li className="bg-zinc-900 rounded-full p-3 hover:bg-zinc-500 transition-all ease-in-out duration-300 hover:scale-110">
                 <a href="https://twitter.com/" target="_blank">
                   <FaXTwitter size="20" color="white" />
                 </a>
               </li>
-              <li className="bg-zinc-900 rounded-full p-3 hover:bg-zinc-500">
+              <li className="bg-zinc-900 rounded-full p-3 hover:bg-zinc-500 transition-all ease-in-out duration-300 hover:scale-110">
                 <a href="https://www.facebook.com/" target="_blank">
                   <FaFacebookF size="20" color="white" />
                 </a>
               </li>
-              <li className="bg-zinc-900 rounded-full p-3 hover:bg-zinc-500">
+              <li className="bg-zinc-900 rounded-full p-3 hover:bg-zinc-500 transition-all ease-in-out duration-300 hover:scale-110">
                 <a href="https://za.linkedin.com/" target="_blank">
                   <FaLinkedinIn size="20" color="white" />
                 </a>
               </li>
-              <li className="bg-zinc-900 rounded-full p-3 hover:bg-zinc-500">
+              <li className="bg-zinc-900 rounded-full p-3 hover:bg-zinc-500 transition-all ease-in-out duration-300 hover:scale-110">
                 <a href="https://www.instagram.com/" target="_blank">
                   <FaInstagram size="20" color="white" />
                 </a>

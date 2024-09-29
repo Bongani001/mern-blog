@@ -7,6 +7,8 @@ import Register from "./pages/register/Register";
 import SharedLayout from "./components/SharedLayout";
 import Posts from "./pages/blogPost/Posts";
 import PostDetails from "./pages/blogPost/PostDetails";
+import ServerDown from "./pages/ServerDown";
+import PageNotFound from "./pages/PageNotFound";
 
 function App() {
   return (
@@ -15,10 +17,12 @@ function App() {
         <Routes>
           <Route path="/" element={<SharedLayout />}>
             <Route index element={<Homepage />} />
-            <Route path="topposts" element={<Posts />} />
+            <Route path="posts" element={<Posts />} />
             <Route path="posts/:id" element={<PostDetails />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
+            <Route path="serverdown" element={<ServerDown />} />
+            <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>
       </BrowserRouter>
