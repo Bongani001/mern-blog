@@ -9,6 +9,7 @@ import Posts from "./pages/blogPost/Posts";
 import PostDetails from "./pages/blogPost/PostDetails";
 import ServerDown from "./pages/ServerDown";
 import PageNotFound from "./pages/PageNotFound";
+import ManagePosts from "./pages/author/ManagePosts";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route index element={<Homepage />} />
             <Route path="posts" element={<Posts />} />
             <Route path="posts/:id" element={<PostDetails />} />
+            <Route path="manageblogs" element={<ManagePosts />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
             <Route path="serverdown" element={<ServerDown />} />

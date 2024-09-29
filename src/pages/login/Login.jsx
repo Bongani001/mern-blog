@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdOutlineMail } from "react-icons/md";
 import { loginUser } from "../../services/users";
 import toast, { Toaster } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ScrollToTop from "../../components/ScrollToTop";
+import { AuthContext } from "../../context/AuthContext";
 
 const Login = () => {
   const [body, setBody] = useState({
@@ -15,6 +16,10 @@ const Login = () => {
     email: "",
     password: "",
   });
+
+  const { setUser } = useContext(AuthContext);
+
+  const { state } = useLocation();
 
   const navigate = useNavigate();
 
@@ -57,6 +62,16 @@ const Login = () => {
     }
     toast.success("Login Successful.");
     localStorage.setItem("userInfo", JSON.stringify(data));
+    setUser(data);
+    if (state !== null) {
+      if (state.path === "/login" || state.path === "/register") {
+        navigate("/");
+      } else {
+        navigate(state.path);
+      }
+    } else {
+      console.log(navigate("/"));
+    }
   };
   return (
     <div className="flex justify-center items-center flex-grow min-h-screen mt-16">

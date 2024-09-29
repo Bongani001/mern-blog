@@ -7,16 +7,13 @@ const PostCard = ({ post, date }) => {
   const navigate = useNavigate();
 
   return (
-    <div
-      key={post._id}
-      className="flex bg-white shadow-md gap-3 md:flex-col transition ease-in-out duration-300 hover:scale-105 "
-    >
+    <div key={post._id} className="flex bg-white shadow-md gap-3 md:flex-col ">
       <div
         onClick={() => navigate(`/posts/${post._id}`)}
         style={{
           backgroundImage: `url(${post.headerImg || headerImg})`,
         }}
-        className="min-h-24 min-w-36 md:min-h-52  bg-cover hover:cursor-pointer"
+        className="min-h-24 min-w-36 md:min-h-52  bg-cover hover:cursor-pointer transition ease-in-out duration-300 hover:scale-105"
       ></div>
       <div className="px-4 py-2 sm:py-0 md:flex md:flex-col md:justify-between md:h-full">
         {!date && (

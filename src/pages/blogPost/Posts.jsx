@@ -15,11 +15,10 @@ const Posts = () => {
   useEffect(() => {
     const getPosts = async () => {
       let data = await getLatestPosts(10); // Get all posts (parameter=number of posts to fetch)
-      let top = await getMostViewedPosts(7); // get top picks (parameter=number of posts to fetch)
+      let top = await getMostViewedPosts(10); // Get top picks (parameter=number of posts to fetch)
       if (data === "Network Error") {
         navigate("/serverdown");
       }
-      console.log(top);
       setPosts(data);
       setTopPosts(top);
       setIsLoadingPosts(false);
@@ -110,12 +109,19 @@ const Posts = () => {
             </div>
           </div>
           <div className="col-span-3 px-2 md:ml-2">
-            <p className="text-zinc-800 text-2xl text-center mb-3">Blogs</p>
+            <p className="text-zinc-800 text-2xl text-center font-semibold mb-3">
+              Blogs
+            </p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4">
               {isLoadingPosts && (
                 <div className="flex sm:col-span-2 lg:col-span-3 justify-center">
                   <img src={loading} alt="loading..." className="w-20" />
                 </div>
+              )}
+              {posts?.length && !isLoadingPosts < 1 && (
+                <span className="flex italic sm:col-span-2 lg:col-span-3 justify-center">
+                  No blog posts available.
+                </span>
               )}
               {posts?.map((post) => {
                 return <PostCard key={post._id} post={post} date={true} />;

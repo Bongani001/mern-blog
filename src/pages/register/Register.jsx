@@ -4,6 +4,7 @@ import { MdOutlineMail } from "react-icons/md";
 import { registerUser } from "../../services/users";
 import toast, { Toaster } from "react-hot-toast";
 import ScrollToTop from "../../components/ScrollToTop";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [body, setBody] = useState({
@@ -18,6 +19,10 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+
+  const { state } = useLocation();
+
+  const navigate = useNavigate();
 
   const handleFormChange = (e) => {
     setBody((prev) => {
@@ -59,6 +64,16 @@ const Register = () => {
       return;
     }
     toast.success("Successfully Registered.");
+    localStorage.setItem("userInfo", JSON.stringify(data));
+    if (state !== null) {
+      if (state.path === "/login" || state.path === "/register") {
+        navigate("/");
+      } else {
+        navigate(state.path);
+      }
+    } else {
+      console.log(navigate("/"));
+    }
   };
 
   return (
