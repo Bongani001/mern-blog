@@ -22,9 +22,9 @@ const Navbar = () => {
 
   const handleAuthorClick = () => {
     if (user !== null) {
-      navigate("/manageblogs");
+      navigate(`/authors/${user._id}`);
     } else {
-      toast.error("You must be logged in to access this page.");
+      toast.error("You must be logged in to access authors page.");
     }
   };
 

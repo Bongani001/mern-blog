@@ -48,3 +48,37 @@ export const getOnePost = async (id) => {
     return error.response.data;
   }
 };
+
+export const getAuthorPosts = async (authorId, limit = 0) => {
+  try {
+    const { data } = await axios.get(
+      `http://localhost:5000/api/posts/authors/${authorId}?limit=${limit}`
+    );
+    return data;
+  } catch (error) {
+    if (error.message === "Network Error") {
+      return error.message;
+    } else if (!error.response?.data) {
+      return error.response;
+    }
+
+    return error.response.data;
+  }
+};
+
+export const getAuthorMostViewedPosts = async (authorId, limit = 0) => {
+  try {
+    const { data } = await axios.get(
+      `http://localhost:5000/api/posts/authors/${authorId}?limit=${limit}$views=true`
+    );
+    return data;
+  } catch (error) {
+    if (error.message === "Network Error") {
+      return error.message;
+    } else if (!error.response?.data) {
+      return error.response;
+    }
+
+    return error.response.data;
+  }
+};

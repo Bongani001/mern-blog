@@ -93,7 +93,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row md:justify-between items-center border-t-2 gap-4 py-3 px-5">
+        <div className="flex flex-col md:flex-row md:justify-between items-center border-t border-t-zinc-300 gap-4 py-3 px-5 md:py-5">
           <p className="text-zinc-500">
             Copyright &copy; 2024{" "}
             <a
