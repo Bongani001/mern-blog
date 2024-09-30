@@ -82,3 +82,26 @@ export const getAuthorMostViewedPosts = async (authorId, limit = 0) => {
     return error.response.data;
   }
 };
+
+export const createPost = async (formData, token) => {
+  try {
+    const { data } = await axios.post(
+      `http://localhost:5000/api/posts/create`,
+      formData,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    return data;
+  } catch (error) {
+    if (error.message === "Network Error") {
+      return error.message;
+    } else if (!error.response?.data) {
+      return error.response;
+    }
+    return error.response.data;
+  }
+};

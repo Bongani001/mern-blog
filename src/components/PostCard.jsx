@@ -51,17 +51,20 @@ const PostCard = ({ post, date }) => {
             </h3>
           </Link>
 
-          <p className="text-zinc-500 text-sm hidden md:static md:line-clamp-2 md:my-2">
-            {post.content}
-          </p>
+          <div
+            dangerouslySetInnerHTML={{ __html: post.content }}
+            className="text-zinc-500 text-sm hidden md:static md:line-clamp-2 md:my-2"
+          />
         </div>
         {post.authorId._id === user._id && date && (
-          <button
-            type="button"
-            className="self-end bg-blue-500 hidden sm:block text-white text-xs rounded-lg px-3 py-2 m-3 ml-0 md:order-2"
-          >
-            Edit
-          </button>
+          <Link to={`/authors/${user._id}/edit?blog=${post.authorId._id}`}>
+            <button
+              type="button"
+              className="self-end bg-blue-500 hidden sm:block text-white text-xs rounded-lg px-3 py-2 m-3 ml-0 md:order-2"
+            >
+              Edit
+            </button>
+          </Link>
         )}
       </div>
     </div>

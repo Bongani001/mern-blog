@@ -68,7 +68,10 @@ const PostDetails = () => {
                 Updated: {new Date(post.updatedAt).toLocaleDateString()}
               </p>
             </div>
-            <main className="px-3">{post.content}</main>
+            <main
+              dangerouslySetInnerHTML={{ __html: post.content }}
+              className="px-3"
+            ></main>
           </div>
           <div className="hidden md:block">
             <p className="text-zinc-600 text-2xl border-b border-zinc-300 mb-3 p-4">

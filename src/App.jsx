@@ -10,6 +10,7 @@ import PostDetails from "./pages/blogPost/PostDetails";
 import ServerDown from "./pages/ServerDown";
 import PageNotFound from "./pages/PageNotFound";
 import AuthorPosts from "./pages/author/AuthorPosts";
+import EditPost from "./pages/author/EditPost";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="posts" element={<Posts />} />
             <Route path="posts/:id" element={<PostDetails />} />
             <Route path="authors/:authorid" element={<AuthorPosts />} />
+            <Route path="authors/:authorid/edit" element={<EditPost />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
             <Route path="serverdown" element={<ServerDown />} />

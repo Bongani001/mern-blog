@@ -42,9 +42,10 @@ const Homepage = () => {
               <h1 className="text-3xl text-zinc-200 font-semibold">
                 {latestPosts[0].title}
               </h1>
-              <p className="text-zinc-300 line-clamp-3">
-                {latestPosts[0].content}
-              </p>
+              <div
+                dangerouslySetInnerHTML={{ __html: latestPosts[0].content }}
+                className="text-zinc-300 line-clamp-3"
+              />
               <button
                 type="button"
                 onClick={() => navigate(`/posts/${latestPosts[0]._id}`)}
@@ -110,9 +111,12 @@ const Homepage = () => {
                     </h4>
                   </Link>
 
-                  <p className="text-zinc-500 text-sm line-clamp-2 lg:line-clamp-3">
-                    {mostViewedPosts[0].content}
-                  </p>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: mostViewedPosts[0].content,
+                    }}
+                    className="text-zinc-500 text-sm line-clamp-2 lg:line-clamp-3"
+                  />
                 </div>
               </div>
             </div>
@@ -147,9 +151,12 @@ const Homepage = () => {
                     </h4>
                   </Link>
 
-                  <p className="text-zinc-500 text-sm line-clamp-2 md:line-clamp-3">
-                    {mostViewedPosts[1].content}
-                  </p>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: mostViewedPosts[1].content,
+                    }}
+                    className="text-zinc-500 text-sm line-clamp-2 md:line-clamp-3"
+                  />
                 </div>
               </div>
             </div>
@@ -183,9 +190,12 @@ const Homepage = () => {
                       {mostViewedPosts[2].title}
                     </h4>
                   </Link>
-                  <p className="text-zinc-500 text-sm line-clamp-2 md:line-clamp-3">
-                    {mostViewedPosts[2].content}
-                  </p>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: mostViewedPosts[2].content,
+                    }}
+                    className="text-zinc-500 text-sm line-clamp-2 md:line-clamp-3"
+                  />
                 </div>
               </div>
             </div>

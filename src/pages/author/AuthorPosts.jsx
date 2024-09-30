@@ -46,13 +46,15 @@ const AuthorPosts = () => {
   return (
     <div className="">
       <Toaster position="top-center" reverseOrder={false} />
-      <BlogsLayout
-        posts={posts}
-        topPosts={topPosts}
-        isLoadingPosts={isLoadingPosts}
-        mostViewed={`Most viewed blogs by ${user.username}`}
-        mainTitle={`Blogs by ${user.username}`}
-      />
+      {!isLoadingPosts && (
+        <BlogsLayout
+          posts={posts}
+          topPosts={topPosts}
+          isLoadingPosts={isLoadingPosts}
+          mostViewed={`Most viewed blogs by ${user.username}`}
+          mainTitle={`Blogs by ${user.username}`}
+        />
+      )}
     </div>
   );
 };
