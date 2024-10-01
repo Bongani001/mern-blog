@@ -12,7 +12,7 @@ exports.post_getAll = asyncHandler(async (req, res, next) => {
     // Get the most viewed posts
     const limit = Number(req.query.limit);
     posts = await Post.find()
-      .populate({ path: "authorId", select: "username" })
+      .populate({ path: "authorId categoryId", select: "username name" })
       .sort({ views: -1 })
       .limit(limit)
       .exec();
@@ -26,6 +26,32 @@ exports.post_getAll = asyncHandler(async (req, res, next) => {
       .exec();
   } else {
     posts = await Post.find().exec();
+  }
+  return res.status(200).json(posts);
+});
+
+exports.post_getUserPosts = asyncHandler(async (req, res, next) => {
+  let posts = [];
+  if (req.query.views) {
+    // Get the most viewed posts
+    const limit = Number(req.query.limit);
+    posts = await Post.find({ authorId: req.params.authorid })
+      .populate({ path: "authorId categoryId", select: "username name" })
+      .sort({ views: -1 })
+      .limit(limit)
+      .exec();
+  } else if (req.query.limit) {
+    // Get limited posts
+    const limit = Number(req.query.limit);
+    posts = await Post.find({ authorId: req.params.authorid })
+      .populate({ path: "authorId categoryId", select: "username name" })
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .exec();
+  } else {
+    posts = await Post.find({ authorId: req.params.authorid })
+      .populate({ path: "authorId categoryId", select: "username name" })
+      .exec();
   }
   return res.status(200).json(posts);
 });
@@ -89,14 +115,13 @@ exports.post_create = [
 ];
 
 exports.post_update = [
+  upload.single("image"),
   body("title", "Title field must be at least 5 characters long.")
     .trim()
     .isLength({ min: 5 }),
   body("content", "Content field must be at least 80 characters long.")
     .trim()
     .isLength({ min: 80 }),
-
-  upload.single("image"),
 
   asyncHandler(async (req, res, next) => {
     const post = await Post.findById(req.params.id).exec();
@@ -119,18 +144,25 @@ exports.post_update = [
       return next(error);
     }
 
-    // Save image to cloudinary
-    const result = await cloudinary.uploader.upload(req.file?.path);
+    let result;
+    if (req.file) {
+      // Delete old image from cloudinary
+      await cloudinary.uploader.destroy(post.imgId);
+      // Save image to cloudinary
+      result = await cloudinary.uploader.upload(req.file?.path, {
+        folder: "blog",
+      });
+    }
 
     const newPost = new Post({
       _id: post._id,
       authorId: post.authorId,
       title: req.body.title,
-      headerImg: result.secure_url || post.secure_url,
-      imgId: result.public_id || post.poblic_id,
+      headerImg: result?.secure_url || post.headerImg,
+      imgId: result?.public_id || post.imgId,
       content: req.body.content,
       published: req.body.published,
-      categoryId: req.body.categoryId,
+      categoryId: req.body.category,
       createdAt: post.createdAt,
       updatedAt: Date.now(),
     });

@@ -37,14 +37,17 @@ exports.register = [
         admin: false,
       });
       const newUser = await user.save();
-      return res
-        .status(201)
-        .json({
-          _id: newUser._id,
-          email: newUser.email,
-          username: newUser.username,
-          admin: newUser.admin,
-        });
+
+      const token = generateToken({
+        _id: newUser._id,
+        email: newUser.email,
+        username: newUser.username,
+        admin: newUser.admin,
+      });
+      return res.status(201).json({
+        ...newUser,
+        token,
+      });
     } catch (err) {
       return next(err);
     }

@@ -4,7 +4,7 @@ const Category = require("../models/category");
 
 exports.category_getAll = asyncHandler(async (req, res, next) => {
   const categories = await Category.find().exec();
-  return res.status(200).json({ categories });
+  return res.status(200).json(categories);
 });
 
 exports.category_create = [
