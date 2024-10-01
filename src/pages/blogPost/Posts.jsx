@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
-import headerImg from "../../assets/defaultHeaderImg.jpg";
-import userImg from "../../assets/userImg.png";
-import loading from "../../assets/three.gif";
 import { getLatestPosts, getMostViewedPosts } from "../../services/posts";
-import PostCard from "../../components/PostCard";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ScrollToTop from "../../components/ScrollToTop";
 import BlogsLayout from "../../components/BlogsLayout";
 
@@ -12,6 +8,8 @@ const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [topPosts, setTopPosts] = useState([]);
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getPosts = async () => {

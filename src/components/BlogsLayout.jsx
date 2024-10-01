@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PostCard from "./PostCard";
 import loading from "../assets/three.gif";
 
@@ -10,6 +10,7 @@ const BlogsLayout = ({
   mostViewed,
   mainTitle,
 }) => {
+  const navigate = useNavigate();
   return (
     <div className="md:grid md:grid-cols-4 min-h-[70dvh] pt-20 pb-8 px-3">
       {posts && (
@@ -97,6 +98,15 @@ const BlogsLayout = ({
             <p className="text-zinc-800 text-2xl text-center font-semibold mb-3">
               {mainTitle}
             </p>
+            {mainTitle.includes("by") && (
+              <button
+                onClick={() => navigate("edit", { state: { post: null } })}
+                type="button"
+                className="bg-blue-500 text-white text-xs font-medium rounded-lg px-3 py-2 m-3"
+              >
+                Create Post
+              </button>
+            )}
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4">
               {isLoadingPosts && (
                 <div className="flex sm:col-span-2 lg:col-span-3 justify-center">

@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getAuthorMostViewedPosts, getAuthorPosts } from "../../services/posts";
 import { FaBullseye } from "react-icons/fa";
 import BlogsLayout from "../../components/BlogsLayout";
+import ScrollToTop from "../../components/ScrollToTop";
 
 const AuthorPosts = () => {
   const [posts, setPosts] = useState([]);
@@ -44,17 +45,16 @@ const AuthorPosts = () => {
   }, []);
 
   return (
-    <div className="">
+    <div className="min-h-[70dvh]">
       <Toaster position="top-center" reverseOrder={false} />
-      {!isLoadingPosts && (
-        <BlogsLayout
-          posts={posts}
-          topPosts={topPosts}
-          isLoadingPosts={isLoadingPosts}
-          mostViewed={`Most viewed blogs by ${user.username}`}
-          mainTitle={`Blogs by ${user.username}`}
-        />
-      )}
+      <BlogsLayout
+        posts={posts}
+        topPosts={topPosts}
+        isLoadingPosts={isLoadingPosts}
+        mostViewed={`Most viewed blogs by ${user.username}`}
+        mainTitle={`Blogs by ${user.username}`}
+      />
+      <ScrollToTop />
     </div>
   );
 };

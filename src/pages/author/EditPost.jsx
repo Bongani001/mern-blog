@@ -1,22 +1,22 @@
 import React, { useContext, useEffect, useState } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
-import { useSearchParams } from "react-router-dom";
-import { createPost } from "../../services/posts";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { createPost, editPost } from "../../services/posts";
 import { AuthContext } from "../../context/AuthContext";
 import { getAllCategories } from "../../services/categories";
-import toast, { ToastBar, Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 const EditPost = () => {
   const [value, setValue] = useState("");
   const [titleValue, setTitleValue] = useState("");
-  const [publishedValue, setPublishedValue] = useState("false");
+  const [publishedValue, setPublishedValue] = useState("true");
   const [categoryValue, setCategoryValue] = useState("");
   const [imgValue, setImgValue] = useState(null);
   const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  let [searchParams, setSearchParams] = useSearchParams();
-
+  const { state } = useLocation();
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
@@ -28,6 +28,14 @@ const EditPost = () => {
       }
       setCategories(data);
     };
+
+    setCategoryValue(
+      state.post?.categoryId || state.post?.categoryId._id
+        ? state.post?.categoryId || state.post?.categoryId._id
+        : ""
+    );
+    setTitleValue(state.post?.title ? state.post?.title : "");
+    setValue(state.post?.content ? state.post?.content : "");
 
     getCategories();
   }, []);
@@ -55,10 +63,11 @@ const EditPost = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+
     if (categoryValue === "") {
       toast.error("Select a category");
       return;
-    } else if (imgValue == null) {
+    } else if (imgValue == null && state.post == null) {
       toast.error("Select an image to be put as a header");
       return;
     }
@@ -68,7 +77,18 @@ const EditPost = () => {
     formData.append("category", categoryValue);
     formData.append("published", publishedValue === "true" ? true : false);
     formData.append("image", imgValue);
-    const data = await createPost(formData, user.token);
+    console.log({ value, titleValue, categoryValue, publishedValue, imgValue });
+
+    // Check whether the user is creating a post or updating an existing one
+    let data;
+    setIsLoading(true);
+    if (state.post == null) {
+      data = await createPost(formData, user.token);
+    } else {
+      data = await editPost(formData, state.post._id, user.token);
+    }
+    setIsLoading(false);
+
     if (data === "Network Error") {
       toast.error("Server error, come back later.");
       return;
@@ -88,10 +108,10 @@ const EditPost = () => {
   };
 
   return (
-    <div className="pt-20 mx-3">
+    <div className="pt-20 mx-8">
       <Toaster position="top-center" reverseOrder={false} />
       <h1 className="text-zinc-800 text-lg text-center mb-3">
-        {searchParams.get("blog") ? "Edit blog" : "Create Blog"}
+        {state.post !== null ? "Edit blog" : "Create Blog"}
       </h1>
       <div>
         <form onSubmit={handleFormSubmit}>
@@ -114,21 +134,21 @@ const EditPost = () => {
                   type="radio"
                   id="yes"
                   name="published"
+                  defaultChecked={true}
                   value="true"
                   onChange={(e) => setPublishedValue(e.target.value)}
                 />
-                <label htmlFor="yes">Yes</label>
+                <label>Yes</label>
               </div>
               <div>
                 <input
                   type="radio"
                   id="no"
                   name="published"
-                  defaultChecked={true}
                   value="false"
                   onChange={(e) => setPublishedValue(e.target.value)}
                 />
-                <label htmlFor="no">No</label>
+                <label>No</label>
               </div>
             </div>
           </div>
@@ -157,7 +177,7 @@ const EditPost = () => {
             </select>
           </div>
 
-          <div className="space-x-3 my-2">
+          <div className="space-x-3 my-3">
             <label htmlFor="image-select" className="font-semibold">
               Header image:
             </label>
@@ -168,13 +188,12 @@ const EditPost = () => {
               onChange={(e) => {
                 setImgValue(e.target.files[0]);
               }}
+              className="my-1"
             />
           </div>
 
           <div className="my-5">
-            <label htmlFor="content" className="font-semibold">
-              Content:
-            </label>
+            <label className="font-semibold">Content:</label>
             <ReactQuill
               theme="snow"
               modules={modules}
@@ -182,7 +201,12 @@ const EditPost = () => {
               onChange={setValue}
             />
           </div>
-          <button type="submit">Submit</button>
+          <button
+            type="submit"
+            className="bg-blue-500 self-center text-white text-xs font-semibold rounded-lg px-3 py-2 m-3"
+          >
+            {isLoading ? "Loading..." : "Submit"}
+          </button>
         </form>
         <div></div>
       </div>

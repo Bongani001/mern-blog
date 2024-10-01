@@ -105,3 +105,27 @@ export const createPost = async (formData, token) => {
     return error.response.data;
   }
 };
+
+export const editPost = async (formData, postId, token) => {
+  try {
+    const { data } = await axios.post(
+      `http://localhost:5000/api/posts/update/${postId}`,
+      formData,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    return data;
+  } catch (error) {
+    console.log("the error", error);
+    if (error.message === "Network Error") {
+      return error.message;
+    } else if (!error.response?.data) {
+      return error.response;
+    }
+    return error.response.data;
+  }
+};

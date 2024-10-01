@@ -35,7 +35,9 @@ const Homepage = () => {
               backgroundImage: `url(${latestPosts[0].headerImg || headerImg})`,
             }}
             className="h-96 md:h-[500px] w-full md:min-w-[50%] bg-cover sm:order-1"
-          ></div>
+          >
+            <div className="h-full w-full bg-black/10"></div>
+          </div>
           <div className="bg-zinc-800 p-4 sm:p-5 md:p-10 md:pt-24 md:min-w-[50%]">
             <div className="flex flex-col gap-2">
               <pre className="text-white">Newest Blog</pre>
