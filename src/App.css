@@ -4,6 +4,5 @@ body {
 
 span {
   background-color: unset !important;
-  /* color: rgb(99, 99, 99) !important; */
   color: inherit !important;
 }

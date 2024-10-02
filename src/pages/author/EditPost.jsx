@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import ReactQuill from "react-quill-new";
-import "react-quill-new/dist/quill.snow.css";
-import { useLocation, useSearchParams } from "react-router-dom";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { useLocation, useNavigate } from "react-router-dom";
 import { createPost, editPost } from "../../services/posts";
 import { AuthContext } from "../../context/AuthContext";
 import { getAllCategories } from "../../services/categories";
 import toast, { Toaster } from "react-hot-toast";
+import userImg from "../../assets/userImg.png";
+import ScrollToTop from "../../components/ScrollToTop";
 
 const EditPost = () => {
   const [value, setValue] = useState("");
@@ -18,6 +20,8 @@ const EditPost = () => {
 
   const { state } = useLocation();
   const { user } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getCategories = async () => {
@@ -40,27 +44,6 @@ const EditPost = () => {
     getCategories();
   }, []);
 
-  const toolbarOptions = [
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    [{ size: ["small", false, "large", "huge"] }], // custom dropdown
-
-    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-    [{ font: [] }],
-    ["bold", "italic", "underline", "strike"], // toggled buttons
-    ["blockquote", "code-block"],
-    ["link"],
-
-    [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
-    [{ script: "sub" }, { script: "super" }], // superscript/subscript
-    [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
-    [{ direction: "rtl" }], // text direction
-
-    [{ align: [] }],
-
-    ["clean"], // remove formatting button
-  ];
-  const modules = { toolbar: toolbarOptions };
-
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -77,7 +60,6 @@ const EditPost = () => {
     formData.append("category", categoryValue);
     formData.append("published", publishedValue === "true" ? true : false);
     formData.append("image", imgValue);
-    console.log({ value, titleValue, categoryValue, publishedValue, imgValue });
 
     // Check whether the user is creating a post or updating an existing one
     let data;
@@ -104,7 +86,13 @@ const EditPost = () => {
       toast.error("Server error, come back later.");
       return;
     }
-    console.log(data);
+
+    if (state.post !== null) {
+      toast.success("Post updated successfully.");
+    } else {
+      toast.success("Post created successfully.");
+    }
+    navigate(`/authors/${user._id}`);
   };
 
   return (
@@ -192,24 +180,74 @@ const EditPost = () => {
             />
           </div>
 
-          <div className="my-5">
+          <div className=" my-5">
             <label className="font-semibold">Content:</label>
             <ReactQuill
               theme="snow"
-              modules={modules}
               value={value}
               onChange={setValue}
+              className="bg-white"
             />
           </div>
-          <button
-            type="submit"
-            className="bg-blue-500 self-center text-white text-xs font-semibold rounded-lg px-3 py-2 m-3"
-          >
-            {isLoading ? "Loading..." : "Submit"}
-          </button>
+
+          {!isLoading && (
+            <button
+              type="submit"
+              className="bg-blue-500 self-center text-white text-xs font-semibold rounded-lg px-3 py-2 m-3"
+            >
+              Submit
+            </button>
+          )}
+
+          {isLoading && (
+            <button
+              type="submit"
+              className="bg-blue-500 self-center text-white text-xs font-semibold rounded-lg px-3 py-2 m-3"
+            >
+              Loading...
+            </button>
+          )}
         </form>
-        <div></div>
       </div>
+      <div>
+        <h2 className="text-zinc-800 text-lg text-center mb-3">Preview</h2>
+        <div className="md:border-r md:border-l md:border-zinc-300 md:px-5 md:col-span-2 pb-3 md:mx-20">
+          <h1 className="text-zinc-800 text-3xl font-semibold sm:text-[3rem] leading-tight">
+            {titleValue}
+          </h1>
+          {/* <img
+            src={state.post?.headerImg || headerImg}
+            alt="Header"
+            className="h-80 sm:h-96 w-full rounded my-5"
+          /> */}
+          <div className="h-64 sm:h-96 w-full flex justify-center items-center font-semibold text-3xl border border-zinc-600 my-5">
+            Header Image
+          </div>
+          <div className="flex justify-between items-center my-3  ">
+            <div className="flex items-center gap-3">
+              <img
+                src={userImg}
+                alt="User profile"
+                className="h-12 w-12 rounded-full"
+              />
+              <div>
+                <p className="text-zinc-7 00 text-sm">Written by</p>
+                <p className="text-zinc-900 text-lg font-semibold">
+                  {user?.username}
+                </p>
+              </div>
+            </div>
+            <p className="text-xs sm:text-sm">
+              Updated: {new Date().toLocaleDateString()}
+            </p>
+          </div>
+          <main
+            dangerouslySetInnerHTML={{ __html: value }}
+            className="px-3"
+          ></main>
+        </div>
+      </div>
+      <ScrollToTop />
     </div>
   );
 };

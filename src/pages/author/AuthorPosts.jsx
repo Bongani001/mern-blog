@@ -51,8 +51,8 @@ const AuthorPosts = () => {
         posts={posts}
         topPosts={topPosts}
         isLoadingPosts={isLoadingPosts}
-        mostViewed={`Most viewed blogs by ${user.username}`}
-        mainTitle={`Blogs by ${user.username}`}
+        mostViewed={`Most viewed blogs by ${user?.username}`}
+        mainTitle={`Blogs by ${user?.username}`}
       />
       <ScrollToTop />
     </div>

@@ -1,38 +1,84 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import headerImg from "../../assets/defaultHeaderImg.jpg";
 import userImg from "../../assets/userImg.png";
 import loading from "../../assets/three.gif";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getMostViewedPosts, getOnePost } from "../../services/posts";
 import ScrollToTop from "../../components/ScrollToTop";
+import { getAllPostComments, postComment } from "../../services/commets";
+import { AuthContext } from "../../context/AuthContext";
+import toast, { Toaster } from "react-hot-toast";
 
 const PostDetails = () => {
   const [post, setPosts] = useState(null);
   const [topPosts, setTopPosts] = useState([]);
+  const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [comment, setComment] = useState("");
+  const [submittingComment, setSubmittingComment] = useState(false);
 
   const { id } = useParams();
+
+  const { user } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const getPosts = async (id) => {
       let data = await getOnePost(id); // Get the main post
-      let top = await getMostViewedPosts(3); // get top picks
+      let top = await getMostViewedPosts(3); // Get top picks
+      let comm = await getAllPostComments(id); // Get all comments related to the post
       if (data === "Network Error") {
         navigate("/serverdown");
       }
 
       setPosts(data);
       setTopPosts(top);
+      setComments(comm);
       setIsLoading(false);
     };
 
     getPosts(id);
   }, [id]);
 
+  const handleCommentSubmit = async () => {
+    if (user?.token) {
+      setSubmittingComment(true);
+      let data = await postComment(
+        { postId: id, content: comment },
+        user.token
+      );
+      if (data === "Network Error") {
+        toast.error("Server error, come back later.");
+        setSubmittingComment(false);
+
+        return;
+      } else if (data?.errors) {
+        data.errors.forEach((err) => {
+          if (err.type) {
+            toast.error(err.msg);
+          }
+        });
+        setSubmittingComment(false);
+        return;
+      }
+      toast.success("Comment successful.");
+      let comm = await getAllPostComments(id); // Get all comments related to the post
+      if (comm === "Network Error") {
+        setSubmittingComment(false);
+        navigate("/serverdown");
+      }
+      setComments(comm);
+      setComment("");
+      setSubmittingComment(false);
+    } else {
+      toast.error("You must be logged in to comment.");
+    }
+  };
+
   return (
     <div className="pt-20 mx-2 md:p-10 md:pt-20 min-h-dvh">
+      <Toaster position="top-center" reverseOrder={false} />
       {isLoading && (
         <div className="flex justify-center">
           <img src={loading} alt="loading..." className="w-20" />
@@ -72,6 +118,70 @@ const PostDetails = () => {
               dangerouslySetInnerHTML={{ __html: post.content }}
               className="px-3"
             ></main>
+            <div className="border-t border-zinc-400 pt-3 my-12 ">
+              <h2 className="text-zinc-800 text-center font-medium">
+                Comments
+              </h2>
+              <div className="flex">
+                <label className="flex-1">
+                  <textarea
+                    name="comment"
+                    id="comment"
+                    rows="2"
+                    placeholder="Write your comment"
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    className="w-full outline-none p-1"
+                  ></textarea>
+                </label>
+                {submittingComment ? (
+                  <button
+                    type="submit"
+                    className="bg-blue-500 self-center text-white text-xs font-semibold rounded-lg px-3 py-2 m-3"
+                  >
+                    Loading...
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleCommentSubmit}
+                    type="submit"
+                    className="bg-blue-500 self-center text-white text-xs font-semibold rounded-lg px-3 py-2 m-3"
+                  >
+                    Submit
+                  </button>
+                )}
+              </div>
+              <div className="mt-2 space-y-2">
+                {comments?.length < 1 && (
+                  <p className="text-zinc-500 text-base italic">
+                    there are no comments for this blog
+                  </p>
+                )}
+                {comments?.map((comment) => {
+                  return (
+                    <div key={comment._id} className="flex items-center gap-2">
+                      <img
+                        src={userImg}
+                        alt="User profile"
+                        className="h-6 w-6 rounded-full self-start"
+                      />
+                      <div className="bg-white rounded p-1">
+                        <div className="flex gap-1 items-center">
+                          <p className="text-zinc-500 text-base">
+                            {comment.authorId.username}
+                          </p>
+                          &#x2022;{" "}
+                          <p className="text-zinc-500 text-base">
+                            {new Date(comment.updatedAt).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <p>{comment.content}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
           <div className="hidden md:block">
             <p className="text-zinc-600 text-2xl border-b border-zinc-300 mb-3 p-4">

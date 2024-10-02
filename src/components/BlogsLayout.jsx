@@ -44,54 +44,6 @@ const BlogsLayout = ({
                   </div>
                 );
               })}
-              {topPosts?.map((post, index) => {
-                return (
-                  <div
-                    key={post._id}
-                    className="flex gap-3 border-b border-zinc-300 py-2"
-                  >
-                    <span className="text-lg font-bold">{index + 1}</span>
-                    <div className="col-span-2 md:flex md:flex-col md:justify-between md:h-full">
-                      <div className="">
-                        <Link to={`/posts/${post._id}`}>
-                          <h3 className="text-zinc-800 text-base font-semibold line-clamp-2">
-                            {post.title}
-                          </h3>
-                        </Link>
-                      </div>
-                      <span className="text-zinc-500 text-sm">{`${
-                        post.categoryId.name
-                      } ▪  ${new Date(
-                        post.createdAt
-                      ).toLocaleDateString()}`}</span>
-                    </div>
-                  </div>
-                );
-              })}
-              {topPosts?.map((post, index) => {
-                return (
-                  <div
-                    key={post._id}
-                    className="flex gap-3 border-b border-zinc-300 py-2"
-                  >
-                    <span className="text-lg font-bold">{index + 1}</span>
-                    <div className="col-span-2 md:flex md:flex-col md:justify-between md:h-full">
-                      <div className="">
-                        <Link to={`/posts/${post._id}`}>
-                          <h3 className="text-zinc-800 text-base font-semibold line-clamp-2">
-                            {post.title}
-                          </h3>
-                        </Link>
-                      </div>
-                      <span className="text-zinc-500 text-sm">{`${
-                        post.categoryId.name
-                      } ▪  ${new Date(
-                        post.createdAt
-                      ).toLocaleDateString()}`}</span>
-                    </div>
-                  </div>
-                );
-              })}
             </div>
           </div>
           <div className="col-span-3 px-2 md:ml-2">
