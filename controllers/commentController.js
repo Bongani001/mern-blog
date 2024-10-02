@@ -4,7 +4,14 @@ const Comment = require("../models/Comment");
 const User = require("../models/User");
 
 exports.comment_getAll = asyncHandler(async (req, res, next) => {
-  const comments = await Comment.find().exec();
+  let comments = [];
+  if (req.query.postId) {
+    comments = await Comment.find({ postId: req.query.postId })
+      .populate("authorId")
+      .exec();
+  } else {
+    comments = await Comment.find().exec();
+  }
   return res.status(200).json(comments);
 });
 
