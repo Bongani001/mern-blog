@@ -73,12 +73,6 @@ const BlogsLayout = ({
               {posts?.map((post) => {
                 return <PostCard key={post._id} post={post} date={true} />;
               })}
-              {posts?.map((post) => {
-                return <PostCard key={post._id} post={post} date={true} />;
-              })}
-              {posts?.map((post) => {
-                return <PostCard key={post._id} post={post} date={true} />;
-              })}
             </div>
           </div>
         </>
