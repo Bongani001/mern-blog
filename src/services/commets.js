@@ -3,7 +3,11 @@ import axios from "axios";
 export const getAllPostComments = async (postId) => {
   try {
     const { data } = await axios.get(
-      `http://localhost:5000/api/comments?postId=${postId}`
+      `${
+        import.meta.env.VITE_NODE_ENV === "production"
+          ? import.meta.env.VITE_SERVER_URL
+          : "http://localhost:5000"
+      }/api/comments?postId=${postId}`
     );
     return data;
   } catch (error) {
@@ -20,7 +24,11 @@ export const getAllPostComments = async (postId) => {
 export const postComment = async (comment, token) => {
   try {
     const { data } = await axios.post(
-      `http://localhost:5000/api/comments/create?postId=${comment.postId}`,
+      `${
+        import.meta.env.VITE_NODE_ENV === "production"
+          ? import.meta.env.VITE_SERVER_URL
+          : "http://localhost:5000"
+      }/api/comments/create?postId=${comment.postId}`,
       {
         postId: comment.postId,
         content: comment.content,

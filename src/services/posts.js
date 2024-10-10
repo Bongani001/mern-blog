@@ -3,7 +3,11 @@ import axios from "axios";
 export const getLatestPosts = async (limit) => {
   try {
     const { data } = await axios.get(
-      `http://localhost:5000/api/posts?limit=${limit}`
+      `${
+        import.meta.env.VITE_NODE_ENV === "production"
+          ? import.meta.env.VITE_SERVER_URL
+          : "http://localhost:5000"
+      }/api/posts?limit=${limit}`
     );
     return data;
   } catch (error) {
@@ -20,7 +24,11 @@ export const getLatestPosts = async (limit) => {
 export const getMostViewedPosts = async (limit) => {
   try {
     const { data } = await axios.get(
-      `http://localhost:5000/api/posts?limit=${limit}&views=true`
+      `${
+        import.meta.env.VITE_NODE_ENV === "production"
+          ? import.meta.env.VITE_SERVER_URL
+          : "http://localhost:5000"
+      }/api/posts?limit=${limit}&views=true`
     );
     return data;
   } catch (error) {
@@ -36,7 +44,13 @@ export const getMostViewedPosts = async (limit) => {
 
 export const getOnePost = async (id) => {
   try {
-    const { data } = await axios.get(`http://localhost:5000/api/posts/${id}`);
+    const { data } = await axios.get(
+      `${
+        import.meta.env.VITE_NODE_ENV === "production"
+          ? import.meta.env.VITE_SERVER_URL
+          : "http://localhost:5000"
+      }/api/posts/${id}`
+    );
     return data;
   } catch (error) {
     if (error.message === "Network Error") {
@@ -52,7 +66,11 @@ export const getOnePost = async (id) => {
 export const getAuthorPosts = async (authorId, limit = 0) => {
   try {
     const { data } = await axios.get(
-      `http://localhost:5000/api/posts/authors/${authorId}?limit=${limit}`
+      `${
+        import.meta.env.VITE_NODE_ENV === "production"
+          ? import.meta.env.VITE_SERVER_URL
+          : "http://localhost:5000"
+      }/api/posts/authors/${authorId}?limit=${limit}`
     );
     return data;
   } catch (error) {
@@ -69,7 +87,11 @@ export const getAuthorPosts = async (authorId, limit = 0) => {
 export const getAuthorMostViewedPosts = async (authorId, limit = 0) => {
   try {
     const { data } = await axios.get(
-      `http://localhost:5000/api/posts/authors/${authorId}?limit=${limit}$views=true`
+      `${
+        import.meta.env.VITE_NODE_ENV === "production"
+          ? import.meta.env.VITE_SERVER_URL
+          : "http://localhost:5000"
+      }/api/posts/authors/${authorId}?limit=${limit}$views=true`
     );
     return data;
   } catch (error) {
@@ -86,7 +108,11 @@ export const getAuthorMostViewedPosts = async (authorId, limit = 0) => {
 export const createPost = async (formData, token) => {
   try {
     const { data } = await axios.post(
-      `http://localhost:5000/api/posts/create`,
+      `${
+        import.meta.env.VITE_NODE_ENV === "production"
+          ? import.meta.env.VITE_SERVER_URL
+          : "http://localhost:5000"
+      }/api/posts/create`,
       formData,
       {
         headers: {
@@ -109,7 +135,11 @@ export const createPost = async (formData, token) => {
 export const editPost = async (formData, postId, token) => {
   try {
     const { data } = await axios.post(
-      `http://localhost:5000/api/posts/update/${postId}`,
+      `${
+        import.meta.env.VITE_NODE_ENV === "production"
+          ? import.meta.env.VITE_SERVER_URL
+          : "http://localhost:5000"
+      }/api/posts/update/${postId}`,
       formData,
       {
         headers: {
