@@ -37,6 +37,9 @@ const PostCard = ({ post, date }) => {
               </span>
               {post.authorId._id === user?._id && (
                 <button
+                  onClick={() =>
+                    navigate(`/authors/${user._id}/edit`, { state: { post } })
+                  }
                   type="button"
                   className="self-end bg-blue-500 sm:hidden text-white text-xs rounded-lg px-3 py-2 ml-3"
                 >
