@@ -11,7 +11,7 @@ exports.post_getAll = asyncHandler(async (req, res, next) => {
   if (req.query.views) {
     // Get the most viewed posts
     const limit = Number(req.query.limit);
-    posts = await Post.find()
+    posts = await Post.find({ published: { $eq: true } })
       .populate({ path: "authorId categoryId", select: "username name" })
       .sort({ views: -1 })
       .limit(limit)
@@ -19,13 +19,13 @@ exports.post_getAll = asyncHandler(async (req, res, next) => {
   } else if (req.query.limit) {
     // Get limited posts
     const limit = Number(req.query.limit);
-    posts = await Post.find()
+    posts = await Post.find({ published: { $eq: true } })
       .populate({ path: "authorId", select: "username" })
       .sort({ createdAt: -1 })
       .limit(limit)
       .exec();
   } else {
-    posts = await Post.find().exec();
+    posts = await Post.find({ published: { $eq: true } }).exec();
   }
   return res.status(200).json(posts);
 });
@@ -36,7 +36,8 @@ exports.post_getUserPosts = asyncHandler(async (req, res, next) => {
     // Get the most viewed posts
     const limit = Number(req.query.limit);
     posts = await Post.find({ authorId: req.params.authorid })
-      .populate({ path: "authorId categoryId", select: "username name" })
+      .populate({ path: "authorId", select: "username" })
+      .populate("categoryId")
       .sort({ views: -1 })
       .limit(limit)
       .exec();

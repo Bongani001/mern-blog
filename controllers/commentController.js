@@ -7,7 +7,7 @@ exports.comment_getAll = asyncHandler(async (req, res, next) => {
   let comments = [];
   if (req.query.postId) {
     comments = await Comment.find({ postId: req.query.postId })
-      .populate("authorId")
+      .populate({ path: "authorId", select: "-password" })
       .exec();
   } else {
     comments = await Comment.find().exec();
