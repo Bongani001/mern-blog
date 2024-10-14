@@ -20,6 +20,11 @@ const BlogsLayout = ({
               {mostViewed}
             </h2>
             <div className="">
+              {topPosts.length < 1 && !isLoadingPosts && (
+                <span className="flex italic sm:col-span-2 lg:col-span-3 justify-center">
+                  No blogs available.
+                </span>
+              )}
               {topPosts?.map((post, index) => {
                 return (
                   <div
