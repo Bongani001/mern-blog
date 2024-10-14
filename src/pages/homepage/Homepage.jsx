@@ -42,7 +42,7 @@ const Homepage = () => {
             <div
               style={{
                 backgroundImage: `url(${
-                  latestPosts[0].headerImg || headerImg
+                  latestPosts[0]?.headerImg || headerImg
                 })`,
               }}
               className="h-96 md:h-[500px] w-full md:min-w-[50%] bg-cover sm:order-1"
@@ -53,15 +53,15 @@ const Homepage = () => {
               <div className="flex flex-col gap-2">
                 <pre className="text-white">Newest Blog</pre>
                 <h1 className="text-3xl text-zinc-200 font-semibold">
-                  {latestPosts[0].title}
+                  {latestPosts[0]?.title}
                 </h1>
                 <div
-                  dangerouslySetInnerHTML={{ __html: latestPosts[0].content }}
+                  dangerouslySetInnerHTML={{ __html: latestPosts[0]?.content }}
                   className="text-zinc-300 line-clamp-3"
                 />
                 <button
                   type="button"
-                  onClick={() => navigate(`/posts/${latestPosts[0]._id}`)}
+                  onClick={() => navigate(`/posts/${latestPosts[0]?._id}`)}
                   className="bg-zinc-100 font-semibold rounded-3xl self-start py-2 px-3"
                 >
                   Read More
@@ -76,147 +76,154 @@ const Homepage = () => {
                 <div>
                   <p className="text-zinc-300 text-sm">Written by</p>
                   <p className="text-zinc-200 text-lg font-semibold">
-                    {latestPosts[0].authorId.username}
+                    {latestPosts[0]?.authorId.username}
                   </p>
                 </div>
               </div>
             </div>
           </header>
           <main className="bg-zinc-50 rounded-2xl py-5 mx-4 relative -top-14">
-            <h2
-              className="text-zinc-800 text-2xl font-semibold ml-3"
-              onClick={() => navigate("/topposts")}
-            >
-              Top Blogs
-            </h2>
-            {latestPosts.length > 2 && (
-              <div className="flex overflow-x-auto md:grid md:grid-cols-2 md:grid-flow-row gap-3 my-3 overflow-hidden">
-                <div className="md:row-span-2">
-                  <div
-                    style={{
-                      backgroundImage: `url(${
-                        mostViewedPosts[0].headerImg || headerImg
-                      })`,
-                    }}
-                    className="h-48 w-72 md:min-h-[60%] md:w-full bg-cover rounded-2xl"
-                  >
-                    <Link to={`posts/${mostViewedPosts[0]._id}`}>
-                      <div className="h-full w-full rounded-2xl hover:bg-black/50 "></div>
-                    </Link>
-                  </div>
-                  <div className="md:flex md:flex-col md:gap-2">
-                    <div className="flex items-center gap-1 md:order-1">
-                      <img
-                        src={userImg}
-                        alt="User profile"
-                        className="h-12 w-12 rounded-full"
-                      />
-                      <p className="text-zinc-500 text-base">
-                        {mostViewedPosts[0].authorId.username}
-                      </p>
-                    </div>
-                    <div className="">
+            {mostViewedPosts.length > 2 && (
+              <>
+                <h2
+                  className="text-zinc-800 text-2xl font-semibold ml-3"
+                  onClick={() => navigate("/topposts")}
+                >
+                  Top Blogs
+                </h2>
+                <div className="flex overflow-x-auto md:grid md:grid-cols-2 md:grid-flow-row gap-3 my-3 overflow-hidden">
+                  <div className="md:row-span-2">
+                    <div
+                      style={{
+                        backgroundImage: `url(${
+                          mostViewedPosts[0].headerImg || headerImg
+                        })`,
+                      }}
+                      className="h-48 w-72 md:min-h-[60%] md:w-full bg-cover rounded-2xl"
+                    >
                       <Link to={`posts/${mostViewedPosts[0]._id}`}>
-                        <h4 className="text-zinc-800 font-semibold md:text-xl md:my-2">
-                          {mostViewedPosts[0].title}
-                        </h4>
+                        <div className="h-full w-full rounded-2xl hover:bg-black/50 "></div>
                       </Link>
+                    </div>
+                    <div className="md:flex md:flex-col md:gap-2">
+                      <div className="flex items-center gap-1 md:order-1">
+                        <img
+                          src={userImg}
+                          alt="User profile"
+                          className="h-12 w-12 rounded-full"
+                        />
+                        <p className="text-zinc-500 text-base">
+                          {mostViewedPosts[0].authorId.username}
+                        </p>
+                      </div>
+                      <div className="">
+                        <Link to={`posts/${mostViewedPosts[0]._id}`}>
+                          <h4 className="text-zinc-800 font-semibold md:text-xl md:my-2">
+                            {mostViewedPosts[0].title}
+                          </h4>
+                        </Link>
 
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: mostViewedPosts[0].content,
-                        }}
-                        className="text-zinc-500 text-sm line-clamp-2 lg:line-clamp-3"
-                      />
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: mostViewedPosts[0].content,
+                          }}
+                          className="text-zinc-500 text-sm line-clamp-2 lg:line-clamp-3"
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="md:flex md:gap-3 ">
-                  <div
-                    style={{
-                      backgroundImage: `url(${
-                        mostViewedPosts[1].headerImg || headerImg
-                      })`,
-                    }}
-                    className="h-48 w-80 md:min-w-[35%] bg-cover rounded-2xl "
-                  >
-                    <Link to={`posts/${mostViewedPosts[1]._id}`}>
-                      <div className="h-full w-full rounded-2xl hover:bg-black/50"></div>
-                    </Link>
-                  </div>
-                  <div className="md:flex md:flex-col md:justify-between">
-                    <div className="flex items-center gap-1 md:order-1">
-                      <img
-                        src={userImg}
-                        alt="User profile"
-                        className="h-12 w-12 rounded-full"
-                      />
-                      <p className="text-zinc-500 text-base">
-                        {mostViewedPosts[1].authorId.username}
-                      </p>
-                    </div>
-                    <div className="">
+                  <div className="md:flex md:gap-3 ">
+                    <div
+                      style={{
+                        backgroundImage: `url(${
+                          mostViewedPosts[1].headerImg || headerImg
+                        })`,
+                      }}
+                      className="h-48 w-80 md:min-w-[35%] bg-cover rounded-2xl "
+                    >
                       <Link to={`posts/${mostViewedPosts[1]._id}`}>
-                        <h4 className="text-zinc-800 font-semibold md:text-xl md:mb-2 ">
-                          {mostViewedPosts[1].title}
-                        </h4>
+                        <div className="h-full w-full rounded-2xl hover:bg-black/50"></div>
                       </Link>
+                    </div>
+                    <div className="md:flex md:flex-col md:justify-between">
+                      <div className="flex items-center gap-1 md:order-1">
+                        <img
+                          src={userImg}
+                          alt="User profile"
+                          className="h-12 w-12 rounded-full"
+                        />
+                        <p className="text-zinc-500 text-base">
+                          {mostViewedPosts[1].authorId.username}
+                        </p>
+                      </div>
+                      <div className="">
+                        <Link to={`posts/${mostViewedPosts[1]._id}`}>
+                          <h4 className="text-zinc-800 font-semibold md:text-xl md:mb-2 ">
+                            {mostViewedPosts[1].title}
+                          </h4>
+                        </Link>
 
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: mostViewedPosts[1].content,
-                        }}
-                        className="text-zinc-500 text-sm line-clamp-2 md:line-clamp-3"
-                      />
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: mostViewedPosts[1].content,
+                          }}
+                          className="text-zinc-500 text-sm line-clamp-2 md:line-clamp-3"
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="md:flex md:gap-3">
-                  <div
-                    style={{
-                      backgroundImage: `url(${
-                        mostViewedPosts[2].headerImg || headerImg
-                      })`,
-                    }}
-                    className="h-48 w-80 md:min-w-[35%] bg-cover rounded-2xl"
-                  >
-                    <Link to={`posts/${mostViewedPosts[2]._id}`}>
-                      <div className="h-full w-full rounded-2xl hover:bg-black/50"></div>
-                    </Link>
-                  </div>
-                  <div className="md:flex md:flex-col md:justify-between">
-                    <div className="flex items-center gap-1 md:order-1">
-                      <img
-                        src={userImg}
-                        alt="User profile"
-                        className="h-12 w-12 rounded-full"
-                      />
-                      <p className="text-zinc-500 text-base">
-                        {mostViewedPosts[2].authorId.username}
-                      </p>
-                    </div>
-                    <div className="">
-                      <Link to={`posts/${mostViewedPosts[0]._id}`}>
-                        <h4 className="text-zinc-800 font-semibold md:text-xl md:mb-2 ">
-                          {mostViewedPosts[2].title}
-                        </h4>
+                  <div className="md:flex md:gap-3">
+                    <div
+                      style={{
+                        backgroundImage: `url(${
+                          mostViewedPosts[2].headerImg || headerImg
+                        })`,
+                      }}
+                      className="h-48 w-80 md:min-w-[35%] bg-cover rounded-2xl"
+                    >
+                      <Link to={`posts/${mostViewedPosts[2]._id}`}>
+                        <div className="h-full w-full rounded-2xl hover:bg-black/50"></div>
                       </Link>
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: mostViewedPosts[2].content,
-                        }}
-                        className="text-zinc-500 text-sm line-clamp-2 md:line-clamp-3"
-                      />
+                    </div>
+                    <div className="md:flex md:flex-col md:justify-between">
+                      <div className="flex items-center gap-1 md:order-1">
+                        <img
+                          src={userImg}
+                          alt="User profile"
+                          className="h-12 w-12 rounded-full"
+                        />
+                        <p className="text-zinc-500 text-base">
+                          {mostViewedPosts[2].authorId.username}
+                        </p>
+                      </div>
+                      <div className="">
+                        <Link to={`posts/${mostViewedPosts[0]._id}`}>
+                          <h4 className="text-zinc-800 font-semibold md:text-xl md:mb-2 ">
+                            {mostViewedPosts[2].title}
+                          </h4>
+                        </Link>
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: mostViewedPosts[2].content,
+                          }}
+                          className="text-zinc-500 text-sm line-clamp-2 md:line-clamp-3"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </>
             )}
 
             <section className="">
               <h2 className="text-zinc-800 text-2xl font-semibold my-4">
                 Latest Blog
               </h2>
+              {latestPosts.length < 1 && (
+                <span className="flex italic sm:col-span-2 lg:col-span-3 justify-center">
+                  No blog posts available.
+                </span>
+              )}
               <div className="flex flex-col gap-3 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {latestPosts?.map((post) => {
                   return <PostCard key={post._id} post={post} />;

@@ -5,7 +5,11 @@ import loading from "../../assets/three.gif";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getMostViewedPosts, getOnePost } from "../../services/posts";
 import ScrollToTop from "../../components/ScrollToTop";
-import { getAllPostComments, postComment } from "../../services/commets";
+import {
+  deleteComment,
+  getAllPostComments,
+  postComment,
+} from "../../services/commets";
 import { AuthContext } from "../../context/AuthContext";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -74,6 +78,32 @@ const PostDetails = () => {
     } else {
       toast.error("You must be logged in to comment.");
     }
+  };
+
+  const handleCommentDelete = async (commentId) => {
+    const data = await deleteComment(commentId, user.token);
+
+    if (data === "Network Error") {
+      toast.error("Server error, come back later.");
+      return;
+    } else if (data?.errors) {
+      data.errors.forEach((err) => {
+        toast.error(err.msg);
+        setUser(null);
+        localStorage.removeItem("userInfo");
+        navigate("/");
+      });
+      return;
+    } else if (data === undefined) {
+      toast.error("Server error, come back later.");
+      return;
+    }
+    let comm = await getAllPostComments(id); // Get all comments related to the post
+    if (comm === "Network Error") {
+      navigate("/serverdown");
+    }
+    setComments(comm);
+    toast.success("Comment deleted successfully.");
   };
 
   return (
@@ -176,6 +206,19 @@ const PostDetails = () => {
                           </p>
                         </div>
                         <p>{comment.content}</p>
+                        {comment.authorId._id === user?._id && (
+                          <div className="flex justify-end">
+                            <button
+                              onClick={() =>
+                                handleCommentDelete(comment._id, user.token)
+                              }
+                              type="button"
+                              className="bg-red-500 text-white text-xs font-semibold rounded-lg px-3 py-2 m-1 hover:cursor-pointer"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   );

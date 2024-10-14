@@ -27,9 +27,10 @@ export const getMostViewedPosts = async (limit) => {
       `${
         import.meta.env.VITE_NODE_ENV === "production"
           ? import.meta.env.VITE_SERVER_URL
-          : "http://localhost:5000"
+          : `http://localhost:5000`
       }/api/posts?limit=${limit}&views=true`
     );
+
     return data;
   } catch (error) {
     if (error.message === "Network Error") {
@@ -151,6 +152,32 @@ export const editPost = async (formData, postId, token) => {
     return data;
   } catch (error) {
     console.log("the error", error);
+    if (error.message === "Network Error") {
+      return error.message;
+    } else if (!error.response?.data) {
+      return error.response;
+    }
+    return error.response.data;
+  }
+};
+
+export const deletePost = async (postId, token) => {
+  try {
+    const { data } = await axios.delete(
+      `${
+        import.meta.env.VITE_NODE_ENV === "production"
+          ? import.meta.env.VITE_SERVER_URL
+          : "http://localhost:5000"
+      }/api/posts/delete/${postId}`,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    return data;
+  } catch (error) {
+    // console.log("the error", error);
     if (error.message === "Network Error") {
       return error.message;
     } else if (!error.response?.data) {

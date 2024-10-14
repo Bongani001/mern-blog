@@ -2,6 +2,7 @@
   "name": "mern-blog-client",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://featherblog.netlify.app",
   "type": "module",
   "scripts": {
     "dev": "vite",

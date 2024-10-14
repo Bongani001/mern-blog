@@ -65,7 +65,7 @@ const BlogsLayout = ({
                   <img src={loading} alt="loading..." className="w-20" />
                 </div>
               )}
-              {posts?.length && !isLoadingPosts < 1 && (
+              {posts?.length < 1 && (
                 <span className="flex italic sm:col-span-2 lg:col-span-3 justify-center">
                   No blog posts available.
                 </span>

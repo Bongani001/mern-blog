@@ -56,7 +56,7 @@ const PostCard = ({ post, date }) => {
 
           <div
             dangerouslySetInnerHTML={{ __html: post.content }}
-            className="text-zinc-500 text-sm hidden md:static md:line-clamp-2 md:my-2"
+            className="text-zinc-500 text-sm hidden md:static md:line-clamp-2 lg:line-clamp-3 md:my-2"
           />
         </div>
         {post.authorId._id === user?._id && date && (

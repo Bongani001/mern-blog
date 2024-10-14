@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useLocation, useNavigate } from "react-router-dom";
-import { createPost, editPost } from "../../services/posts";
+import { createPost, deletePost, editPost } from "../../services/posts";
 import { AuthContext } from "../../context/AuthContext";
 import { getAllCategories } from "../../services/categories";
 import toast, { Toaster } from "react-hot-toast";
@@ -17,9 +17,10 @@ const EditPost = () => {
   const [imgValue, setImgValue] = useState(null);
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const { state } = useLocation();
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -34,10 +35,13 @@ const EditPost = () => {
     };
 
     setCategoryValue(
-      state.post?.categoryId || state.post?.categoryId._id
-        ? state.post?.categoryId || state.post?.categoryId._id
+      state.post?.categoryId._id
+        ? state.post?.categoryId._id
+        : state.post?.categoryId
+        ? state.post?.categoryId
         : ""
     );
+
     setTitleValue(state.post?.title ? state.post?.title : "");
     setValue(state.post?.content ? state.post?.content : "");
 
@@ -61,9 +65,9 @@ const EditPost = () => {
     formData.append("published", publishedValue === "true" ? true : false);
     formData.append("image", imgValue);
 
-    // Check whether the user is creating a post or updating an existing one
     let data;
     setIsLoading(true);
+    // Check whether the user is creating a post or updating an existing one
     if (state.post == null) {
       data = await createPost(formData, user.token);
     } else {
@@ -95,6 +99,31 @@ const EditPost = () => {
     navigate(`/authors/${user._id}`);
   };
 
+  const handlePostDelete = async () => {
+    setIsDeleting(true);
+    const data = await deletePost(state.post._id, user.token);
+
+    if (data === "Network Error") {
+      toast.error("Server error, come back later.");
+      return;
+    } else if (data?.errors) {
+      data.errors.forEach((err) => {
+        toast.error(err.msg);
+        setUser(null);
+        localStorage.removeItem("userInfo");
+        navigate("/");
+      });
+      return;
+    } else if (data === undefined) {
+      toast.error("Server error, come back later.");
+      return;
+    }
+    setIsDeleting(false);
+
+    toast.success("Post deleted successfully.");
+    navigate(-1);
+  };
+
   return (
     <div className="pt-20 mx-8">
       <Toaster position="top-center" reverseOrder={false} />
@@ -102,6 +131,27 @@ const EditPost = () => {
         {state.post !== null ? "Edit blog" : "Create Blog"}
       </h1>
       <div>
+        {state.post !== null ? (
+          isDeleting ? (
+            <button
+              type="button"
+              className="bg-red-500 self-center text-white text-xs font-semibold rounded-lg px-3 py-2 m-3 ml-0 hover:cursor-pointer"
+            >
+              Deleting...
+            </button>
+          ) : (
+            <button
+              onClick={handlePostDelete}
+              type="button"
+              className="bg-red-500 self-center text-white text-xs font-semibold rounded-lg px-3 py-2 m-3 ml-0 hover:cursor-pointer"
+            >
+              Delete
+            </button>
+          )
+        ) : (
+          ""
+        )}
+
         <form onSubmit={handleFormSubmit}>
           <label htmlFor="title" className="font-semibold">
             Blog Title:
@@ -122,7 +172,7 @@ const EditPost = () => {
                   type="radio"
                   id="yes"
                   name="published"
-                  defaultChecked={true}
+                  defaultChecked={state.post?.published ? true : false}
                   value="true"
                   onChange={(e) => setPublishedValue(e.target.value)}
                 />
@@ -133,6 +183,7 @@ const EditPost = () => {
                   type="radio"
                   id="no"
                   name="published"
+                  defaultChecked={state.post?.published ? false : true}
                   value="false"
                   onChange={(e) => setPublishedValue(e.target.value)}
                 />
@@ -171,6 +222,7 @@ const EditPost = () => {
             </label>
             <input
               type="file"
+              accept="image/*"
               name="image"
               id="image-select"
               onChange={(e) => {
