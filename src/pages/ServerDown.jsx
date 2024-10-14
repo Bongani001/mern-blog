@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import ScrollToTop from "../components/ScrollToTop";
+import { NavbarContext } from "../context/NavbarContext";
 
 const ServerDown = () => {
+  const { setSelectedPage } = useContext(NavbarContext);
+
+  useEffect(() => {
+    setSelectedPage("");
+  }, []);
+
   return (
     <div className="flex justify-center items-center min-h-dvh">
       <p className="text-zinc-800 text-xl md:text-3xl text-center">

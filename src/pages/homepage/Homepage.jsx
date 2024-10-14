@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import headerImg from "../../assets/defaultHeaderImg.jpg";
 import userImg from "../../assets/userImg.png";
 import { getLatestPosts, getMostViewedPosts } from "../../services/posts";
@@ -6,15 +6,18 @@ import { Link, useNavigate } from "react-router-dom";
 import ScrollToTop from "../../components/ScrollToTop";
 import PostCard from "../../components/PostCard";
 import loading from "../../assets/three.gif";
+import { NavbarContext } from "../../context/NavbarContext";
 
 const Homepage = () => {
   const [latestPosts, setLatestPosts] = useState([]);
   const [mostViewedPosts, setMostViewedPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const { setSelectedPage } = useContext(NavbarContext);
   const navigate = useNavigate();
 
   useEffect(() => {
+    setSelectedPage("homepage");
     const getLatest = async () => {
       setIsLoading(true);
       let data = await getLatestPosts(8);

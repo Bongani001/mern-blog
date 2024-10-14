@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdOutlineMail } from "react-icons/md";
 import { loginUser } from "../../services/users";
@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import ScrollToTop from "../../components/ScrollToTop";
 import { AuthContext } from "../../context/AuthContext";
+import { NavbarContext } from "../../context/NavbarContext";
 
 const Login = () => {
   const [body, setBody] = useState({
@@ -18,10 +19,15 @@ const Login = () => {
   });
 
   const { setUser } = useContext(AuthContext);
+  const { setSelectedPage } = useContext(NavbarContext);
 
   const { state } = useLocation();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setSelectedPage("login");
+  }, []);
 
   const handleFormChange = (e) => {
     setBody((prev) => {
@@ -73,6 +79,7 @@ const Login = () => {
       console.log(navigate("/"));
     }
   };
+
   return (
     <div className="flex justify-center items-center flex-grow min-h-screen mt-16">
       <Toaster position="top-center" reverseOrder={false} />

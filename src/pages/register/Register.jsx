@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { RiLockPasswordLine, RiUserLine } from "react-icons/ri";
 import { MdOutlineMail } from "react-icons/md";
 import { registerUser } from "../../services/users";
 import toast, { Toaster } from "react-hot-toast";
 import ScrollToTop from "../../components/ScrollToTop";
 import { useLocation, useNavigate } from "react-router-dom";
+import { NavbarContext } from "../../context/NavbarContext";
 
 const Register = () => {
   const [body, setBody] = useState({
@@ -22,7 +23,12 @@ const Register = () => {
 
   const { state } = useLocation();
 
+  const { setSelectedPage } = useContext(NavbarContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setSelectedPage("register");
+  }, []);
 
   const handleFormChange = (e) => {
     setBody((prev) => {

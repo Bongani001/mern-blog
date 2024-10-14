@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import ScrollToTop from "../components/ScrollToTop";
 import { Link } from "react-router-dom";
+import { NavbarContext } from "../context/NavbarContext";
 
 const PageNotFound = () => {
+  const { setSelectedPage } = useContext(NavbarContext);
+
+  useEffect(() => {
+    setSelectedPage("");
+  }, []);
+
   return (
     <div className="flex flex-col justify-center items-center gap-5 min-h-dvh">
       <span className="text-zinc-800 text-3xl md:text-[4rem] text-center">

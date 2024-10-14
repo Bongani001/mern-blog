@@ -8,6 +8,7 @@ import { getAllCategories } from "../../services/categories";
 import toast, { Toaster } from "react-hot-toast";
 import userImg from "../../assets/userImg.png";
 import ScrollToTop from "../../components/ScrollToTop";
+import { NavbarContext } from "../../context/NavbarContext";
 
 const EditPost = () => {
   const [value, setValue] = useState("");
@@ -21,10 +22,12 @@ const EditPost = () => {
 
   const { state } = useLocation();
   const { user, setUser } = useContext(AuthContext);
+  const { setSelectedPage } = useContext(NavbarContext);
 
   const navigate = useNavigate();
 
   useEffect(() => {
+    setSelectedPage("author");
     const getCategories = async () => {
       const data = await getAllCategories();
       if (data === "Network Error") {

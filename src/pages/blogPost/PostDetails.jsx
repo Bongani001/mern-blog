@@ -12,6 +12,7 @@ import {
 } from "../../services/commets";
 import { AuthContext } from "../../context/AuthContext";
 import toast, { Toaster } from "react-hot-toast";
+import { NavbarContext } from "../../context/NavbarContext";
 
 const PostDetails = () => {
   const [post, setPosts] = useState(null);
@@ -24,10 +25,12 @@ const PostDetails = () => {
   const { id } = useParams();
 
   const { user } = useContext(AuthContext);
+  const { setSelectedPage } = useContext(NavbarContext);
 
   const navigate = useNavigate();
 
   useEffect(() => {
+    setSelectedPage("blogs");
     const getPosts = async (id) => {
       let data = await getOnePost(id); // Get the main post
       let top = await getMostViewedPosts(3); // Get top picks

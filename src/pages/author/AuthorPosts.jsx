@@ -6,6 +6,7 @@ import { getAuthorMostViewedPosts, getAuthorPosts } from "../../services/posts";
 import { FaBullseye } from "react-icons/fa";
 import BlogsLayout from "../../components/BlogsLayout";
 import ScrollToTop from "../../components/ScrollToTop";
+import { NavbarContext } from "../../context/NavbarContext";
 
 const AuthorPosts = () => {
   const [posts, setPosts] = useState([]);
@@ -13,12 +14,14 @@ const AuthorPosts = () => {
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);
 
   const { user } = useContext(AuthContext);
+  const { setSelectedPage } = useContext(NavbarContext);
 
   const navigate = useNavigate();
 
   const { authorid } = useParams();
 
   useEffect(() => {
+    setSelectedPage("author");
     let author = localStorage.getItem("userInfo");
     if (author == null) {
       navigate("/");

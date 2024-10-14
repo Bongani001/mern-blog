@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { getLatestPosts, getMostViewedPosts } from "../../services/posts";
 import { useNavigate } from "react-router-dom";
 import ScrollToTop from "../../components/ScrollToTop";
 import BlogsLayout from "../../components/BlogsLayout";
+import { NavbarContext } from "../../context/NavbarContext";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [topPosts, setTopPosts] = useState([]);
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);
 
+  const { setSelectedPage } = useContext(NavbarContext);
   const navigate = useNavigate();
 
   useEffect(() => {
+    setSelectedPage("blogs");
     const getPosts = async () => {
       let data = await getLatestPosts(10); // Get all posts (parameter=number of posts to fetch)
       let top = await getMostViewedPosts(10); // Get top picks (parameter=number of posts to fetch)
