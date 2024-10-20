@@ -96,7 +96,7 @@ const Navbar = () => {
             >
               Author
             </button>
-            {user ? (
+            {user != null ? (
               <button
                 onClick={() => {
                   toggleNavbar();

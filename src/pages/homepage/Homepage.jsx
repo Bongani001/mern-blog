@@ -88,10 +88,7 @@ const Homepage = () => {
           <main className="bg-zinc-50 rounded-2xl py-5 mx-4 relative -top-14">
             {mostViewedPosts.length > 2 && (
               <>
-                <h2
-                  className="text-zinc-800 text-2xl font-semibold ml-3"
-                  onClick={() => navigate("/topposts")}
-                >
+                <h2 className="text-zinc-800 text-2xl font-semibold ml-3">
                   Top Blogs
                 </h2>
                 <div className="flex overflow-x-auto md:grid md:grid-cols-2 md:grid-flow-row gap-3 my-3 overflow-hidden">
@@ -121,7 +118,7 @@ const Homepage = () => {
                       </div>
                       <div className="">
                         <Link to={`posts/${mostViewedPosts[0]._id}`}>
-                          <h4 className="text-zinc-800 font-semibold md:text-xl md:my-2">
+                          <h4 className="text-zinc-800 font-semibold line-clamp-2 md:text-xl md:my-2">
                             {mostViewedPosts[0].title}
                           </h4>
                         </Link>
@@ -130,7 +127,7 @@ const Homepage = () => {
                           dangerouslySetInnerHTML={{
                             __html: mostViewedPosts[0].content,
                           }}
-                          className="text-zinc-500 text-sm line-clamp-2 lg:line-clamp-3"
+                          className="text-zinc-500 text-sm line-clamp-2"
                         />
                       </div>
                     </div>
@@ -161,7 +158,7 @@ const Homepage = () => {
                       </div>
                       <div className="">
                         <Link to={`posts/${mostViewedPosts[1]._id}`}>
-                          <h4 className="text-zinc-800 font-semibold md:text-xl md:mb-2 ">
+                          <h4 className="text-zinc-800 font-semibold line-clamp-2 md:text-xl md:mb-2 ">
                             {mostViewedPosts[1].title}
                           </h4>
                         </Link>
@@ -201,7 +198,7 @@ const Homepage = () => {
                       </div>
                       <div className="">
                         <Link to={`posts/${mostViewedPosts[0]._id}`}>
-                          <h4 className="text-zinc-800 font-semibold md:text-xl md:mb-2 ">
+                          <h4 className="text-zinc-800 font-semibold line-clamp-2 md:text-xl md:mb-2 ">
                             {mostViewedPosts[2].title}
                           </h4>
                         </Link>
