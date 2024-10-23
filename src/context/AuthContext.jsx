@@ -9,31 +9,25 @@ export const AuthContextProvider = ({ children }) => {
 
   useEffect(() => {
     let data = localStorage.getItem("userInfo");
-    if (data != null) {
-      data = JSON.parse(data);
-      const tokenValid = verifyToken(data.token);
-      if (tokenValid != null) {
+    data = JSON.parse(data);
+
+    const verifyToken = async (token) => {
+      try {
+        const secret = new TextEncoder().encode(
+          import.meta.env.VITE_JWT_SECRET
+        );
+        const { payload } = await jose.jwtVerify(token, secret);
         setUser(data);
-      } else {
+      } catch (error) {
         setUser(null);
-        localStorage.removeItem("userInfo");
       }
-    } else {
-      setUser(null);
+    };
+
+    if (data != null) {
+      verifyToken(data.token);
     }
   }, []);
 
-  const verifyToken = async (token) => {
-    try {
-      const secret = new TextEncoder().encode(import.meta.env.VITE_JWT_SECRET);
-      const { payload } = await jose.jwtVerify(token, secret);
-
-      // Decode and return the payload
-      return jwtDecode(token);
-    } catch (error) {
-      return null;
-    }
-  };
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       {children}

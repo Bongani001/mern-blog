@@ -127,7 +127,7 @@ const PostDetails = () => {
             <img
               src={post.headerImg || headerImg}
               alt="Header"
-              className="h-80 sm:h-96 w-full rounded my-5"
+              className="h-80 sm:h-96 w-full object-cover rounded my-5"
             />
             <div className="flex justify-between items-center my-3  ">
               <div className="flex items-center gap-3">
@@ -229,6 +229,7 @@ const PostDetails = () => {
               </div>
             </div>
           </div>
+
           <div className="hidden md:block">
             <p className="text-zinc-600 text-2xl border-b border-zinc-300 mb-3 p-4">
               Get the latest news from our website that interests you.
