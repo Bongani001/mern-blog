@@ -5,6 +5,8 @@ const postController = require("../controllers/postController");
 
 router.get("/", postController.post_getAll);
 
+router.get("/categories", postController.post_getByCategory);
+
 router.get("/:id", postController.post_getSpecific);
 
 router.get("/authors/:authorid", postController.post_getUserPosts);

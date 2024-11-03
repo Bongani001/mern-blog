@@ -30,6 +30,20 @@ exports.post_getAll = asyncHandler(async (req, res, next) => {
   return res.status(200).json(posts);
 });
 
+exports.post_getByCategory = asyncHandler(async (req, res) => {
+  const categoryId = req.query.categoryid;
+  const limit = Number(req.query.limit);
+
+  // Gets posts by category and sort by latest created post
+  const posts = await Post.find({ categoryId, published: { $eq: true } })
+    .populate({ path: "authorId categoryId", select: "username name" })
+    .sort({ createdAt: -1 })
+    .limit(limit)
+    .exec();
+
+  return res.status(200).json(posts);
+});
+
 exports.post_getUserPosts = asyncHandler(async (req, res, next) => {
   let posts = [];
   if (req.query.views) {
@@ -185,6 +199,10 @@ exports.post_delete = asyncHandler(async (req, res, next) => {
   }
 
   await Comment.deleteMany({ postId: req.params.id });
+
+  // Delete image from cloudinary
+  await cloudinary.uploader.destroy(post.imgId);
+
   await Post.findByIdAndDelete(req.params.id);
   res.status(200).json({ msg: "Post deleted successfully." });
 });
