@@ -77,7 +77,7 @@ const Navbar = () => {
             <button
               onClick={() => {
                 toggleNavbar();
-                navigate("/posts");
+                navigate("/posts?category=all");
               }}
               className={`${
                 selectedPage === "blogs" ? "border-b-2 border-b-zinc-800" : ""

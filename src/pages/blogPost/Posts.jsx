@@ -1,40 +1,77 @@
 import React, { useContext, useEffect, useState } from "react";
-import { getLatestPosts, getMostViewedPosts } from "../../services/posts";
-import { useNavigate } from "react-router-dom";
+import {
+  getLatestPosts,
+  getMostViewedPosts,
+  getPostsByCategory,
+} from "../../services/posts";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import ScrollToTop from "../../components/ScrollToTop";
 import BlogsLayout from "../../components/BlogsLayout";
 import { NavbarContext } from "../../context/NavbarContext";
+import { getAllCategories } from "../../services/categories";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [topPosts, setTopPosts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);
+
+  const [searchParams] = useSearchParams();
 
   const { setSelectedPage } = useContext(NavbarContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     setSelectedPage("blogs");
+    const category = searchParams.get("category");
+    // const getCategories = async () => {
+    //   const data = await getAllCategories();
+    //   if (data === "Network Error") {
+    //     navigate("/serverdown");
+    //   }
+    //   setCategories(data);
+    // };
     const getPosts = async () => {
-      let data = await getLatestPosts(10); // Get all posts (parameter=number of posts to fetch)
-      let top = await getMostViewedPosts(10); // Get top picks (parameter=number of posts to fetch)
-      if (data === "Network Error" || top === "Network Error") {
+      setIsLoadingPosts(false);
+      // Get the categories
+      const categoriesData = await getAllCategories();
+
+      // Get posts
+      let data = [];
+      if (category == "all") {
+        data = await getLatestPosts(10); // Get all posts (argument=number of posts to fetch)
+      } else {
+        const categoryId = selectedCategory._id;
+        data = await getPostsByCategory(categoryId, 10); // Get posts by category (arguments=(category id, number of posts to fetch))
+      }
+      let top = await getMostViewedPosts(10); // Get top picks (argument=number of posts to fetch)
+      if (
+        data === "Network Error" ||
+        top === "Network Error" ||
+        categoriesData === "Network Error"
+      ) {
         navigate("/serverdown");
       }
+
+      setCategories(categoriesData);
       setPosts(data);
       setTopPosts(top);
       setIsLoadingPosts(false);
     };
 
     getPosts();
-  }, []);
+  }, [selectedCategory]);
 
   return (
     <>
       <BlogsLayout
         posts={posts}
         topPosts={topPosts}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
         isLoadingPosts={isLoadingPosts}
+        categories={categories}
         mostViewed="Top Picks"
         mainTitle="Blogs"
       />

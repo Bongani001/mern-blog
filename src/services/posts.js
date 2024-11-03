@@ -43,6 +43,27 @@ export const getMostViewedPosts = async (limit) => {
   }
 };
 
+export const getPostsByCategory = async (id, limit) => {
+  try {
+    const { data } = await axios.get(
+      `${
+        import.meta.env.VITE_NODE_ENV === "production"
+          ? import.meta.env.VITE_SERVER_URL
+          : "http://localhost:5000"
+      }/api/posts/categories?categoryid=${id}&limit=${limit}`
+    );
+    return data;
+  } catch (error) {
+    if (error.message === "Network Error") {
+      return error.message;
+    } else if (!error.response?.data) {
+      return error.response;
+    }
+
+    return error.response.data;
+  }
+};
+
 export const getOnePost = async (id) => {
   try {
     const { data } = await axios.get(

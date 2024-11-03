@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PostCard from "./PostCard";
 import loading from "../assets/three.gif";
@@ -9,8 +9,12 @@ const BlogsLayout = ({
   isLoadingPosts,
   mostViewed,
   mainTitle,
+  categories,
+  selectedCategory,
+  setSelectedCategory,
 }) => {
   const navigate = useNavigate();
+
   return (
     <div className="md:grid md:grid-cols-4 min-h-[70dvh] pt-20 pb-8 px-3">
       {posts && (
@@ -64,6 +68,48 @@ const BlogsLayout = ({
                 Create Post
               </button>
             )}
+            <div className="sm:flex gap-4 mb-4 ">
+              <span className="font-semibold whitespace-nowrap">
+                By Category:
+              </span>
+              <div className="flex overflow-x-auto no-scrollbar sm:flex-wrap gap-2">
+                <button
+                  onClick={() => {
+                    setSelectedCategory("all");
+                    navigate("/posts?category=all");
+                  }}
+                  type="button"
+                  disabled={selectedCategory == "all"}
+                  className={`${
+                    selectedCategory == "all" ? "bg-zinc-800" : "bg-zinc-500"
+                  }  text-white text-xs font-medium hover:bg-zinc-800 rounded-lg px-3 py-2`}
+                >
+                  All
+                </button>
+                {categories?.map((category) => {
+                  return (
+                    <button
+                      onClick={() => {
+                        setSelectedCategory(category);
+                        navigate(
+                          `/posts?category=${category.name.toLowerCase()}`
+                        );
+                      }}
+                      type="button"
+                      key={category._id}
+                      disabled={selectedCategory._id == category._id}
+                      className={`${
+                        selectedCategory._id == category._id
+                          ? "bg-zinc-800"
+                          : "bg-zinc-500"
+                      } bg-zinc-500 text-white text-xs capitalize font-medium hover:bg-zinc-800 rounded-lg px-3 py-2`}
+                    >
+                      {category.name}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4">
               {isLoadingPosts && (
                 <div className="flex sm:col-span-2 lg:col-span-3 justify-center">
