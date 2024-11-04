@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PostCard from "./PostCard";
 import loading from "../assets/three.gif";
@@ -116,7 +116,7 @@ const BlogsLayout = ({
                   <img src={loading} alt="loading..." className="w-20" />
                 </div>
               )}
-              {posts?.length < 1 && (
+              {posts?.length < 1 && !isLoadingPosts && (
                 <span className="flex italic sm:col-span-2 lg:col-span-3 justify-center">
                   No blog posts available.
                 </span>
