@@ -76,7 +76,7 @@ const BlogsLayout = ({
                 <button
                   onClick={() => {
                     setSelectedCategory("all");
-                    navigate("/posts?category=all");
+                    navigate("?category=all");
                   }}
                   type="button"
                   disabled={selectedCategory == "all"}
@@ -90,16 +90,14 @@ const BlogsLayout = ({
                   return (
                     <button
                       onClick={() => {
-                        setSelectedCategory(category);
-                        navigate(
-                          `/posts?category=${category.name.toLowerCase()}`
-                        );
+                        setSelectedCategory(category.name.toLowerCase());
+                        navigate(`?category=${category.name.toLowerCase()}`);
                       }}
                       type="button"
                       key={category._id}
-                      disabled={selectedCategory._id == category._id}
+                      disabled={selectedCategory == category.name.toLowerCase()}
                       className={`${
-                        selectedCategory._id == category._id
+                        selectedCategory == category.name.toLowerCase()
                           ? "bg-zinc-800"
                           : "bg-zinc-500"
                       } bg-zinc-500 text-white text-xs capitalize font-medium hover:bg-zinc-800 rounded-lg px-3 py-2`}

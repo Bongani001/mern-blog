@@ -10,7 +10,7 @@ import { NavbarContext } from "../context/NavbarContext";
 // bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium
 
 const Navbar = () => {
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const { showSideNav, toggleNavbar, selectedPage } = useContext(NavbarContext);
 
   const navigate = useNavigate();
@@ -18,16 +18,16 @@ const Navbar = () => {
   const { user, setUser } = useContext(AuthContext);
 
   const handleLoginClick = () => {
-    navigate("/login", { state: { path: pathname } });
+    navigate("/login", { state: { path: pathname + search } });
   };
 
   const handleRegisterClick = () => {
-    navigate("/register", { state: { path: pathname } });
+    navigate("/register", { state: { path: pathname + search } });
   };
 
   const handleAuthorClick = () => {
     if (user !== null) {
-      navigate(`/authors/${user._id}`);
+      navigate(`/authors/${user._id}?category=all`);
     } else {
       toast.error("You must be logged in to access authors page.");
     }
@@ -42,7 +42,7 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 w-full bg-transparent z-40">
-      <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position="bottom-right" reverseOrder={false} />
       <div className="bg-white rounded-bl-xl rounded-br-xl drop-shadow-sm text-white flex justify-between items-center py-3 px-8 mx-3 md:mx-10 z-40">
         <Link to="/">
           <GiTwoFeathers className="rotate-90 text-gray-800 text-2xl" />

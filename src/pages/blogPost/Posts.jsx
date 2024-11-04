@@ -14,6 +14,7 @@ const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [topPosts, setTopPosts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);
 
@@ -25,14 +26,9 @@ const Posts = () => {
   useEffect(() => {
     setSelectedPage("blogs");
     setPosts([]);
-    const category = searchParams.get("category");
-    // const getCategories = async () => {
-    //   const data = await getAllCategories();
-    //   if (data === "Network Error") {
-    //     navigate("/serverdown");
-    //   }
-    //   setCategories(data);
-    // };
+    const cat = searchParams.get("category");
+    setCategory(cat);
+
     const getPosts = async () => {
       setIsLoadingPosts(true);
       // Get the categories
@@ -40,19 +36,23 @@ const Posts = () => {
 
       // Get posts
       let data = [];
-      if (category == "all") {
+      if (cat == "all") {
         // Get all posts (argument=number of posts to fetch)
         data = await getLatestPosts(10);
       } else {
-        let categoryId;
-        categoriesData.forEach((cat) => {
-          if (cat.name.toLowerCase() == category.toLowerCase()) {
-            categoryId = cat._id;
+        let categoryId = "";
+        categoriesData.forEach((cate) => {
+          if (cate.name.toLowerCase() == cat.toLowerCase()) {
+            categoryId = cate._id;
           }
         });
-        data = await getPostsByCategory(categoryId, 10); // Get posts by category (arguments=(category id, number of posts to fetch))
+
+        // Get posts by category (arguments=(category id, number of posts to fetch))
+        data = await getPostsByCategory(categoryId, 10);
       }
-      let top = await getMostViewedPosts(10); // Get top picks (argument=number of posts to fetch)
+
+      // Get top picks (argument=number of posts to fetch)
+      let top = await getMostViewedPosts(10);
       if (
         data === "Network Error" ||
         top === "Network Error" ||
@@ -75,14 +75,13 @@ const Posts = () => {
       <BlogsLayout
         posts={posts}
         topPosts={topPosts}
-        selectedCategory={selectedCategory}
+        selectedCategory={category}
         setSelectedCategory={setSelectedCategory}
         isLoadingPosts={isLoadingPosts}
         categories={categories}
         mostViewed="Top Picks"
         mainTitle="Blogs"
       />
-
       <ScrollToTop />
     </>
   );
