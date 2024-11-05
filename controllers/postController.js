@@ -34,7 +34,7 @@ exports.post_getByCategory = asyncHandler(async (req, res) => {
   const categoryId = req.query.categoryid;
   const limit = Number(req.query.limit);
 
-  // Gets posts by category and sort by latest created post
+  // Get posts by category and sort by latest created post
   const posts = await Post.find({ categoryId, published: { $eq: true } })
     .populate({ path: "authorId categoryId", select: "username name" })
     .sort({ createdAt: -1 })
@@ -69,6 +69,21 @@ exports.post_getUserPosts = asyncHandler(async (req, res, next) => {
       .exec();
   }
   return res.status(200).json(posts);
+});
+
+exports.post_getUserPostsByCategory = asyncHandler(async (req, res) => {
+  const authorId = req.params.authorid;
+  const categoryId = req.query.categoryid;
+  const limit = Number(req.query.limit);
+
+  // Get posts by category and sort by latest created post
+  const posts = await Post.find({ authorId, categoryId })
+    .populate({ path: "authorId categoryId", select: "username name" })
+    .sort({ createdAt: -1 })
+    .limit(limit)
+    .exec();
+
+  return res.status(200).json({ posts });
 });
 
 exports.post_getSpecific = asyncHandler(async (req, res, next) => {

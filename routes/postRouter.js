@@ -11,6 +11,11 @@ router.get("/:id", postController.post_getSpecific);
 
 router.get("/authors/:authorid", postController.post_getUserPosts);
 
+router.get(
+  "/authors/:authorid/categories",
+  postController.post_getUserPostsByCategory
+);
+
 router.post("/create", verifyToken, postController.post_create);
 
 router.post("/update/:id", verifyToken, postController.post_update);
