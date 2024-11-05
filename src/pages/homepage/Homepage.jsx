@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import PostCard from "../../components/PostCard";
 import loading from "../../assets/three.gif";
 import { NavbarContext } from "../../context/NavbarContext";
+import ScrollToTop from "../../components/ScrollToTop";
 
 const Homepage = () => {
   const [latestPosts, setLatestPosts] = useState([]);
@@ -232,6 +233,7 @@ const Homepage = () => {
           </main>{" "}
         </>
       )}
+      <ScrollToTop />
     </div>
   );
 };

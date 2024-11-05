@@ -8,6 +8,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import BlogsLayout from "../../components/BlogsLayout";
 import { NavbarContext } from "../../context/NavbarContext";
 import { getAllCategories } from "../../services/categories";
+import ScrollToTop from "../../components/ScrollToTop";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
@@ -70,16 +71,19 @@ const Posts = () => {
   }, [selectedCategory]);
 
   return (
-    <BlogsLayout
-      posts={posts}
-      topPosts={topPosts}
-      selectedCategory={category}
-      setSelectedCategory={setSelectedCategory}
-      isLoadingPosts={isLoadingPosts}
-      categories={categories}
-      mostViewed="Top Picks"
-      mainTitle="Blogs"
-    />
+    <>
+      <BlogsLayout
+        posts={posts}
+        topPosts={topPosts}
+        selectedCategory={category}
+        setSelectedCategory={setSelectedCategory}
+        isLoadingPosts={isLoadingPosts}
+        categories={categories}
+        mostViewed="Top Picks"
+        mainTitle="Blogs"
+      />
+      <ScrollToTop />
+    </>
   );
 };
 

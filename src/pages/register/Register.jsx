@@ -5,6 +5,7 @@ import { registerUser } from "../../services/users";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import { NavbarContext } from "../../context/NavbarContext";
+import ScrollToTop from "../../components/ScrollToTop";
 
 const Register = () => {
   const [body, setBody] = useState({
@@ -215,6 +216,7 @@ const Register = () => {
           </button>
         </form>
       </div>
+      <ScrollToTop />
     </div>
   );
 };

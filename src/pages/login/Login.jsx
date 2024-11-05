@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { NavbarContext } from "../../context/NavbarContext";
+import ScrollToTop from "../../components/ScrollToTop";
 
 const Login = () => {
   const [body, setBody] = useState({
@@ -153,6 +154,7 @@ const Login = () => {
           </button>
         </form>
       </div>
+      <ScrollToTop />
     </div>
   );
 };

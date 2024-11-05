@@ -10,6 +10,7 @@ import {
 import BlogsLayout from "../../components/BlogsLayout";
 import { NavbarContext } from "../../context/NavbarContext";
 import { getAllCategories } from "../../services/categories";
+import ScrollToTop from "../../components/ScrollToTop";
 
 const AuthorPosts = () => {
   const [posts, setPosts] = useState([]);
@@ -98,6 +99,7 @@ const AuthorPosts = () => {
         mostViewed={`Most viewed blogs by ${user?.username}`}
         mainTitle={`Blogs by ${user?.username}`}
       />
+      <ScrollToTop />
     </div>
   );
 };

@@ -12,6 +12,7 @@ import {
 import { AuthContext } from "../../context/AuthContext";
 import toast from "react-hot-toast";
 import { NavbarContext } from "../../context/NavbarContext";
+import ScrollToTop from "../../components/ScrollToTop";
 
 const PostDetails = () => {
   const [post, setPosts] = useState(null);
@@ -277,6 +278,7 @@ const PostDetails = () => {
           </div>
         </div>
       )}
+      <ScrollToTop />
     </div>
   );
 };

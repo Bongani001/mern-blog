@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { NavbarContext } from "../context/NavbarContext";
+import ScrollToTop from "../components/ScrollToTop";
 
 const PageNotFound = () => {
   const { setSelectedPage } = useContext(NavbarContext);
@@ -23,6 +24,7 @@ const PageNotFound = () => {
           Homepage
         </Link>
       </span>
+      <ScrollToTop />
     </div>
   );
 };

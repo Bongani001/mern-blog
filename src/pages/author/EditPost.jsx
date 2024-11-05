@@ -8,6 +8,7 @@ import { getAllCategories } from "../../services/categories";
 import toast from "react-hot-toast";
 import userImg from "../../assets/userImg.png";
 import { NavbarContext } from "../../context/NavbarContext";
+import ScrollToTop from "../../components/ScrollToTop";
 
 const EditPost = () => {
   const [value, setValue] = useState("");
@@ -166,7 +167,7 @@ const EditPost = () => {
           />
 
           <div className="flex gap-3 my-4">
-            <legend className="font-semibold">Published:</legend>
+            <legend className="font-semibold">Publish:</legend>
             <div>
               <div>
                 <input
@@ -296,6 +297,7 @@ const EditPost = () => {
           ></main>
         </div>
       </div>
+      <ScrollToTop />
     </div>
   );
 };
