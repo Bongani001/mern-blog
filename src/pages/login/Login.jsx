@@ -2,9 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdOutlineMail } from "react-icons/md";
 import { loginUser } from "../../services/users";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
-import ScrollToTop from "../../components/ScrollToTop";
 import { AuthContext } from "../../context/AuthContext";
 import { NavbarContext } from "../../context/NavbarContext";
 
@@ -82,7 +81,6 @@ const Login = () => {
 
   return (
     <div className="flex justify-center items-center flex-grow min-h-screen mt-16">
-      <Toaster position="top-center" reverseOrder={false} />
       <div className="py-8 px-20  md:shadow-2xl rounded-2xl">
         <h1 className="text-center text-2xl font-medium">Login</h1>
         <form onSubmit={handleFormSubmit} className="mt-3 flex flex-col gap-4">
@@ -155,7 +153,6 @@ const Login = () => {
           </button>
         </form>
       </div>
-      <ScrollToTop />
     </div>
   );
 };

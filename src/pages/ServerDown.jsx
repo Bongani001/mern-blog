@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from "react";
-import ScrollToTop from "../components/ScrollToTop";
 import { NavbarContext } from "../context/NavbarContext";
 
 const ServerDown = () => {
@@ -15,7 +14,6 @@ const ServerDown = () => {
         The server is temporarily down, we are working on fixing the problem.{" "}
         <br /> <br /> Thank you for your patience
       </p>
-      <ScrollToTop />
     </div>
   );
 };

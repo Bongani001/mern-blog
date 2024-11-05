@@ -64,6 +64,27 @@ export const getPostsByCategory = async (id, limit) => {
   }
 };
 
+export const getUserPostsByCategory = async (authorId, categoryId, limit) => {
+  try {
+    const { data } = await axios.get(
+      `${
+        import.meta.env.VITE_NODE_ENV === "production"
+          ? import.meta.env.VITE_SERVER_URL
+          : "http://localhost:5000"
+      }/api/posts/authors/${authorId}/categories?categoryid=${categoryId}&limit=${limit}`
+    );
+    return data;
+  } catch (error) {
+    if (error.message === "Network Error") {
+      return error.message;
+    } else if (!error.response?.data) {
+      return error.response;
+    }
+
+    return error.response.data;
+  }
+};
+
 export const getOnePost = async (id) => {
   try {
     const { data } = await axios.get(

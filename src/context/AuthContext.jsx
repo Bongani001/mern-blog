@@ -20,6 +20,7 @@ export const AuthContextProvider = ({ children }) => {
         setUser(data);
       } catch (error) {
         setUser(null);
+        localStorage.removeItem("userInfo");
       }
     };
 

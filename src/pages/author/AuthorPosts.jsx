@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { getAuthorMostViewedPosts, getAuthorPosts } from "../../services/posts";
-import { FaBullseye } from "react-icons/fa";
+import {
+  getAuthorMostViewedPosts,
+  getAuthorPosts,
+  getUserPostsByCategory,
+} from "../../services/posts";
 import BlogsLayout from "../../components/BlogsLayout";
-import ScrollToTop from "../../components/ScrollToTop";
 import { NavbarContext } from "../../context/NavbarContext";
 import { getAllCategories } from "../../services/categories";
 
@@ -46,16 +48,35 @@ const AuthorPosts = () => {
       // Get the categories
       const categoriesData = await getAllCategories();
 
-      const authorPosts = await getAuthorPosts(authorid, 0);
+      // Get posts
+      let authorPosts = [];
+      if (cat == "all") {
+        // Get all posts (argument=(author id,number of posts to fetch))
+        authorPosts = await getAuthorPosts(authorid, 10);
+      } else {
+        let categoryId = "";
+        categoriesData.forEach((cate) => {
+          if (cate.name.toLowerCase() == cat.toLowerCase()) {
+            categoryId = cate._id;
+          }
+        });
 
-      const authorTopPosts = await getAuthorMostViewedPosts(authorid, 0);
+        // Get posts by category (arguments=(category id, number of posts to fetch))
+        authorPosts = await getUserPostsByCategory(authorid, categoryId, 10);
+      }
+
+      // // Get user's most viewed posts (argument=(author id, number of posts to fetch))
+      const authorTopPosts = await getAuthorMostViewedPosts(authorid, 10);
+
       if (
         authorPosts === "Network Error" ||
-        authorTopPosts === "Network Error"
+        authorTopPosts === "Network Error" ||
+        categoriesData === "Network Error"
       ) {
         navigate("/serverdown");
       }
 
+      console.log(authorPosts);
       setIsLoadingPosts(false);
       setCategories(categoriesData);
       setPosts(authorPosts);
@@ -67,7 +88,6 @@ const AuthorPosts = () => {
 
   return (
     <div className="min-h-[70dvh]">
-      <Toaster position="bottom-right" reverseOrder={false} />
       <BlogsLayout
         posts={posts}
         topPosts={topPosts}
@@ -78,7 +98,6 @@ const AuthorPosts = () => {
         mostViewed={`Most viewed blogs by ${user?.username}`}
         mainTitle={`Blogs by ${user?.username}`}
       />
-      <ScrollToTop />
     </div>
   );
 };

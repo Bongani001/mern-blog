@@ -5,7 +5,6 @@ import {
   getPostsByCategory,
 } from "../../services/posts";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import ScrollToTop from "../../components/ScrollToTop";
 import BlogsLayout from "../../components/BlogsLayout";
 import { NavbarContext } from "../../context/NavbarContext";
 import { getAllCategories } from "../../services/categories";
@@ -71,19 +70,16 @@ const Posts = () => {
   }, [selectedCategory]);
 
   return (
-    <>
-      <BlogsLayout
-        posts={posts}
-        topPosts={topPosts}
-        selectedCategory={category}
-        setSelectedCategory={setSelectedCategory}
-        isLoadingPosts={isLoadingPosts}
-        categories={categories}
-        mostViewed="Top Picks"
-        mainTitle="Blogs"
-      />
-      <ScrollToTop />
-    </>
+    <BlogsLayout
+      posts={posts}
+      topPosts={topPosts}
+      selectedCategory={category}
+      setSelectedCategory={setSelectedCategory}
+      isLoadingPosts={isLoadingPosts}
+      categories={categories}
+      mostViewed="Top Picks"
+      mainTitle="Blogs"
+    />
   );
 };
 

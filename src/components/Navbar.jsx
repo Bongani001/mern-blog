@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { FiMenu } from "react-icons/fi";
 import { MdClose } from "react-icons/md";
 import { NavbarContext } from "../context/NavbarContext";
+import ScrollToTop from "./ScrollToTop";
 
 // bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium
 
@@ -139,6 +140,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+      <ScrollToTop />
     </nav>
   );
 };

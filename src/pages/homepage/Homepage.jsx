@@ -3,7 +3,6 @@ import headerImg from "../../assets/defaultHeaderImg.jpg";
 import userImg from "../../assets/userImg.png";
 import { getLatestPosts, getMostViewedPosts } from "../../services/posts";
 import { Link, useNavigate } from "react-router-dom";
-import ScrollToTop from "../../components/ScrollToTop";
 import PostCard from "../../components/PostCard";
 import loading from "../../assets/three.gif";
 import { NavbarContext } from "../../context/NavbarContext";
@@ -217,7 +216,7 @@ const Homepage = () => {
 
             <section className="">
               <h2 className="text-zinc-800 text-2xl font-semibold my-4">
-                Latest Blog
+                Latest Blogs
               </h2>
               {latestPosts.length < 1 && (
                 <span className="flex italic sm:col-span-2 lg:col-span-3 justify-center">
@@ -233,8 +232,6 @@ const Homepage = () => {
           </main>{" "}
         </>
       )}
-
-      <ScrollToTop />
     </div>
   );
 };

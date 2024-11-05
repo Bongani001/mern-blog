@@ -4,14 +4,13 @@ import userImg from "../../assets/userImg.png";
 import loading from "../../assets/three.gif";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getMostViewedPosts, getOnePost } from "../../services/posts";
-import ScrollToTop from "../../components/ScrollToTop";
 import {
   deleteComment,
   getAllPostComments,
   postComment,
 } from "../../services/commets";
 import { AuthContext } from "../../context/AuthContext";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { NavbarContext } from "../../context/NavbarContext";
 
 const PostDetails = () => {
@@ -111,7 +110,6 @@ const PostDetails = () => {
 
   return (
     <div className="pt-20 mx-2 md:p-10 md:pt-20 min-h-dvh">
-      <Toaster position="top-center" reverseOrder={false} />
       {isLoading && (
         <div className="flex justify-center">
           <img src={loading} alt="loading..." className="w-20" />
@@ -279,7 +277,6 @@ const PostDetails = () => {
           </div>
         </div>
       )}
-      <ScrollToTop />
     </div>
   );
 };

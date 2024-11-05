@@ -5,9 +5,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { createPost, deletePost, editPost } from "../../services/posts";
 import { AuthContext } from "../../context/AuthContext";
 import { getAllCategories } from "../../services/categories";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import userImg from "../../assets/userImg.png";
-import ScrollToTop from "../../components/ScrollToTop";
 import { NavbarContext } from "../../context/NavbarContext";
 
 const EditPost = () => {
@@ -99,7 +98,7 @@ const EditPost = () => {
     } else {
       toast.success("Post created successfully.");
     }
-    navigate(`/authors/${user._id}`);
+    navigate(`/authors/${user._id}?category=all`);
   };
 
   const handlePostDelete = async () => {
@@ -129,7 +128,6 @@ const EditPost = () => {
 
   return (
     <div className="pt-20 mx-8">
-      <Toaster position="top-center" reverseOrder={false} />
       <h1 className="text-zinc-800 text-lg text-center mb-3">
         {state.post !== null ? "Edit blog" : "Create Blog"}
       </h1>
@@ -270,11 +268,7 @@ const EditPost = () => {
           <h1 className="text-zinc-800 text-3xl font-semibold sm:text-[3rem] leading-tight">
             {titleValue}
           </h1>
-          {/* <img
-            src={state.post?.headerImg || headerImg}
-            alt="Header"
-            className="h-80 sm:h-96 w-full rounded my-5"
-          /> */}
+
           <div className="h-64 sm:h-96 w-full flex justify-center items-center font-semibold text-3xl border border-zinc-600 my-5">
             Header Image
           </div>
@@ -302,7 +296,6 @@ const EditPost = () => {
           ></main>
         </div>
       </div>
-      <ScrollToTop />
     </div>
   );
 };
