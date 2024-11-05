@@ -83,7 +83,7 @@ exports.post_getUserPostsByCategory = asyncHandler(async (req, res) => {
     .limit(limit)
     .exec();
 
-  return res.status(200).json({ posts });
+  return res.status(200).json(posts);
 });
 
 exports.post_getSpecific = asyncHandler(async (req, res, next) => {
