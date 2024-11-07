@@ -85,6 +85,7 @@ export const getUserPostsByCategory = async (authorId, categoryId, limit) => {
   }
 };
 
+// Get a specific post
 export const getOnePost = async (id) => {
   try {
     const { data } = await axios.get(

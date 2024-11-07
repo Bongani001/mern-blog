@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PostCard from "./PostCard";
 import loading from "../assets/three.gif";
+import { useCategories } from "../store/useCategories";
 
 const BlogsLayout = ({
   posts,
@@ -9,10 +10,10 @@ const BlogsLayout = ({
   isLoadingPosts,
   mostViewed,
   mainTitle,
-  categories,
   selectedCategory,
-  setSelectedCategory,
 }) => {
+  const { categories, changeSelectedCategory } = useCategories();
+
   const navigate = useNavigate();
 
   return (
@@ -75,7 +76,7 @@ const BlogsLayout = ({
               <div className="flex overflow-x-auto no-scrollbar sm:flex-wrap gap-2">
                 <button
                   onClick={() => {
-                    setSelectedCategory("all");
+                    changeSelectedCategory("all");
                     navigate("?category=all");
                   }}
                   type="button"
@@ -90,7 +91,7 @@ const BlogsLayout = ({
                   return (
                     <button
                       onClick={() => {
-                        setSelectedCategory(category.name.toLowerCase());
+                        changeSelectedCategory(category.name.toLowerCase());
                         navigate(`?category=${category.name.toLowerCase()}`);
                       }}
                       type="button"

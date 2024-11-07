@@ -7,30 +7,23 @@ import PostCard from "../../components/PostCard";
 import loading from "../../assets/three.gif";
 import { NavbarContext } from "../../context/NavbarContext";
 import ScrollToTop from "../../components/ScrollToTop";
+import { usePosts } from "../../store/usePosts";
 
 const Homepage = () => {
-  const [latestPosts, setLatestPosts] = useState([]);
-  const [mostViewedPosts, setMostViewedPosts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { latestPosts, mostViewedPosts, isLoading } = usePosts();
 
   const { setSelectedPage } = useContext(NavbarContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     setSelectedPage("homepage");
-    const getLatest = async () => {
-      setIsLoading(true);
-      let data = await getLatestPosts(8);
-      let viewed = await getMostViewedPosts(3);
-      if (data === "Network Error") {
-        navigate("/serverdown");
-      }
-      setLatestPosts(data);
-      setMostViewedPosts(viewed);
-      setIsLoading(false);
-    };
 
-    getLatest();
+    if (
+      latestPosts === "Network Error" ||
+      mostViewedPosts === "Network Error"
+    ) {
+      navigate("/serverdown");
+    }
   }, []);
 
   return (
