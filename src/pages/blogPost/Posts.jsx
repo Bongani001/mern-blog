@@ -38,9 +38,7 @@ const Posts = () => {
       }
 
       // Get posts
-      if (cat == "all") {
-        setPosts(latestPosts);
-      } else {
+      if (cat !== "all") {
         let categoryId = "";
         categories.forEach((cate) => {
           if (cate.name.toLowerCase() == cat.toLowerCase()) {

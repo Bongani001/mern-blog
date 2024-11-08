@@ -3,7 +3,7 @@ import { getAllCategories } from "../services/categories";
 
 export const useCategories = create((set) => ({
   categories: [],
-  selectedCategory: "all",
+  selectedCategory: "",
   fetchCategories: async () => {
     const categories = await getAllCategories();
     set({ categories });
