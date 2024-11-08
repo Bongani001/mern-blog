@@ -8,9 +8,7 @@ import { usePosts } from "../../store/usePosts";
 import { getAllCategories } from "../../services/categories";
 
 const Posts = () => {
-  const [posts, setPosts] = useState([]);
   const [category, setCategory] = useState("");
-  const [isLoadingPosts, setIsLoadingPosts] = useState(true);
 
   const [searchParams] = useSearchParams();
 
@@ -33,6 +31,7 @@ const Posts = () => {
     setCategory(cat);
 
     const getPosts = async () => {
+      // Get categories if not yet initialised in the store
       if (categories == 0) {
         categories = await getAllCategories();
       }
@@ -48,10 +47,14 @@ const Posts = () => {
 
         // Get posts by category
         fetchPostsByCategory(categoryId);
-        setPosts(postsByCategory);
       }
 
-      if (posts === "Network Error" || categories === "Network Error") {
+      if (
+        latestPosts === "Network Error" ||
+        mostViewedPosts === "Network Error" ||
+        postsByCategory === "Network Error" ||
+        categories === "Network Error"
+      ) {
         navigate("/serverdown");
       }
     };

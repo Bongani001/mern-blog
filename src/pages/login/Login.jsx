@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { NavbarContext } from "../../context/NavbarContext";
 import ScrollToTop from "../../components/ScrollToTop";
+import { useUser } from "../../store/useUser";
 
 const Login = () => {
   const [body, setBody] = useState({
@@ -18,7 +19,8 @@ const Login = () => {
     password: "",
   });
 
-  const { setUser } = useContext(AuthContext);
+  // const { setUser } = useContext(AuthContext);
+  const { setUser } = useUser();
   const { setSelectedPage } = useContext(NavbarContext);
 
   const { state } = useLocation();
@@ -69,6 +71,7 @@ const Login = () => {
     toast.success("Login Successful.");
     localStorage.setItem("userInfo", JSON.stringify(data));
     setUser(data);
+
     if (state !== null) {
       if (state.path === "/login" || state.path === "/register") {
         navigate("/");

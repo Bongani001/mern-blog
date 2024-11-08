@@ -3,9 +3,11 @@ import headerImg from "../assets/defaultHeaderImg.jpg";
 import userImg from "../assets/userImg.png";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { useUser } from "../store/useUser";
 
 const PostCard = ({ post, date }) => {
-  const { user } = useContext(AuthContext);
+  // const { user } = useContext(AuthContext);
+  const { user } = useUser();
   const navigate = useNavigate();
   return (
     <div key={post._id} className="flex bg-white shadow-md gap-3 md:flex-col ">

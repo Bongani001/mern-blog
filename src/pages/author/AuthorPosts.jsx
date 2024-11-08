@@ -1,33 +1,37 @@
 import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
 import toast from "react-hot-toast";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import {
-  getAuthorMostViewedPosts,
-  getAuthorPosts,
-  getUserPostsByCategory,
-} from "../../services/posts";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import BlogsLayout from "../../components/BlogsLayout";
 import { NavbarContext } from "../../context/NavbarContext";
 import { getAllCategories } from "../../services/categories";
 import ScrollToTop from "../../components/ScrollToTop";
+import { useUser } from "../../store/useUser";
+import { useCategories } from "../../store/useCategories";
 
 const AuthorPosts = () => {
-  const [posts, setPosts] = useState([]);
-  const [topPosts, setTopPosts] = useState([]);
   const [category, setCategory] = useState("");
-  const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [isLoadingPosts, setIsLoadingPosts] = useState(true);
 
-  const { user } = useContext(AuthContext);
   const { setSelectedPage } = useContext(NavbarContext);
+
+  const {
+    user,
+    userPosts,
+    userTopPosts,
+    userPostsByCategory,
+    isLoading,
+    fetchAllUserPosts,
+    fetchUserPostsByCategory,
+    fetchUserMostViewedPosts,
+  } = useUser();
+  let { categories, selectedCategory } = useCategories();
 
   const [searchParams] = useSearchParams();
 
   const navigate = useNavigate();
 
-  const { authorid } = useParams();
+  useEffect(() => {
+    fetchUserMostViewedPosts();
+  }, []);
 
   useEffect(() => {
     setSelectedPage("author");
@@ -40,62 +44,49 @@ const AuthorPosts = () => {
       return;
     }
 
-    setPosts([]);
     const cat = searchParams.get("category");
     setCategory(cat);
 
-    const getPosts = async (authorid) => {
-      setIsLoadingPosts(true);
-      // Get the categories
-      const categoriesData = await getAllCategories();
+    const getPosts = async () => {
+      // Get categories if not yet initialised in the store
+      if (categories == 0) {
+        categories = await getAllCategories();
+      }
 
       // Get posts
-      let authorPosts = [];
       if (cat == "all") {
-        // Get all posts (argument=(author id,number of posts to fetch))
-        authorPosts = await getAuthorPosts(authorid, 10);
+        fetchAllUserPosts(user._id, 10);
       } else {
         let categoryId = "";
-        categoriesData.forEach((cate) => {
+        categories.forEach((cate) => {
           if (cate.name.toLowerCase() == cat.toLowerCase()) {
             categoryId = cate._id;
           }
         });
 
-        // Get posts by category (arguments=(category id, number of posts to fetch))
-        authorPosts = await getUserPostsByCategory(authorid, categoryId, 10);
+        // Get posts by category
+        fetchUserPostsByCategory(user._id, categoryId, 10);
       }
 
-      // // Get user's most viewed posts (argument=(author id, number of posts to fetch))
-      const authorTopPosts = await getAuthorMostViewedPosts(authorid, 10);
-
       if (
-        authorPosts === "Network Error" ||
-        authorTopPosts === "Network Error" ||
-        categoriesData === "Network Error"
+        userPosts === "Network Error" ||
+        userTopPosts === "Network Error" ||
+        categories === "Network Error"
       ) {
         navigate("/serverdown");
       }
-
-      console.log(authorPosts);
-      setIsLoadingPosts(false);
-      setCategories(categoriesData);
-      setPosts(authorPosts);
-      setTopPosts(authorTopPosts);
     };
 
-    getPosts(authorid);
+    getPosts();
   }, [selectedCategory]);
 
   return (
     <div className="min-h-[70dvh]">
       <BlogsLayout
-        posts={posts}
-        topPosts={topPosts}
+        posts={category == "all" ? userPosts : userPostsByCategory}
+        topPosts={userTopPosts}
         selectedCategory={category}
-        setSelectedCategory={setSelectedCategory}
-        isLoadingPosts={isLoadingPosts}
-        categories={categories}
+        isLoadingPosts={isLoading}
         mostViewed={`Most viewed blogs by ${user?.username}`}
         mainTitle={`Blogs by ${user?.username}`}
       />

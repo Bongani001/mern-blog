@@ -128,14 +128,14 @@ export const getAuthorPosts = async (authorId, limit = 0) => {
   }
 };
 
-export const getAuthorMostViewedPosts = async (authorId, limit = 0) => {
+export const getAuthorMostViewedPosts = async (authorId, limit) => {
   try {
     const { data } = await axios.get(
       `${
         import.meta.env.VITE_NODE_ENV === "production"
           ? import.meta.env.VITE_SERVER_URL
           : "http://localhost:5000"
-      }/api/posts/authors/${authorId}?limit=${limit}$views=true`
+      }/api/posts/authors/${authorId}?limit=${limit}&views=true`
     );
     return data;
   } catch (error) {

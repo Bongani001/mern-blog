@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { FiMenu } from "react-icons/fi";
 import { MdClose } from "react-icons/md";
 import { NavbarContext } from "../context/NavbarContext";
+import { useUser } from "../store/useUser";
 
 const Navbar = () => {
   const { pathname, search } = useLocation();
@@ -13,7 +14,8 @@ const Navbar = () => {
 
   const navigate = useNavigate();
 
-  const { user, setUser } = useContext(AuthContext);
+  // const { user, setUser } = useContext(AuthContext);
+  const { user, setUser } = useUser();
 
   const handleLoginClick = () => {
     navigate("/login", { state: { path: pathname + search } });
