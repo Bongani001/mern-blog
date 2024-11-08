@@ -5,6 +5,7 @@ export const useCategories = create((set) => ({
   categories: [],
   selectedCategory: "",
   fetchCategories: async () => {
+    // Get categories from the database
     const categories = await getAllCategories();
     set({ categories });
   },
@@ -13,4 +14,5 @@ export const useCategories = create((set) => ({
   },
 }));
 
+// Initialise the categories by getting them from the database
 getAllCategories().then((data) => useCategories.setState({ categories: data }));

@@ -20,6 +20,7 @@ const Posts = () => {
     mostViewedPosts,
     postsByCategory,
     fetchPostsByCategory,
+    isLoading,
   } = usePosts();
 
   const { setSelectedPage } = useContext(NavbarContext);
@@ -32,7 +33,6 @@ const Posts = () => {
     setCategory(cat);
 
     const getPosts = async () => {
-      setIsLoadingPosts(true);
       if (categories == 0) {
         categories = await getAllCategories();
       }
@@ -54,8 +54,6 @@ const Posts = () => {
       if (posts === "Network Error" || categories === "Network Error") {
         navigate("/serverdown");
       }
-
-      setIsLoadingPosts(false);
     };
 
     getPosts();
@@ -67,7 +65,7 @@ const Posts = () => {
         posts={category == "all" ? latestPosts : postsByCategory}
         topPosts={mostViewedPosts}
         selectedCategory={category}
-        isLoadingPosts={isLoadingPosts}
+        isLoadingPosts={isLoading}
         mostViewed="Top Picks"
         mainTitle="Blogs"
       />
