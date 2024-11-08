@@ -3,44 +3,45 @@ import headerImg from "../../assets/defaultHeaderImg.jpg";
 import userImg from "../../assets/userImg.png";
 import loading from "../../assets/three.gif";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { getMostViewedPosts, getOnePost } from "../../services/posts";
+import { getOnePost } from "../../services/posts";
 import {
   deleteComment,
   getAllPostComments,
   postComment,
 } from "../../services/commets";
-import { AuthContext } from "../../context/AuthContext";
 import toast from "react-hot-toast";
 import { NavbarContext } from "../../context/NavbarContext";
 import ScrollToTop from "../../components/ScrollToTop";
+import { useUser } from "../../store/useUser";
+import { usePosts } from "../../store/usePosts";
 
 const PostDetails = () => {
   const [post, setPosts] = useState(null);
-  const [topPosts, setTopPosts] = useState([]);
   const [comments, setComments] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [comment, setComment] = useState("");
   const [submittingComment, setSubmittingComment] = useState(false);
 
   const { id } = useParams();
 
-  const { user } = useContext(AuthContext);
   const { setSelectedPage } = useContext(NavbarContext);
+  const { mostViewedPosts } = usePosts();
+  const { user } = useUser();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     setSelectedPage("blogs");
+    setIsLoading(true);
+
     const getPosts = async (id) => {
       let data = await getOnePost(id); // Get the main post
-      let top = await getMostViewedPosts(3); // Get top picks
       let comm = await getAllPostComments(id); // Get all comments related to the post
       if (data === "Network Error") {
         navigate("/serverdown");
       }
 
       setPosts(data);
-      setTopPosts(top);
       setComments(comm);
       setIsLoading(false);
     };
@@ -117,7 +118,7 @@ const PostDetails = () => {
         </div>
       )}
 
-      {post && (
+      {post && !isLoading && (
         <div className=" md:grid md:grid-cols-3">
           <div className="md:border-r md:border-zinc-300 md:pr-5 md:col-span-2">
             <h1 className="text-zinc-800 text-3xl font-semibold sm:text-[3rem] leading-tight">
@@ -239,7 +240,7 @@ const PostDetails = () => {
                 Top Picks
               </h2>
               <div className="">
-                {topPosts?.map((post) => {
+                {mostViewedPosts?.slice(0, 5).map((post) => {
                   return (
                     <div
                       key={post._id}
@@ -247,7 +248,10 @@ const PostDetails = () => {
                     >
                       <img
                         src={post.headerImg || headerImg}
-                        onClick={() => navigate(`/posts/${post._id}`)}
+                        onClick={() => {
+                          window.scrollTo({ top: 0, behavior: "smooth" });
+                          navigate(`/posts/${post._id}`);
+                        }}
                         alt="User profile"
                         className="h-24 md:h-44 lg:h-52 min-w-[35%] md:w-full rounded-2xl hover:cursor-pointer"
                       />

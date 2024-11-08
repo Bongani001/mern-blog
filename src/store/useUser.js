@@ -31,9 +31,9 @@ export const useUser = create((set) => ({
     set({ userPostsByCategory: posts });
     set({ isLoading: false });
   },
-  fetchUserMostViewedPosts: async () => {
+  fetchUserMostViewedPosts: async (userId) => {
     // // Get user's most viewed posts (argument=(author id, number of posts to fetch))
-    getAuthorMostViewedPosts(data._id, 10).then((data) => {
+    getAuthorMostViewedPosts(userId, 10).then((data) => {
       useUser.setState({ userTopPosts: data });
     });
   },

@@ -42,7 +42,7 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 w-full bg-transparent z-40">
-      <Toaster position="bottom-right" reverseOrder={false} />
+      <Toaster position="bottom-left" reverseOrder={false} />
       <div className="bg-white rounded-bl-xl rounded-br-xl drop-shadow-sm text-white flex justify-between items-center py-3 px-8 mx-3 md:mx-10 z-40">
         <Link to="/">
           <GiTwoFeathers className="rotate-90 text-gray-800 text-2xl" />

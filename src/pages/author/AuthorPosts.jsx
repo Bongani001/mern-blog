@@ -30,7 +30,7 @@ const AuthorPosts = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchUserMostViewedPosts();
+    fetchUserMostViewedPosts(user._id);
   }, []);
 
   useEffect(() => {

@@ -3,12 +3,12 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { createPost, deletePost, editPost } from "../../services/posts";
-import { AuthContext } from "../../context/AuthContext";
 import { getAllCategories } from "../../services/categories";
 import toast from "react-hot-toast";
 import userImg from "../../assets/userImg.png";
 import { NavbarContext } from "../../context/NavbarContext";
 import ScrollToTop from "../../components/ScrollToTop";
+import { useUser } from "../../store/useUser";
 
 const EditPost = () => {
   const [value, setValue] = useState("");
@@ -21,7 +21,7 @@ const EditPost = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const { state } = useLocation();
-  const { user, setUser } = useContext(AuthContext);
+  const { user, setUser } = useUser();
   const { setSelectedPage } = useContext(NavbarContext);
 
   const navigate = useNavigate();
