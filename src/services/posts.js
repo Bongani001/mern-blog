@@ -64,14 +64,19 @@ export const getPostsByCategory = async (id, page, limit) => {
   }
 };
 
-export const getUserPostsByCategory = async (authorId, categoryId, limit) => {
+export const getUserPostsByCategory = async (
+  authorId,
+  categoryId,
+  page,
+  limit
+) => {
   try {
     const { data } = await axios.get(
       `${
         import.meta.env.VITE_NODE_ENV === "production"
           ? import.meta.env.VITE_SERVER_URL
           : "http://localhost:5000"
-      }/api/posts/authors/${authorId}/categories?categoryid=${categoryId}&limit=${limit}`
+      }/api/posts/authors/${authorId}/categories?categoryid=${categoryId}&limit=${limit}&page=${page}`
     );
     return data;
   } catch (error) {

@@ -22,12 +22,12 @@ export const useUser = create((set) => ({
     set({ userPosts: posts });
     set({ isLoading: false });
   },
-  fetchUserPostsByCategory: async (userId, categoryId, limit) => {
-    set({ userPostsByCategory: [] });
+  fetchUserPostsByCategory: async (userId, categoryId, page) => {
+    // set({ userPostsByCategory: [] });
     set({ isLoading: true });
 
     // Get posts filtered by category (arguments=(user id,category id,number of posts to fetch))
-    let posts = await getUserPostsByCategory(userId, categoryId, limit);
+    let posts = await getUserPostsByCategory(userId, categoryId, page, 10);
     set({ userPostsByCategory: posts });
     set({ isLoading: false });
   },

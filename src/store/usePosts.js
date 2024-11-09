@@ -9,7 +9,7 @@ export const usePosts = create((set) => ({
   latestPosts: [],
   mostViewedPosts: [],
   postsByCategory: [],
-  post: [],
+  post: {},
   isLoading: true,
   fetchLatestPosts: async () => {
     // Get the latest posts from the database
@@ -26,10 +26,10 @@ export const usePosts = create((set) => ({
     set({ isLoading: true });
 
     // Get posts by category (arguments=(category id,page number, number of posts to fetch))
-    const data = await getPostsByCategory(categoryId, page, 1);
+    const data = await getPostsByCategory(categoryId, page, 10);
 
-    set({ isLoading: false });
     set({ postsByCategory: data });
+    set({ isLoading: false });
   },
 }));
 

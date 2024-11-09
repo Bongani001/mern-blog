@@ -83,10 +83,7 @@ const EditPost = () => {
       return;
     } else if (data?.errors) {
       data.errors.forEach((err) => {
-        if (err.type) {
-          toast.error(err.msg);
-          return;
-        }
+        toast.error(err.msg);
       });
       return;
     } else if (data === undefined) {
@@ -99,7 +96,7 @@ const EditPost = () => {
     } else {
       toast.success("Post created successfully.");
     }
-    navigate(`/authors/${user._id}?category=all`);
+    navigate(`/authors/${user._id}?category=all&page=1`);
   };
 
   const handlePostDelete = async () => {

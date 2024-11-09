@@ -10,6 +10,7 @@ import { useCategories } from "../../store/useCategories";
 
 const AuthorPosts = () => {
   const [category, setCategory] = useState("");
+  const [currentPage, setCurrentPage] = useState(1); // pagination Index
 
   const { setSelectedPage } = useContext(NavbarContext);
 
@@ -19,7 +20,6 @@ const AuthorPosts = () => {
     userTopPosts,
     userPostsByCategory,
     isLoading,
-    fetchAllUserPosts,
     fetchUserPostsByCategory,
     fetchUserMostViewedPosts,
   } = useUser();
@@ -33,6 +33,7 @@ const AuthorPosts = () => {
     fetchUserMostViewedPosts(user._id);
   }, []);
 
+  let page = 1;
   useEffect(() => {
     setSelectedPage("author");
     let author = localStorage.getItem("userInfo");
@@ -46,6 +47,7 @@ const AuthorPosts = () => {
 
     const cat = searchParams.get("category");
     setCategory(cat);
+    page = Number(searchParams.get("page"));
 
     const getPosts = async () => {
       // Get categories if not yet initialised in the store
@@ -55,7 +57,8 @@ const AuthorPosts = () => {
 
       // Get posts
       if (cat == "all") {
-        fetchAllUserPosts(user._id, 10);
+        // Get posts by category
+        fetchUserPostsByCategory(user._id, cat, page);
       } else {
         let categoryId = "";
         categories.forEach((cate) => {
@@ -65,7 +68,7 @@ const AuthorPosts = () => {
         });
 
         // Get posts by category
-        fetchUserPostsByCategory(user._id, categoryId, 10);
+        fetchUserPostsByCategory(user._id, categoryId, page);
       }
 
       if (
@@ -80,13 +83,44 @@ const AuthorPosts = () => {
     getPosts();
   }, [selectedCategory]);
 
+  // Invoke when user click to request another page.
+  // Pagination
+  const handlePageClick = (event) => {
+    window.scrollTo({ top: 50, behavior: "smooth" });
+    let categoryName = "";
+    if (category == "all") {
+      const address = "?category=all&page=" + Number(event.selected + 1);
+      navigate(address);
+      setCurrentPage(event.selected + 1);
+      fetchUserPostsByCategory(user._id, category, event.selected + 1);
+    } else {
+      let categoryId;
+      categories.forEach((cate) => {
+        if (cate.name.toLowerCase() == category.toLowerCase()) {
+          categoryId = cate._id;
+          categoryName = category.toLowerCase();
+        }
+      });
+      setCurrentPage(event.selected + 1);
+      fetchUserPostsByCategory(user._id, categoryId, event.selected + 1);
+      const address =
+        `?category=${categoryName}&page=` + Number(event.selected + 1);
+      navigate(address);
+    }
+  };
+
   return (
     <div className="min-h-[70dvh]">
       <BlogsLayout
-        posts={category == "all" ? userPosts : userPostsByCategory}
+        posts={userPostsByCategory.posts}
+        pageCount={userPostsByCategory.count}
         topPosts={userTopPosts}
         selectedCategory={category}
         isLoadingPosts={isLoading}
+        fetchPostsByCategory={fetchUserPostsByCategory}
+        handlePageClick={handlePageClick}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
         mostViewed={`Most viewed blogs by ${user?.username}`}
         mainTitle={`Blogs by ${user?.username}`}
       />

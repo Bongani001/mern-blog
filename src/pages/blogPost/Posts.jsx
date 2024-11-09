@@ -36,7 +36,7 @@ const Posts = () => {
 
       // Get posts
       if (cat == "all") {
-        // Get posts by category
+        // Get all posts
         fetchPostsByCategory(cat, page);
       } else {
         let categoryId = "";

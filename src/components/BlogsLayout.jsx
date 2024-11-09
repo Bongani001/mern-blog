@@ -134,7 +134,7 @@ const BlogsLayout = ({
                 return <PostCard key={post._id} post={post} date={true} />;
               })}
             </div>
-            <div className=" ">
+            <div>
               <ReactPaginate
                 breakLabel={"..."}
                 className="react-paginate"
