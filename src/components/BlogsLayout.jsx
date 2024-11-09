@@ -1,16 +1,22 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import PostCard from "./PostCard";
 import loading from "../assets/three.gif";
 import { useCategories } from "../store/useCategories";
+import ReactPaginate from "react-paginate";
+import "../styles/pagination.css";
 
 const BlogsLayout = ({
   posts,
+  pageCount,
   topPosts,
   isLoadingPosts,
   mostViewed,
   mainTitle,
   selectedCategory,
+  handlePageClick,
+  currentPage,
+  setCurrentPage,
 }) => {
   const { categories, changeSelectedCategory } = useCategories();
 
@@ -76,8 +82,9 @@ const BlogsLayout = ({
               <div className="flex overflow-x-auto no-scrollbar sm:flex-wrap gap-2">
                 <button
                   onClick={() => {
+                    setCurrentPage(1);
                     changeSelectedCategory("all");
-                    navigate("?category=all");
+                    navigate("?category=all&page=1");
                   }}
                   type="button"
                   disabled={selectedCategory == "all"}
@@ -91,8 +98,11 @@ const BlogsLayout = ({
                   return (
                     <button
                       onClick={() => {
+                        setCurrentPage(1);
                         changeSelectedCategory(category.name.toLowerCase());
-                        navigate(`?category=${category.name.toLowerCase()}`);
+                        navigate(
+                          `?category=${category.name.toLowerCase()}&page=1`
+                        );
                       }}
                       type="button"
                       key={category._id}
@@ -101,7 +111,7 @@ const BlogsLayout = ({
                         selectedCategory == category.name.toLowerCase()
                           ? "bg-zinc-800"
                           : "bg-zinc-500"
-                      } bg-zinc-500 text-white text-xs capitalize font-medium hover:bg-zinc-800 rounded-lg px-3 py-2`}
+                      } text-white text-xs capitalize font-medium hover:bg-zinc-800 rounded-lg px-3 py-2`}
                     >
                       {category.name}
                     </button>
@@ -123,6 +133,20 @@ const BlogsLayout = ({
               {posts?.map((post) => {
                 return <PostCard key={post._id} post={post} date={true} />;
               })}
+            </div>
+            <div className=" ">
+              <ReactPaginate
+                breakLabel={"..."}
+                className="react-paginate"
+                marginPagesDisplayed={2}
+                nextLabel=">"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={1}
+                forcePage={currentPage - 1}
+                pageCount={pageCount}
+                previousLabel="<"
+                renderOnZeroPageCount={null}
+              />
             </div>
           </div>
         </>

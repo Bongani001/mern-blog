@@ -43,14 +43,14 @@ export const getMostViewedPosts = async (limit) => {
   }
 };
 
-export const getPostsByCategory = async (id, limit) => {
+export const getPostsByCategory = async (id, page, limit) => {
   try {
     const { data } = await axios.get(
       `${
         import.meta.env.VITE_NODE_ENV === "production"
           ? import.meta.env.VITE_SERVER_URL
           : "http://localhost:5000"
-      }/api/posts/categories?categoryid=${id}&limit=${limit}`
+      }/api/posts/categories?categoryid=${id}&page=${page}&limit=${limit}`
     );
     return data;
   } catch (error) {

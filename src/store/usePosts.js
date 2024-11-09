@@ -21,12 +21,12 @@ export const usePosts = create((set) => ({
     let data = await getMostViewedPosts(10);
     set({ mostViewedPosts: data });
   },
-  fetchPostsByCategory: async (categoryId) => {
-    set({ postsByCategory: [] });
+  fetchPostsByCategory: async (categoryId, page) => {
+    // set({ postsByCategory: [] });
     set({ isLoading: true });
 
-    // Get posts by category (arguments=(category id, number of posts to fetch))
-    const data = await getPostsByCategory(categoryId, 10);
+    // Get posts by category (arguments=(category id,page number, number of posts to fetch))
+    const data = await getPostsByCategory(categoryId, page, 1);
 
     set({ isLoading: false });
     set({ postsByCategory: data });

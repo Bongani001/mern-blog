@@ -1,7 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { GiTwoFeathers } from "react-icons/gi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
 import toast, { Toaster } from "react-hot-toast";
 import { FiMenu } from "react-icons/fi";
 import { MdClose } from "react-icons/md";
@@ -14,7 +13,6 @@ const Navbar = () => {
 
   const navigate = useNavigate();
 
-  // const { user, setUser } = useContext(AuthContext);
   const { user, setUser } = useUser();
 
   const handleLoginClick = () => {
@@ -27,7 +25,7 @@ const Navbar = () => {
 
   const handleAuthorClick = () => {
     if (user !== null) {
-      navigate(`/authors/${user._id}?category=all`);
+      navigate(`/authors/${user._id}?category=all&page=1`);
     } else {
       toast.error("You must be logged in to access authors page.");
     }
@@ -77,7 +75,7 @@ const Navbar = () => {
             <button
               onClick={() => {
                 toggleNavbar();
-                navigate("/posts?category=all");
+                navigate("/posts?category=all&page=1");
               }}
               className={`${
                 selectedPage === "blogs" ? "border-b-2 border-b-zinc-800" : ""
