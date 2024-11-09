@@ -30,22 +30,68 @@ exports.post_getAll = asyncHandler(async (req, res, next) => {
   return res.status(200).json(posts);
 });
 
+exports.post_getSpecific = asyncHandler(async (req, res, next) => {
+  const post = await Post.findById(req.params.id).exec();
+
+  const updatedPost = await Post.findByIdAndUpdate(
+    req.params.id,
+    { views: post.views + 1 },
+    {
+      new: true,
+    }
+  ).populate({ path: "authorId", select: "username" });
+
+  return res.status(200).json(updatedPost);
+});
+
 exports.post_getByCategory = asyncHandler(async (req, res) => {
   const categoryId = req.query.categoryid;
   const limit = Number(req.query.limit);
+  const page = Number(req.query.page);
 
-  // Get posts by category and sort by latest created post
-  const posts = await Post.find({ categoryId, published: { $eq: true } })
-    .populate({ path: "authorId categoryId", select: "username name" })
-    .sort({ createdAt: -1 })
-    .limit(limit)
-    .exec();
+  const skipDocuments = (page - 1) * limit;
 
-  return res.status(200).json(posts);
+  let postsQuery;
+  let countQuery;
+  if (categoryId === "all") {
+    // Get all posts sort by latest created post
+    postsQuery = Post.find({ published: { $eq: true } })
+      .populate({ path: "authorId categoryId", select: "username name" })
+      .sort({ createdAt: -1 })
+      .skip(skipDocuments)
+      .limit(limit);
+
+    countQuery = Post.countDocuments({
+      published: { $eq: true },
+    });
+  } else {
+    // Get posts by category and sort by latest created post
+    postsQuery = Post.find({ categoryId, published: { $eq: true } })
+      .populate({ path: "authorId categoryId", select: "username name" })
+      .sort({ createdAt: -1 })
+      .skip(skipDocuments)
+      .limit(limit);
+
+    countQuery = Post.countDocuments({
+      categoryId,
+      published: { $eq: true },
+    });
+  }
+
+  let [count, posts] = await Promise.all([countQuery, postsQuery]);
+
+  count = Math.ceil(count / limit);
+
+  return res.status(200).json({ count, posts });
 });
+
+/******************* 
+ USER  
+********************/
 
 exports.post_getUserPosts = asyncHandler(async (req, res, next) => {
   let posts = [];
+
   if (req.query.views) {
     // Get the most viewed posts
     const limit = Number(req.query.limit);
@@ -75,29 +121,42 @@ exports.post_getUserPostsByCategory = asyncHandler(async (req, res) => {
   const authorId = req.params.authorid;
   const categoryId = req.query.categoryid;
   const limit = Number(req.query.limit);
+  const page = Number(req.query.page);
 
-  // Get posts by category and sort by latest created post
-  const posts = await Post.find({ authorId, categoryId })
-    .populate({ path: "authorId categoryId", select: "username name" })
-    .sort({ createdAt: -1 })
-    .limit(limit)
-    .exec();
+  const skipDocuments = (page - 1) * limit;
 
-  return res.status(200).json(posts);
-});
+  let postsQuery;
+  let countQuery;
+  if (categoryId === "all") {
+    // Get all posts and sort by latest created post
+    postsQuery = Post.find({ authorId })
+      .populate({ path: "authorId categoryId", select: "username name" })
+      .sort({ createdAt: -1 })
+      .skip(skipDocuments)
+      .limit(limit);
 
-exports.post_getSpecific = asyncHandler(async (req, res, next) => {
-  const post = await Post.findById(req.params.id).exec();
+    countQuery = Post.countDocuments({
+      authorId,
+    });
+  } else {
+    // Get posts by category and sort by latest created post
+    postsQuery = Post.find({ authorId, categoryId })
+      .populate({ path: "authorId categoryId", select: "username name" })
+      .sort({ createdAt: -1 })
+      .skip(skipDocuments)
+      .limit(limit);
 
-  const updatedPost = await Post.findByIdAndUpdate(
-    req.params.id,
-    { views: post.views + 1 },
-    {
-      new: true,
-    }
-  ).populate({ path: "authorId", select: "username" });
+    countQuery = Post.countDocuments({
+      authorId,
+      categoryId,
+    });
+  }
 
-  return res.status(200).json(updatedPost);
+  let [count, posts] = await Promise.all([countQuery, postsQuery]);
+
+  count = Math.ceil(count / limit);
+
+  return res.status(200).json({ count, posts });
 });
 
 exports.post_create = [
