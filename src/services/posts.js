@@ -106,8 +106,9 @@ export const getOnePost = async (id) => {
       return error.message;
     } else if (!error.response?.data) {
       return error.response;
+    } else if (error.response.status == 404 || error.response.status == 400) {
+      return 404 || 400;
     }
-
     return error.response.data;
   }
 };

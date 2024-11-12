@@ -9,16 +9,21 @@ import userImg from "../../assets/userImg.png";
 import { NavbarContext } from "../../context/NavbarContext";
 import ScrollToTop from "../../components/ScrollToTop";
 import { useUser } from "../../store/useUser";
+import { usePosts } from "../../store/usePosts";
+import { format } from "date-fns";
 
 const EditPost = () => {
   const [value, setValue] = useState("");
   const [titleValue, setTitleValue] = useState("");
-  const [publishedValue, setPublishedValue] = useState("true");
+  const [publishedValue, setPublishedValue] = useState("false");
   const [categoryValue, setCategoryValue] = useState("");
   const [imgValue, setImgValue] = useState(null);
+  const [imgSRC, setImgSRC] = useState(null);
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const { fetchLatestPosts, fetchMostViewedPosts } = usePosts();
 
   const { state } = useLocation();
   const { user, setUser } = useUser();
@@ -27,7 +32,7 @@ const EditPost = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setSelectedPage("author");
+    setSelectedPage("author"); // Navbar navigation
     const getCategories = async () => {
       const data = await getAllCategories();
       if (data === "Network Error") {
@@ -49,6 +54,7 @@ const EditPost = () => {
     setValue(state.post?.content ? state.post?.content : "");
 
     getCategories();
+    setImgSRC(state.post?.headerImg ?? null);
   }, []);
 
   const handleFormSubmit = async (e) => {
@@ -73,8 +79,16 @@ const EditPost = () => {
     // Check whether the user is creating a post or updating an existing one
     if (state.post == null) {
       data = await createPost(formData, user.token);
+
+      // Update posts
+      fetchLatestPosts();
+      fetchMostViewedPosts();
     } else {
       data = await editPost(formData, state.post._id, user.token);
+
+      // Update posts
+      fetchLatestPosts();
+      fetchMostViewedPosts();
     }
     setIsLoading(false);
 
@@ -226,6 +240,9 @@ const EditPost = () => {
               id="image-select"
               onChange={(e) => {
                 setImgValue(e.target.files[0]);
+                const imageURL = URL.createObjectURL(e.target.files[0]);
+                // console.log(imageURL);
+                setImgSRC(imageURL);
               }}
               className="my-1"
             />
@@ -252,24 +269,26 @@ const EditPost = () => {
 
           {isLoading && (
             <button
-              type="submit"
+              disabled={true}
+              type="button"
               className="bg-blue-500 self-center text-white text-xs font-semibold rounded-lg px-3 py-2 m-3"
             >
-              Loading...
+              {state.post == null ? "Creating..." : "Updating..."}
             </button>
           )}
         </form>
       </div>
       <div>
-        <h2 className="text-zinc-800 text-lg text-center mb-3">Preview</h2>
+        <h2 className="text-zinc-800 text-lg text-center mb-3">Blog Preview</h2>
         <div className="md:border-r md:border-l md:border-zinc-300 md:px-5 md:col-span-2 pb-3 md:mx-20">
           <h1 className="text-zinc-800 text-3xl font-semibold sm:text-[3rem] leading-tight">
             {titleValue}
           </h1>
 
-          <div className="h-64 sm:h-96 w-full flex justify-center items-center font-semibold text-3xl border border-zinc-600 my-5">
-            Header Image
-          </div>
+          <div
+            style={{ backgroundImage: `url(${imgSRC}` }}
+            className="h-64 sm:h-96 w-full flex justify-center items-center font-semibold text-3xl bg-cover border border-zinc-600 my-5"
+          ></div>
           <div className="flex justify-between items-center my-3  ">
             <div className="flex items-center gap-3">
               <img
@@ -285,7 +304,7 @@ const EditPost = () => {
               </div>
             </div>
             <p className="text-xs sm:text-sm">
-              Updated: {new Date().toLocaleDateString()}
+              Updated: {format(new Date(), "dd-MM-yyyy")}
             </p>
           </div>
           <main
