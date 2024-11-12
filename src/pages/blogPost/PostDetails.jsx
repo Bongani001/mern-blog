@@ -40,6 +40,8 @@ const PostDetails = () => {
       let comm = await getAllPostComments(id); // Get all comments related to the post
       if (data === "Network Error") {
         navigate("/serverdown");
+      } else if (data == 404 || data == 400) {
+        navigate("*");
       }
 
       setPost(data);
