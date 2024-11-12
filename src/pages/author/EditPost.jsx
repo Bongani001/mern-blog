@@ -10,6 +10,7 @@ import { NavbarContext } from "../../context/NavbarContext";
 import ScrollToTop from "../../components/ScrollToTop";
 import { useUser } from "../../store/useUser";
 import { usePosts } from "../../store/usePosts";
+import { format } from "date-fns";
 
 const EditPost = () => {
   const [value, setValue] = useState("");
@@ -303,7 +304,7 @@ const EditPost = () => {
               </div>
             </div>
             <p className="text-xs sm:text-sm">
-              Updated: {new Date().toLocaleDateString()}
+              Updated: {format(new Date(), "dd-MM-yyyy")}
             </p>
           </div>
           <main

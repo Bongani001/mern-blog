@@ -219,7 +219,7 @@ const Homepage = () => {
               )}
               <div className="flex flex-col gap-3 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {latestPosts?.map((post) => {
-                  return <PostCard key={post._id} post={post} />;
+                  return <PostCard key={post._id} post={post} date={true} />;
                 })}
               </div>
             </section>

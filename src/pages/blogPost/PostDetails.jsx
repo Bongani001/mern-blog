@@ -14,9 +14,10 @@ import { NavbarContext } from "../../context/NavbarContext";
 import ScrollToTop from "../../components/ScrollToTop";
 import { useUser } from "../../store/useUser";
 import { usePosts } from "../../store/usePosts";
+import { format } from "date-fns";
 
 const PostDetails = () => {
-  const [post, setPosts] = useState(null);
+  const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [comment, setComment] = useState("");
@@ -34,19 +35,20 @@ const PostDetails = () => {
     setSelectedPage("blogs");
     setIsLoading(true);
 
-    const getPosts = async (id) => {
+    const getPost = async (id) => {
       let data = await getOnePost(id); // Get the main post
       let comm = await getAllPostComments(id); // Get all comments related to the post
       if (data === "Network Error") {
         navigate("/serverdown");
       }
 
-      setPosts(data);
+      setPost(data);
+      console.log(data);
       setComments(comm);
       setIsLoading(false);
     };
 
-    getPosts(id);
+    getPost(id);
   }, [id]);
 
   const handleCommentSubmit = async () => {
@@ -134,18 +136,23 @@ const PostDetails = () => {
                 <img
                   src={userImg}
                   alt="User profile"
-                  className="h-12 w-12 rounded-full"
+                  className="h-9 w-9 rounded-full"
                 />
                 <div>
-                  <p className="text-zinc-7 00 text-sm">Written by</p>
-                  <p className="text-zinc-900 text-lg font-semibold">
+                  <p className="text-zinc-7 00 text-xs">Written by</p>
+                  <p className="text-zinc-900 text-base font-semibold">
                     {post.authorId.username}
                   </p>
                 </div>
               </div>
-              <p className="text-xs sm:text-sm">
-                Updated: {new Date(post.updatedAt).toLocaleDateString()}
-              </p>
+              <div className="flex flex-col gap-1">
+                <span className="text-xs sm:text-xs">
+                  Updated: {format(new Date(post.updatedAt), "dd-MM-yyy")}
+                </span>
+                <button className="bg-zinc-800 self-end text-white text-xs font-medium hover:bg-zinc-500 rounded-lg px-3 py-1">
+                  {post.categoryId.name}
+                </button>
+              </div>
             </div>
             <main
               dangerouslySetInnerHTML={{ __html: post.content }}

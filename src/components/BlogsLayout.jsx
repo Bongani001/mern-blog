@@ -90,7 +90,7 @@ const BlogsLayout = ({
                   disabled={selectedCategory == "all"}
                   className={`${
                     selectedCategory == "all" ? "bg-zinc-800" : "bg-zinc-500"
-                  }  text-white text-xs font-medium hover:bg-zinc-800 rounded-lg px-3 py-2`}
+                  }  text-white text-xs font-medium hover:bg-zinc-800 rounded-lg px-3 py-1`}
                 >
                   All
                 </button>
@@ -111,7 +111,7 @@ const BlogsLayout = ({
                         selectedCategory == category.name.toLowerCase()
                           ? "bg-zinc-800"
                           : "bg-zinc-500"
-                      } text-white text-xs capitalize font-medium hover:bg-zinc-800 rounded-lg px-3 py-2`}
+                      } text-white text-xs capitalize font-medium hover:bg-zinc-800 rounded-lg px-3 py-1`}
                     >
                       {category.name}
                     </button>

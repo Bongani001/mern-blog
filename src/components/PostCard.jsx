@@ -2,13 +2,13 @@ import React, { useContext } from "react";
 import headerImg from "../assets/defaultHeaderImg.jpg";
 import userImg from "../assets/userImg.png";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
 import { useUser } from "../store/useUser";
+import { format } from "date-fns";
 
 const PostCard = ({ post, date }) => {
-  // const { user } = useContext(AuthContext);
   const { user } = useUser();
   const navigate = useNavigate();
+
   return (
     <div key={post._id} className="flex bg-white shadow-md gap-3 md:flex-col ">
       <div
@@ -35,7 +35,7 @@ const PostCard = ({ post, date }) => {
           {date && (
             <div className="flex items-center justify-between">
               <span className="text-zinc-500 text-sm">
-                {new Date(post.createdAt).toDateString()}
+                {format(new Date(post.createdAt), "dd-MM-yyyy")}
               </span>
               {post.authorId._id === user?._id && (
                 <button
@@ -51,7 +51,7 @@ const PostCard = ({ post, date }) => {
             </div>
           )}
           <Link to={`/posts/${post._id}`}>
-            <h3 className="text-zinc-800 text-base font-semibold line-clamp-3 md:line-clamp-2 mt-1 md:text-xl">
+            <h3 className="text-zinc-800 text-base font-semibold line-clamp-3 md:line-clamp-2 mt-1 md:text-lg">
               {post.title}
             </h3>
           </Link>
