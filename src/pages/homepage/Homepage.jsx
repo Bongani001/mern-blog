@@ -67,11 +67,11 @@ const Homepage = () => {
                 <img
                   src={userImg}
                   alt="User profile"
-                  className="h-12 w-12 rounded-full"
+                  className="h-9 w-9 sm:h-12 sm:w-12  rounded-full"
                 />
                 <div>
-                  <p className="text-zinc-300 text-sm">Written by</p>
-                  <p className="text-zinc-200 text-lg font-semibold">
+                  <p className="text-zinc-300 text-xs sm:text-sm">Written by</p>
+                  <p className="text-zinc-200 text-base sm:text-lg font-semibold">
                     {latestPosts[0]?.authorId.username}
                   </p>
                 </div>
@@ -92,7 +92,7 @@ const Homepage = () => {
                           mostViewedPosts[0].headerImg || headerImg
                         })`,
                       }}
-                      className="h-48 w-72 md:min-h-[60%] md:w-full bg-cover rounded-2xl"
+                      className="h-40 w-72 md:min-h-[60%] md:w-full bg-cover rounded-2xl"
                     >
                       <Link to={`posts/${mostViewedPosts[0]._id}`}>
                         <div className="h-full w-full rounded-2xl hover:bg-black/50 "></div>
@@ -103,9 +103,9 @@ const Homepage = () => {
                         <img
                           src={userImg}
                           alt="User profile"
-                          className="h-12 w-12 rounded-full"
+                          className="h-9 w-9 rounded-full my-1"
                         />
-                        <p className="text-zinc-500 text-base">
+                        <p className="text-zinc-500 text-sm">
                           {mostViewedPosts[0].authorId.username}
                         </p>
                       </div>
@@ -132,7 +132,7 @@ const Homepage = () => {
                           mostViewedPosts[1].headerImg || headerImg
                         })`,
                       }}
-                      className="h-48 w-80 md:min-w-[35%] bg-cover rounded-2xl "
+                      className="h-40 w-72 md:min-w-[35%] bg-cover rounded-2xl "
                     >
                       <Link to={`posts/${mostViewedPosts[1]._id}`}>
                         <div className="h-full w-full rounded-2xl hover:bg-black/50"></div>
@@ -143,9 +143,9 @@ const Homepage = () => {
                         <img
                           src={userImg}
                           alt="User profile"
-                          className="h-12 w-12 rounded-full"
+                          className="h-9 w-9 rounded-full my-1"
                         />
-                        <p className="text-zinc-500 text-base">
+                        <p className="text-zinc-500 text-sm">
                           {mostViewedPosts[1].authorId.username}
                         </p>
                       </div>
@@ -172,7 +172,7 @@ const Homepage = () => {
                           mostViewedPosts[2].headerImg || headerImg
                         })`,
                       }}
-                      className="h-48 w-80 md:min-w-[35%] bg-cover rounded-2xl"
+                      className="h-40 w-72 md:min-w-[35%] bg-cover rounded-2xl"
                     >
                       <Link to={`posts/${mostViewedPosts[2]._id}`}>
                         <div className="h-full w-full rounded-2xl hover:bg-black/50"></div>
@@ -183,9 +183,9 @@ const Homepage = () => {
                         <img
                           src={userImg}
                           alt="User profile"
-                          className="h-12 w-12 rounded-full"
+                          className="h-9 w-9 rounded-full my-1"
                         />
-                        <p className="text-zinc-500 text-base">
+                        <p className="text-zinc-500 text-sm">
                           {mostViewedPosts[2].authorId.username}
                         </p>
                       </div>
