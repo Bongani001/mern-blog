@@ -5,7 +5,7 @@ exports.invalidPathHandler = (req, res, next) => {
 };
 
 exports.errorResponseHandler = (err, req, res, next) => {
-  const statusCode = err.statusCode || 400;
+  const statusCode = err.status || 400;
   res.status(statusCode).json({
     message: err.message,
   });

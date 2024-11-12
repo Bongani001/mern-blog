@@ -33,13 +33,21 @@ exports.post_getAll = asyncHandler(async (req, res, next) => {
 exports.post_getSpecific = asyncHandler(async (req, res, next) => {
   const post = await Post.findById(req.params.id).exec();
 
+  if (post === null) {
+    const error = new Error("Post not found");
+    error.status = 404;
+    return next(error);
+  }
+
   const updatedPost = await Post.findByIdAndUpdate(
     req.params.id,
     { views: post.views + 1 },
     {
       new: true,
     }
-  ).populate({ path: "authorId", select: "username" });
+  )
+    .populate({ path: "authorId", select: "username" })
+    .populate({ path: "categoryId", select: "name" });
 
   return res.status(200).json(updatedPost);
 });
