@@ -209,9 +209,13 @@ const Homepage = () => {
             )}
 
             <section className="">
-              <h2 className="text-zinc-800 text-2xl font-semibold my-4">
-                Latest Blogs
-              </h2>
+              <div className="flex mb-2 mt-4">
+                <h2 className="text-zinc-800 text-2xl whitespace-nowrap font-semibold my-">
+                  Latest Blogs
+                </h2>
+                <span className="bg-blue-900 border-b border-b-zinc-500 w-full mb-2"></span>
+              </div>
+
               {latestPosts.length < 1 && (
                 <span className="flex italic sm:col-span-2 lg:col-span-3 justify-center">
                   No blog posts available.

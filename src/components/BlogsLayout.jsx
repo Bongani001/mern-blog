@@ -131,7 +131,14 @@ const BlogsLayout = ({
                 </span>
               )}
               {posts?.map((post) => {
-                return <PostCard key={post._id} post={post} date={true} />;
+                return (
+                  <PostCard
+                    key={post._id}
+                    post={post}
+                    date={true}
+                    showPublished={mainTitle.includes("by") ? true : false}
+                  />
+                );
               })}
             </div>
             <div>

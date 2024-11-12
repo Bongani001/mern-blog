@@ -43,7 +43,6 @@ const PostDetails = () => {
       }
 
       setPost(data);
-      console.log(data);
       setComments(comm);
       setIsLoading(false);
     };
@@ -149,7 +148,14 @@ const PostDetails = () => {
                 <span className="text-xs sm:text-xs">
                   Updated: {format(new Date(post.updatedAt), "dd-MM-yyy")}
                 </span>
-                <button className="bg-zinc-800 self-end text-white text-xs font-medium hover:bg-zinc-500 rounded-lg px-3 py-1">
+                <button
+                  onClick={() =>
+                    navigate(
+                      `/posts?category=${post.categoryId.name.toLowerCase()}&page=1`
+                    )
+                  }
+                  className="bg-zinc-800 self-end text-white text-xs font-medium hover:bg-zinc-500 rounded-lg px-3 py-1"
+                >
                   {post.categoryId.name}
                 </button>
               </div>
@@ -176,7 +182,7 @@ const PostDetails = () => {
                 </label>
                 {submittingComment ? (
                   <button
-                    type="submit"
+                    type="button"
                     className="bg-blue-500 self-center text-white text-xs font-semibold rounded-lg px-3 py-2 m-3"
                   >
                     Loading...
