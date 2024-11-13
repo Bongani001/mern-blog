@@ -74,7 +74,7 @@ const BlogsLayout = ({
                 <input
                   type="text"
                   name="search"
-                  defaultValue={"me"}
+                  defaultValue={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="search for a blog"
                   className="text-zinc-800 w-full rounded-lg outline-none placeholder:text-gray-500 p-2"
@@ -100,7 +100,7 @@ const BlogsLayout = ({
                   onClick={() => {
                     setCurrentPage(1);
                     changeSelectedCategory("all");
-                    navigate("?category=all&page=1");
+                    navigate(`?search=${search}&category=all&page=1`);
                   }}
                   type="button"
                   disabled={selectedCategory == "all"}
@@ -117,7 +117,7 @@ const BlogsLayout = ({
                         setCurrentPage(1);
                         changeSelectedCategory(category.name.toLowerCase());
                         navigate(
-                          `?category=${category.name.toLowerCase()}&page=1`
+                          `?search=${search}&category=${category.name.toLowerCase()}&page=1`
                         );
                       }}
                       type="button"
