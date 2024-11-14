@@ -43,14 +43,14 @@ export const getMostViewedPosts = async (limit) => {
   }
 };
 
-export const getPostsByCategory = async (id, page, limit) => {
+export const getPostsByCategory = async (id, searchQuery = "", page, limit) => {
   try {
     const { data } = await axios.get(
       `${
         import.meta.env.VITE_NODE_ENV === "production"
           ? import.meta.env.VITE_SERVER_URL
           : "http://localhost:5000"
-      }/api/posts/categories?categoryid=${id}&page=${page}&limit=${limit}`
+      }/api/posts/categories?categoryid=${id}&search=${searchQuery}&page=${page}&limit=${limit}`
     );
     return data;
   } catch (error) {
@@ -65,7 +65,7 @@ export const getPostsByCategory = async (id, page, limit) => {
 };
 
 export const getUserPostsByCategory = async (
-  authorId,
+  authorId,searchParam,
   categoryId,
   page,
   limit
@@ -76,7 +76,7 @@ export const getUserPostsByCategory = async (
         import.meta.env.VITE_NODE_ENV === "production"
           ? import.meta.env.VITE_SERVER_URL
           : "http://localhost:5000"
-      }/api/posts/authors/${authorId}/categories?categoryid=${categoryId}&limit=${limit}&page=${page}`
+      }/api/posts/authors/${authorId}/categories?search=${searchParam}&categoryid=${categoryId}&limit=${limit}&page=${page}`
     );
     return data;
   } catch (error) {

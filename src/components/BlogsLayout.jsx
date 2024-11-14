@@ -5,6 +5,7 @@ import loading from "../assets/three.gif";
 import { useCategories } from "../store/useCategories";
 import ReactPaginate from "react-paginate";
 import "../styles/pagination.css";
+import { IoSearchOutline } from "react-icons/io5";
 
 const BlogsLayout = ({
   posts,
@@ -17,6 +18,8 @@ const BlogsLayout = ({
   handlePageClick,
   currentPage,
   setCurrentPage,
+  search,
+  setSearch,
 }) => {
   const { categories, changeSelectedCategory } = useCategories();
 
@@ -66,6 +69,19 @@ const BlogsLayout = ({
             <p className="text-zinc-800 text-2xl text-center font-semibold mb-3">
               {mainTitle}
             </p>
+            <div className="flex justify-center my-5">
+              <div className="bg-white w-[100%] sm:w-[70%] md:w-[50%] rounded-lg flex items-center">
+                <input
+                  type="text"
+                  name="search"
+                  defaultValue={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="search for a blog"
+                  className="text-zinc-800 w-full rounded-lg outline-none placeholder:text-gray-500 p-2"
+                />
+                <IoSearchOutline className="text-zinc-800 m-3" />
+              </div>
+            </div>
             {mainTitle.includes("by") && (
               <button
                 onClick={() => navigate("edit", { state: { post: null } })}
@@ -84,7 +100,7 @@ const BlogsLayout = ({
                   onClick={() => {
                     setCurrentPage(1);
                     changeSelectedCategory("all");
-                    navigate("?category=all&page=1");
+                    navigate(`?search=${search}&category=all&page=1`);
                   }}
                   type="button"
                   disabled={selectedCategory == "all"}
@@ -101,7 +117,7 @@ const BlogsLayout = ({
                         setCurrentPage(1);
                         changeSelectedCategory(category.name.toLowerCase());
                         navigate(
-                          `?category=${category.name.toLowerCase()}&page=1`
+                          `?search=${search}&category=${category.name.toLowerCase()}&page=1`
                         );
                       }}
                       type="button"

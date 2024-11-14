@@ -6,18 +6,45 @@ import ScrollToTop from "../../components/ScrollToTop";
 import { useCategories } from "../../store/useCategories";
 import { usePosts } from "../../store/usePosts";
 import { getAllCategories } from "../../services/categories";
+import { useDebouncedCallback } from "use-debounce";
 
 const Posts = () => {
   const [category, setCategory] = useState("");
-  const [currentPage, setCurrentPage] = useState(1); // pagination Index
+  const [currentPage, setCurrentPage] = useState(1); // pagination index
+  const [search, setSearch] = useState("");
+  const [resetPage, setResetPage] = useState(false);
+
+  const { setSelectedPage } = useContext(NavbarContext);
 
   const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get("search");
 
   let { categories, selectedCategory } = useCategories();
   const { mostViewedPosts, postsByCategory, fetchPostsByCategory, isLoading } =
     usePosts();
 
-  const { setSelectedPage } = useContext(NavbarContext);
+  // delayed search request after user pauses typing on the search input
+  const debounced = useDebouncedCallback((value) => {
+    setResetPage(true); // reset page to page 1 for a new search request
+    setCurrentPage(1); // reset pagination index to 1
+
+    setSearch(value);
+
+    if (category === "all") {
+      navigate(`?search=${value}&category=all&page=1`);
+    } else {
+      let categoryId;
+      let categoryName = "";
+      categories.forEach((cate) => {
+        if (cate.name.toLowerCase() == category.toLowerCase()) {
+          categoryId = cate._id;
+          categoryName = category.toLowerCase();
+        }
+      });
+
+      navigate(`?search=${value}&category=${categoryName}&page=1`);
+    }
+  }, 2000);
 
   const navigate = useNavigate();
 
@@ -25,8 +52,13 @@ const Posts = () => {
   useEffect(() => {
     setSelectedPage("blogs");
     const cat = searchParams.get("category");
+    const searchParam = searchParams.get("search") || "";
     setCategory(cat);
+    setSearch(searchParam);
     page = searchParams.get("page");
+
+    // if its's a serach query, reset pagination index to 1
+    if (resetPage) page = 1;
 
     const getPosts = async () => {
       // Get categories if not yet initialised in the store
@@ -37,7 +69,7 @@ const Posts = () => {
       // Get posts
       if (cat == "all") {
         // Get all posts
-        fetchPostsByCategory(cat, page);
+        fetchPostsByCategory(cat, searchParam, page);
       } else {
         let categoryId = "";
         categories.forEach((cate) => {
@@ -47,7 +79,7 @@ const Posts = () => {
         });
 
         // Get posts by category
-        fetchPostsByCategory(categoryId, page);
+        fetchPostsByCategory(categoryId, searchParam, page);
       }
 
       if (
@@ -60,7 +92,7 @@ const Posts = () => {
     };
 
     getPosts();
-  }, [selectedCategory]);
+  }, [selectedCategory, searchQuery]);
 
   // Invoke when user click to request another page.
   // Pagination
@@ -68,10 +100,13 @@ const Posts = () => {
     window.scrollTo({ top: 50, behavior: "smooth" });
     let categoryName = "";
     if (category == "all") {
-      const address = "?category=all&page=" + Number(event.selected + 1);
-      navigate(address);
+      // change page number
+      const url =
+        `?search=${search}&category=all&page=` + Number(event.selected + 1);
+      navigate(url);
+
       setCurrentPage(event.selected + 1);
-      fetchPostsByCategory(category, event.selected + 1);
+      fetchPostsByCategory(category, search, event.selected + 1);
     } else {
       let categoryId;
       categories.forEach((cate) => {
@@ -81,10 +116,13 @@ const Posts = () => {
         }
       });
       setCurrentPage(event.selected + 1);
-      fetchPostsByCategory(categoryId, event.selected + 1);
-      const address =
-        `?category=${categoryName}&page=` + Number(event.selected + 1);
-      navigate(address);
+      fetchPostsByCategory(categoryId, search, event.selected + 1);
+
+      // change page number
+      const url =
+        `?search=${search}&category=${categoryName}&page=` +
+        Number(event.selected + 1);
+      navigate(url);
     }
   };
 
@@ -100,6 +138,8 @@ const Posts = () => {
         handlePageClick={handlePageClick}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
+        search={search}
+        setSearch={debounced}
         mostViewed="Top Picks"
         mainTitle="Blogs"
       />

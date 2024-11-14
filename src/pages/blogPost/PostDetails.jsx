@@ -27,7 +27,7 @@ const PostDetails = () => {
 
   const { setSelectedPage } = useContext(NavbarContext);
   const { mostViewedPosts } = usePosts();
-  const { user } = useUser();
+  const { user, setUser } = useUser();
 
   const navigate = useNavigate();
 
@@ -66,9 +66,9 @@ const PostDetails = () => {
         return;
       } else if (data?.errors) {
         data.errors.forEach((err) => {
-          if (err.type) {
-            toast.error(err.msg);
-          }
+          toast.error(err.msg);
+          localStorage.removeItem("userInfo");
+          setUser(null);
         });
         setSubmittingComment(false);
         return;
