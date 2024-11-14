@@ -3,9 +3,10 @@ import { RiLockPasswordLine, RiUserLine } from "react-icons/ri";
 import { MdOutlineMail } from "react-icons/md";
 import { registerUser } from "../../services/users";
 import toast from "react-hot-toast";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { NavbarContext } from "../../context/NavbarContext";
 import ScrollToTop from "../../components/ScrollToTop";
+import { AiOutlineLoading } from "react-icons/ai";
 
 const Register = () => {
   const [body, setBody] = useState({
@@ -20,6 +21,7 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const { state } = useLocation();
 
@@ -41,6 +43,7 @@ const Register = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const { email, username, password, confirmPassword } = body;
     const data = await registerUser({
       email,
@@ -48,6 +51,8 @@ const Register = () => {
       password,
       confirmPassword,
     });
+    setIsLoading(false);
+
     if (data === "Network Error") {
       toast.error("Server error, come back later.");
       return;
@@ -83,7 +88,7 @@ const Register = () => {
   };
 
   return (
-    <div className="flex justify-center items-center flex-grow min-h-screen mt-16">
+    <div className="flex justify-center items-center flex-grow min-h-screen mt-8">
       <div className="py-8 px-20  md:shadow-2xl rounded-2xl">
         <h1 className="text-center text-2xl font-medium">Register</h1>
         <form onSubmit={handleFormSubmit} className="mt-3 flex flex-col gap-4">
@@ -212,9 +217,19 @@ const Register = () => {
             type="submit"
             className="bg-gray-800 py-2 px-4 mt-4 text-white rounded self-center"
           >
-            Login
+            {isLoading ? (
+              <AiOutlineLoading className="animate-spin text-lg" />
+            ) : (
+              "Sign up"
+            )}
           </button>
         </form>
+        <p className="text-sm mt-4">
+          Already have an account?{" "}
+          <Link to={"/login"} className="text-cyan-600">
+            Login
+          </Link>
+        </p>
       </div>
       <ScrollToTop />
     </div>

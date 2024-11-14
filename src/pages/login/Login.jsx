@@ -3,11 +3,11 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { MdOutlineMail } from "react-icons/md";
 import { loginUser } from "../../services/users";
 import toast from "react-hot-toast";
-import { useLocation, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { NavbarContext } from "../../context/NavbarContext";
 import ScrollToTop from "../../components/ScrollToTop";
 import { useUser } from "../../store/useUser";
+import { AiOutlineLoading } from "react-icons/ai";
 
 const Login = () => {
   const [body, setBody] = useState({
@@ -18,6 +18,7 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   // const { setUser } = useContext(AuthContext);
   const { setUser } = useUser();
@@ -42,10 +43,13 @@ const Login = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const data = await loginUser({
       email: body.email,
       password: body.password,
     });
+    setIsLoading(false);
+
     if (data === "Network Error") {
       toast.error("Server error, come back later.");
       return;
@@ -79,12 +83,12 @@ const Login = () => {
         navigate(state.path);
       }
     } else {
-      console.log(navigate("/"));
+      navigate("/");
     }
   };
 
   return (
-    <div className="flex justify-center items-center flex-grow min-h-screen mt-16">
+    <div className="flex justify-center items-center flex-grow min-h-screen mt-8">
       <div className="py-8 px-20  md:shadow-2xl rounded-2xl">
         <h1 className="text-center text-2xl font-medium">Login</h1>
         <form onSubmit={handleFormSubmit} className="mt-3 flex flex-col gap-4">
@@ -153,9 +157,19 @@ const Login = () => {
             type="submit"
             className="bg-gray-800 py-2 px-4 mt-4 text-white rounded self-center"
           >
-            Login
+            {isLoading ? (
+              <AiOutlineLoading className="animate-spin text-lg" />
+            ) : (
+              "Login"
+            )}
           </button>
         </form>
+        <p className="text-sm mt-4">
+          Don't have an account?{" "}
+          <Link to={"/register"} className="text-cyan-600">
+            Register
+          </Link>
+        </p>
       </div>
       <ScrollToTop />
     </div>
