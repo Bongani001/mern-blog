@@ -17,7 +17,7 @@
         <li><strong>Effortless Content Creation ✍️:</strong>
             <ul>
                 <li>Create, read, update, and delete blog posts with ease.</li>
-                <li>Organize your content with tags and categories.</li>
+                <li>Organize your content with categories.</li>
             </ul>
         </li>
         <li><strong>Engaging Discussions 💬:</strong>
