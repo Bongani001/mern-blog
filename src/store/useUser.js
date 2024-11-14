@@ -9,7 +9,7 @@ export const useUser = create((set) => ({
   user: null,
   userPosts: [],
   userTopPosts: [],
-  userPostsByCategory: [],
+  userPostsByCategory: {},
   isLoading: false,
   setUser: (user) => {
     set({ user });
@@ -22,12 +22,12 @@ export const useUser = create((set) => ({
     set({ userPosts: posts });
     set({ isLoading: false });
   },
-  fetchUserPostsByCategory: async (userId, categoryId, page) => {
+  fetchUserPostsByCategory: async (userId,searchParam="", categoryId, page) => {
     // set({ userPostsByCategory: [] });
     set({ isLoading: true });
 
-    // Get posts filtered by category (arguments=(user id,category id,number of posts to fetch))
-    let posts = await getUserPostsByCategory(userId, categoryId, page, 10);
+    // Get posts filtered by category (arguments=(user id,search query,category id,number of posts to fetch))
+    let posts = await getUserPostsByCategory(userId,searchParam, categoryId, page, 10);
     set({ userPostsByCategory: posts });
     set({ isLoading: false });
   },
@@ -42,6 +42,7 @@ export const useUser = create((set) => ({
 let data = localStorage.getItem("userInfo");
 data = JSON.parse(data);
 
+// verify user token
 const isValidToken = async (token) => {
   try {
     const secret = new TextEncoder().encode(import.meta.env.VITE_JWT_SECRET);
@@ -54,6 +55,7 @@ const isValidToken = async (token) => {
   }
 };
 
+// if token is still valid, keep user signed in, otherwise log out the user
 if (data != null) {
   if (isValidToken(data.token)) {
     useUser.setState({ user: data });

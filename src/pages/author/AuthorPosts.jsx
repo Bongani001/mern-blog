@@ -7,12 +7,18 @@ import { getAllCategories } from "../../services/categories";
 import ScrollToTop from "../../components/ScrollToTop";
 import { useUser } from "../../store/useUser";
 import { useCategories } from "../../store/useCategories";
+import { useDebouncedCallback } from "use-debounce";
 
 const AuthorPosts = () => {
   const [category, setCategory] = useState("");
   const [currentPage, setCurrentPage] = useState(1); // pagination Index
+  const [search, setSearch] = useState("");
+  const [resetPage, setResetPage] = useState(false);
 
   const { setSelectedPage } = useContext(NavbarContext);
+
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get("search");
 
   const {
     user,
@@ -25,7 +31,28 @@ const AuthorPosts = () => {
   } = useUser();
   let { categories, selectedCategory } = useCategories();
 
-  const [searchParams] = useSearchParams();
+   // delayed search request after user pauses typing on the search input
+   const debounced = useDebouncedCallback((value) => {
+    setResetPage(true); // reset page to page 1 for a new search request
+    setCurrentPage(1); // reset pagination index to 1
+
+    setSearch(value);
+
+    if (category === "all") {
+      navigate(`?search=${value}&category=all&page=1`);
+    } else {
+      let categoryId;
+      let categoryName = "";
+      categories.forEach((cate) => {
+        if (cate.name.toLowerCase() == category.toLowerCase()) {
+          categoryId = cate._id;
+          categoryName = category.toLowerCase();
+        }
+      });
+
+      navigate(`?search=${value}&category=${categoryName}&page=1`);
+    }
+  }, 2000);
 
   const navigate = useNavigate();
 
@@ -46,8 +73,13 @@ const AuthorPosts = () => {
     }
 
     const cat = searchParams.get("category");
+    const searchParam = searchParams.get("search") || "";
     setCategory(cat);
+    setSearch(searchParam);
     page = Number(searchParams.get("page"));
+
+    // if its's a serach query, reset pagination index to 1
+    if (resetPage) page = 1;
 
     const getPosts = async () => {
       // Get categories if not yet initialised in the store
@@ -58,7 +90,7 @@ const AuthorPosts = () => {
       // Get posts
       if (cat == "all") {
         // Get posts by category
-        fetchUserPostsByCategory(user._id, cat, page);
+        fetchUserPostsByCategory(user._id,searchParam, cat, page);
       } else {
         let categoryId = "";
         categories.forEach((cate) => {
@@ -68,7 +100,7 @@ const AuthorPosts = () => {
         });
 
         // Get posts by category
-        fetchUserPostsByCategory(user._id, categoryId, page);
+        fetchUserPostsByCategory(user._id,searchParam, categoryId, page);
       }
 
       if (
@@ -81,7 +113,7 @@ const AuthorPosts = () => {
     };
 
     getPosts();
-  }, [selectedCategory]);
+  }, [selectedCategory,searchQuery]);
 
   // Invoke when user click to request another page.
   // Pagination
@@ -89,10 +121,12 @@ const AuthorPosts = () => {
     window.scrollTo({ top: 50, behavior: "smooth" });
     let categoryName = "";
     if (category == "all") {
-      const address = "?category=all&page=" + Number(event.selected + 1);
-      navigate(address);
+      // change page number
+      const url = `?search=${search}&category=all&page=` + Number(event.selected + 1);
+      navigate(url);
+
       setCurrentPage(event.selected + 1);
-      fetchUserPostsByCategory(user._id, category, event.selected + 1);
+      fetchUserPostsByCategory(user._id,search, category, event.selected + 1);
     } else {
       let categoryId;
       categories.forEach((cate) => {
@@ -102,10 +136,12 @@ const AuthorPosts = () => {
         }
       });
       setCurrentPage(event.selected + 1);
-      fetchUserPostsByCategory(user._id, categoryId, event.selected + 1);
-      const address =
-        `?category=${categoryName}&page=` + Number(event.selected + 1);
-      navigate(address);
+      fetchUserPostsByCategory(user._id,search, categoryId, event.selected + 1);
+
+      // change page number
+      const url =
+        `?search=${search}&category=${categoryName}&page=` + Number(event.selected + 1);
+      navigate(url);
     }
   };
 
@@ -121,6 +157,8 @@ const AuthorPosts = () => {
         handlePageClick={handlePageClick}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
+        search={search}
+        setSearch={debounced}
         mostViewed={`Most viewed blogs by ${user?.username}`}
         mainTitle={`Blogs by ${user?.username}`}
       />
