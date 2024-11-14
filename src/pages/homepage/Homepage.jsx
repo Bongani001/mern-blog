@@ -84,7 +84,7 @@ const Homepage = () => {
                 <h2 className="text-zinc-800 text-2xl font-semibold ml-3">
                   Top Blogs
                 </h2>
-                <div className="flex overflow-x-auto md:grid md:grid-cols-2 md:grid-flow-row gap-3 my-3 overflow-hidden">
+                <div className="flex overflow-x-auto no-scrollbar md:grid md:grid-cols-2 md:grid-flow-row gap-3 my-3">
                   <div className="md:row-span-2">
                     <div
                       style={{

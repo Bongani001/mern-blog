@@ -45,7 +45,7 @@ ul.react-paginate li.disabled a {
 @media screen and (max-width: 400px) {
   /* For very small screens (e.g., mobile phones in portrait mode) */
   ul.react-paginate li a {
-    padding: 6px 5px;
+    padding: 6px 8px;
     font-size: 12px;
   }
 }

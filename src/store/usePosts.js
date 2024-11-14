@@ -26,7 +26,7 @@ export const usePosts = create((set) => ({
     set({ isLoading: true });
 
     // Get posts by category (arguments=(category id,page number, number of posts to fetch))
-    const data = await getPostsByCategory(categoryId, searchQuery, page, 10);
+    const data = await getPostsByCategory(categoryId, searchQuery, page, 12);
 
     set({ postsByCategory: data });
     set({ isLoading: false });

@@ -27,7 +27,7 @@ export const useUser = create((set) => ({
     set({ isLoading: true });
 
     // Get posts filtered by category (arguments=(user id,search query,category id,number of posts to fetch))
-    let posts = await getUserPostsByCategory(userId,searchParam, categoryId, page, 10);
+    let posts = await getUserPostsByCategory(userId,searchParam, categoryId, page, 12);
     set({ userPostsByCategory: posts });
     set({ isLoading: false });
   },
