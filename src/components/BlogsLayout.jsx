@@ -6,6 +6,7 @@ import { useCategories } from "../store/useCategories";
 import ReactPaginate from "react-paginate";
 import "../styles/pagination.css";
 import { IoSearchOutline } from "react-icons/io5";
+import PostCardSkeleton from "./PostCardSkeleton";
 
 const BlogsLayout = ({
   posts,
@@ -136,26 +137,36 @@ const BlogsLayout = ({
               </div>
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4">
-              {isLoadingPosts && (
+              {/* {isLoadingPosts && (
                 <div className="flex sm:col-span-2 lg:col-span-3 justify-center">
                   <img src={loading} alt="loading..." className="w-20" />
                 </div>
+              )} */}
+              {/* //Skeleton */}
+              {isLoadingPosts && (
+                <>
+                  <PostCardSkeleton />
+                  <PostCardSkeleton />
+                  <PostCardSkeleton />
+                </>
               )}
               {posts?.length < 1 && !isLoadingPosts && (
                 <span className="flex italic sm:col-span-2 lg:col-span-3 justify-center">
                   No blog posts available.
                 </span>
               )}
-              {posts?.map((post) => {
-                return (
-                  <PostCard
-                    key={post._id}
-                    post={post}
-                    date={true}
-                    showPublished={mainTitle.includes("by") ? true : false}
-                  />
-                );
-              })}
+
+              {!isLoadingPosts &&
+                posts?.map((post) => {
+                  return (
+                    <PostCard
+                      key={post._id}
+                      post={post}
+                      date={true}
+                      showPublished={mainTitle.includes("by") ? true : false}
+                    />
+                  );
+                })}
             </div>
             <div>
               <ReactPaginate
