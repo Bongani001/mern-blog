@@ -8,10 +8,14 @@ const upload = require("../middleware/multer");
 
 exports.post_getAll = asyncHandler(async (req, res, next) => {
   let posts = [];
+  const search = req.query.search || "";
   if (req.query.views) {
     // Get the most viewed posts
     const limit = Number(req.query.limit);
-    posts = await Post.find({ published: { $eq: true } })
+    posts = await Post.find({
+      title: { $regex: search, $options: "i" },
+      published: { $eq: true },
+    })
       .populate({ path: "authorId categoryId", select: "username name" })
       .sort({ views: -1 })
       .limit(limit)
@@ -19,13 +23,19 @@ exports.post_getAll = asyncHandler(async (req, res, next) => {
   } else if (req.query.limit) {
     // Get limited posts
     const limit = Number(req.query.limit);
-    posts = await Post.find({ published: { $eq: true } })
+    posts = await Post.find({
+      title: { $regex: search, $options: "i" },
+      published: { $eq: true },
+    })
       .populate({ path: "authorId", select: "username" })
       .sort({ createdAt: -1 })
       .limit(limit)
       .exec();
   } else {
-    posts = await Post.find({ published: { $eq: true } }).exec();
+    posts = await Post.find({
+      title: { $regex: search, $options: "i" },
+      published: { $eq: true },
+    }).exec();
   }
   return res.status(200).json(posts);
 });
@@ -56,6 +66,7 @@ exports.post_getByCategory = asyncHandler(async (req, res) => {
   const categoryId = req.query.categoryid;
   const limit = Number(req.query.limit);
   const page = Number(req.query.page);
+  const search = req.query.search || "";
 
   const skipDocuments = (page - 1) * limit;
 
@@ -63,18 +74,26 @@ exports.post_getByCategory = asyncHandler(async (req, res) => {
   let countQuery;
   if (categoryId === "all") {
     // Get all posts sort by latest created post
-    postsQuery = Post.find({ published: { $eq: true } })
+    postsQuery = Post.find({
+      title: { $regex: search, $options: "i" },
+      published: { $eq: true },
+    })
       .populate({ path: "authorId categoryId", select: "username name" })
       .sort({ createdAt: -1 })
       .skip(skipDocuments)
       .limit(limit);
 
     countQuery = Post.countDocuments({
+      title: { $regex: search, $options: "i" },
       published: { $eq: true },
     });
   } else {
     // Get posts by category and sort by latest created post
-    postsQuery = Post.find({ categoryId, published: { $eq: true } })
+    postsQuery = Post.find({
+      categoryId,
+      title: { $regex: search, $options: "i" },
+      published: { $eq: true },
+    })
       .populate({ path: "authorId categoryId", select: "username name" })
       .sort({ createdAt: -1 })
       .skip(skipDocuments)
@@ -82,6 +101,7 @@ exports.post_getByCategory = asyncHandler(async (req, res) => {
 
     countQuery = Post.countDocuments({
       categoryId,
+      title: { $regex: search, $options: "i" },
       published: { $eq: true },
     });
   }
@@ -130,6 +150,7 @@ exports.post_getUserPostsByCategory = asyncHandler(async (req, res) => {
   const categoryId = req.query.categoryid;
   const limit = Number(req.query.limit);
   const page = Number(req.query.page);
+  const search = req.query.search || "";
 
   const skipDocuments = (page - 1) * limit;
 
@@ -137,7 +158,10 @@ exports.post_getUserPostsByCategory = asyncHandler(async (req, res) => {
   let countQuery;
   if (categoryId === "all") {
     // Get all posts and sort by latest created post
-    postsQuery = Post.find({ authorId })
+    postsQuery = Post.find({
+      authorId,
+      title: { $regex: search, $options: "i" },
+    })
       .populate({ path: "authorId categoryId", select: "username name" })
       .sort({ createdAt: -1 })
       .skip(skipDocuments)
@@ -145,10 +169,15 @@ exports.post_getUserPostsByCategory = asyncHandler(async (req, res) => {
 
     countQuery = Post.countDocuments({
       authorId,
+      title: { $regex: search, $options: "i" },
     });
   } else {
     // Get posts by category and sort by latest created post
-    postsQuery = Post.find({ authorId, categoryId })
+    postsQuery = Post.find({
+      authorId,
+      categoryId,
+      title: { $regex: search, $options: "i" },
+    })
       .populate({ path: "authorId categoryId", select: "username name" })
       .sort({ createdAt: -1 })
       .skip(skipDocuments)
@@ -157,6 +186,7 @@ exports.post_getUserPostsByCategory = asyncHandler(async (req, res) => {
     countQuery = Post.countDocuments({
       authorId,
       categoryId,
+      title: { $regex: search, $options: "i" },
     });
   }
 
