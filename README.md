@@ -51,10 +51,60 @@
             </ul>
         </li>
     </ul>
-    <p><strong>Ready to Take Flight? ✈️</strong></p>
-    <p>Dive into the world of blogging with FeatherBlog. <strong>Start your journey today!</strong></p>
-<!--     <img src="your_logo.svg" alt="FeatherBlog Logo">
-    <video src="your_demo.mp4" controls></video> -->
-    <p><strong>Contributing 🤝</strong></p>
-    <p>Feel free to fork this repository, work on whatever you want to improve and open a pull-request.</p>
-    <p><strong>Let's build something amazing together!</strong></p>
+
+## 📂 Project Structure
+```bash
+client/
+├── public/             # Static assets
+├── src/
+│   ├── components/     # Reusable UI components
+│   ├── pages/          # Page-level views
+│   ├── context/        # Zustand store
+│   ├── utils/          # Helpers
+│   ├── App.jsx         # Root component
+│   └── main.jsx        # Entry point
+├── .env.example        # Environment variables
+├── package.json        # Dependencies
+├── vite.config.js      # Vite configuration
+└── tailwind.config.js  # Tailwind configuration
+```
+
+## ⚙️ Setup & Installation
+
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/Bongani001/mern-blog.git
+   cd mern-blog/client
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Configure environment**
+   Create a `.env` file:
+   ```env
+   VITE_API_URL=http://localhost:5000/api
+   ```
+
+4. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+
+5. **Build for production**
+   ```bash
+   npm run build
+   ```
+
+
+## 🤝 Contributing
+Contributions are welcome!  
+Fork the repo, create a feature branch, and submit a pull request. Let’s build something amazing together.
+
+
+## 📌 License
+Licensed under the MIT License.
+
+---
