@@ -85,7 +85,9 @@ client/
 3. **Configure environment**
    Create a `.env` file:
    ```env
-   VITE_API_URL=http://localhost:5000/api
+   VITE_NODE_ENV=
+   VITE_SERVER_URL=http://localhost:5000/api
+   VITE_JWT_SECRET=
    ```
 
 4. **Run the development server**
