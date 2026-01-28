@@ -1,38 +1,38 @@
-<h1>FeatherBlog 🪶: A Feather-Light Blogging Platform (API)</h1>
-    <p><strong>🚀 Elevate Your Blogging Experience</strong></p>
+<h1>FeatherBlog: A Feather-Light Blogging Platform (API)</h1>
+    <p><strong>Elevate Your Blogging Experience</strong></p>
     <p>This feather-light backend API empowers you to create stunning, interactive, and user-friendly blogs.</p>
     <h3>Key Features:</h3>
     <ul>
-       <li><strong>Server-Side Pagination 🌐:</strong>
+       <li><strong>Server-Side Pagination:</strong>
             <ul>
                 <li>Fetch and display data in smaller chunks, improving performance and user experience.</li>
             </ul>
         </li>
-        <li><strong>Robust User Authentication 🔒:</strong>
+        <li><strong>Robust User Authentication:</strong>
             <ul>
                 <li>Secure user login and registration.</li>
                 <li>Role-based access control for granular permissions.</li>
             </ul>
         </li>
-        <li><strong>Effortless Content Creation ✍️:</strong>
+        <li><strong>Effortless Content Creation:</strong>
             <ul>
                 <li>Create, read, update, and delete blog posts with ease.</li>
                 <li>Organize your content with categories.</li>
             </ul>
         </li>
-        <li><strong>Engaging Discussions 💬:</strong>
+        <li><strong>Engaging Discussions:</strong>
             <ul>
                 <li>Foster community with a robust comment system.</li>
                 <li>Moderate comments to maintain a positive environment.</li>
             </ul>
         </li>
-        <li><strong>Rich Text Editing 🖋️:</strong>
+        <li><strong>Rich Text Editing:</strong>
             <ul>
                 <li>Craft beautiful, formatted content with React Quill.</li>
             </ul>
         </li>
     </ul>
-    <h3>Built with Love ❤️ Using:</h3>
+    <h3>Built using:</h3>
     <ul>
         <li><strong>Backend Technologies:</strong>
             <ul>
@@ -52,7 +52,7 @@
         </li>
     </ul>
 
-## 📂 Project Structure
+## Project Structure
 ```bash
 client/
 ├── public/             # Static assets
@@ -69,7 +69,7 @@ client/
 └── tailwind.config.js  # Tailwind configuration
 ```
 
-## ⚙️ Setup & Installation
+## Setup & Installation
 
 1. **Clone the repo**
    ```bash
@@ -101,12 +101,12 @@ client/
    ```
 
 
-## 🤝 Contributing
+## Contributing
 Contributions are welcome!  
 Fork the repo, create a feature branch, and submit a pull request. Let’s build something amazing together.
 
 
-## 📌 License
+## License
 Licensed under the MIT License.
 
 ---
