@@ -1,11 +1,8 @@
-# 📖 MERN Blog
+<h1>FeatherBlog: A Feather-Light Blogging Platform (API)</h1>
+    <p><strong>Elevate Your Blogging Experience</strong></p>
+    <p>This feather-light backend API empowers you to create stunning, interactive, and user-friendly blogs.</p>
 
-A full-stack blogging platform built with the **MERN stack** (MongoDB, Express.js, React.js, Node.js).  
-This project allows users to create, read, update, and delete blog posts, manage categories, and interact through comments.
-
----
-
-## 🚀 Features
+## Features
 - User authentication (register/login)
 - Create, edit, and delete blog posts
 - Categorize posts
@@ -14,17 +11,13 @@ This project allows users to create, read, update, and delete blog posts, manage
 - MongoDB for data persistence
 - React frontend (deployed separately)
 
----
-
-## 🛠️ Tech Stack
+## Tech Stack
 - **Frontend:** React.js  
 - **Backend:** Node.js, Express.js  
 - **Database:** MongoDB  
 - **Authentication:** JWT  
 
----
-
-## 📂 Project Structure
+## Project Structure
 ```
 server/
 │── controllers/
@@ -47,53 +40,41 @@ server/
 │── package.json
 ```
 
----
-
-## 🌐 API Routes
+## API Routes
 
 Here’s a list of all available routes in the backend:
 
-### 🔑 User Routes (`/api/users`)
+### Index Router (`/api`)
+- Root entry point for all API routes
+
+### User Routes (`/api/users`)
 - `POST /register` → Register a new user  
 - `POST /login` → Login user  
 - `GET /profile/:id` → Get user profile  
 - `PUT /profile/:id` → Update user profile  
 - `DELETE /profile/:id` → Delete user  
 
----
-
-### 📝 Post Routes (`/api/posts`)
+### Post Routes (`/api/posts`)
 - `POST /` → Create a new post  
 - `GET /` → Get all posts  
 - `GET /:id` → Get single post by ID  
 - `PUT /:id` → Update post  
 - `DELETE /:id` → Delete post  
 
----
-
-### 📂 Category Routes (`/api/categories`)
+### Category Routes (`/api/categories`)
 - `POST /` → Create a new category  
 - `GET /` → Get all categories  
 - `GET /:id` → Get category by ID  
 - `PUT /:id` → Update category  
 - `DELETE /:id` → Delete category  
 
----
-
-### 💬 Comment Routes (`/api/comments`)
+### Comment Routes (`/api/comments`)
 - `POST /` → Add a new comment  
 - `GET /post/:postId` → Get all comments for a post  
 - `PUT /:id` → Update comment  
 - `DELETE /:id` → Delete comment  
 
----
-
-### 🌍 Index Router (`/api`)
-- Root entry point for all API routes
-
----
-
-## ⚙️ Installation & Setup
+## Installation & Setup
 
 1. Clone the repository:
    ```bash
@@ -118,9 +99,5 @@ Here’s a list of all available routes in the backend:
    npm start
    ```
 
----
-
-## 📌 License
+## License
 This project is licensed under the MIT License.
-
----
