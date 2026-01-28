@@ -1,6 +1,7 @@
-<h1>FeatherBlog: A Feather-Light Blogging Platform (API)</h1>
-    <p><strong>Elevate Your Blogging Experience</strong></p>
-    <p>This feather-light backend API empowers you to create stunning, interactive, and user-friendly blogs.</p>
+# MERN Blog
+
+A full-stack blogging platform built with the **MERN stack** (MongoDB, Express.js, React.js, Node.js).  
+This project allows users to create, read, update, and delete blog posts, manage categories, and interact through comments.
     <h3>Key Features:</h3>
     <ul>
        <li><strong>Server-Side Pagination:</strong>
